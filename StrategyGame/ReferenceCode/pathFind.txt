@@ -1,0 +1,277 @@
+#pragma once
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace PathFind
+{
+    public partial class Form1 : Form
+    {
+        const int size = 16;
+        const int border = 12;
+
+        //Has wall
+        int[,] map = new int[size, size];
+        int[,] distance = new int[size, size];
+        Point startP = new Point(1, 1);
+        Point endP = new Point(size - 2, size - 2);
+        int[,] ranges = new int[size, size];
+
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        public void ResetRanges()
+        {
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    ranges[x, y] =  -1;
+                    //Obstacles or edges
+                    //if (map[x, y] != 0) ranges[x, y] = -1;
+                }
+            }
+        }
+
+        
+
+        private void resetMap()
+        {
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    map[x, y] = 0;
+                    if ((x == 0) || (y == 0) || (x == (size - 1)) || (y == (size - 1)))
+                        map[x, y] = 1; //Wall
+                }
+            }
+            mapVLine(5, 4, 20);
+            mapHLine(5, 18, 20);
+        }
+        private void mapHLine(int x, int y, int width)
+        {
+            for (int i = 0; i < width; i++)
+            {
+                map[x + i, y] = 1;
+            }
+        }
+        private void mapVLine(int x, int y, int height)
+        {
+            for (int i = 0; i < height; i++)
+            {
+                map[x, y + i] = 1;
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            resetMap();
+        }
+
+        public bool rangeOpen(int x, int y)
+        {
+            if (map[x, y] != 0) return false;
+            if (ranges[x, y] == -1) return true;
+            return false;
+        }
+
+        List<Point> thePath = new List<Point>();
+
+        public void calcFlood()
+        {
+            thePath.Clear();
+            ResetRanges();            
+            //HashSet<xyRange> main = new HashSet<xyRange>();
+            HashSet<xyRange> found = new HashSet<xyRange>(new xyRange(0,0,0));
+            found.Add(new xyRange(endP.X, endP.Y, 1));
+    
+            while (found.Count > 0)
+            {
+
+                HashSet<xyRange> main = new HashSet<xyRange>();
+                foreach (xyRange xyz in found)
+                {
+                    int x = xyz.X;
+                    int y = xyz.Y;
+                    int d = xyz.Z;
+                    //Set this spot.
+                    ranges[x, y] = d;
+
+                    if (rangeOpen(x, y - 1)) main.Add(new xyRange(x, y-1, d+1));
+                    if (rangeOpen(x, y + 1)) main.Add(new xyRange(x, y+1, d + 1));
+                    if (rangeOpen(x+1, y )) main.Add(new xyRange(x+1, y, d + 1));
+                    if (rangeOpen(x-1, y))  main.Add(new xyRange(x-1, y, d + 1));
+                }
+                found.Clear();
+                foreach (xyRange xy in main)
+                {
+                    if (!found.Contains(xy))
+                    {
+                        found.Add(xy);
+                    }
+                }
+                main.Clear();
+            }
+        }
+        public bool pathGood(int x, int y, int d)
+        {
+            if (ranges[x, y] < 1) return false;
+            if (ranges[x, y] < d) return true;
+            return false;
+        }
+        private void CalcPath()
+        {
+            Random r = new Random();
+            thePath.Clear();
+            thePath.Add(new Point(startP.X, startP.Y));
+
+            
+
+            while (thePath.Last() != endP)
+            {
+
+                int x = thePath.Last().X;
+                int y = thePath.Last().Y;
+                int d = ranges[x, y];
+                int dx = 1;
+                int dy = 1;
+
+                if (r.Next(2) == 1) dx = -1;
+                if (r.Next(2) == 1) dy = -1;
+                if (pathGood(x, y - 1*dy, d))
+                {
+                    thePath.Add(new Point(x, y - 1 * dy));
+                    continue;
+                }
+                if (pathGood(x + 1 * dx, y, d))
+                {
+                    thePath.Add(new Point(x + 1 * dx, y));
+                    continue;
+                }
+
+                if (pathGood(x, y + 1*dy, d))
+                {
+                    thePath.Add(new Point(x, y + 1 * dy));
+                    continue;
+                }
+                if (pathGood(x-1 * dx, y , d))
+                {
+                    thePath.Add(new Point(x-1 * dx, y));
+                    continue;
+                }
+                break;
+            }
+
+
+
+        }
+
+
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            calcFlood();
+            CalcPath();
+            Graphics g = e.Graphics;
+            int width = panel1.Width / size;
+            int height = panel1.Height / size;
+            int border = 3;
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    Color cellC = Color.Blue;
+                    if (map[x, y] == 1)
+                    {
+                        cellC = Color.Gray;
+                    }
+                    if ((x == startP.X) && (y == startP.Y))
+                    {
+                        cellC = Color.Green;
+                    }
+                    if ((x == endP.X) && (y == endP.Y))
+                    {
+                        cellC = Color.Red;
+                    }
+                    using (Brush b = new SolidBrush(cellC))
+                    {
+                        int p = (x * height) / size;
+
+                        g.FillRectangle(b, (x * width), (y * height), width, height);
+                        g.DrawRectangle(Pens.White, (x * width), (y * height), width, height);
+                        string st = "" + ranges[x, y];
+                        g.DrawString(st, SystemFonts.DefaultFont, Brushes.White, x * width, y * height);
+
+                    }
+                }
+            }
+            foreach (Point p in thePath)
+            {
+                int x = p.X;
+                int y = p.Y;
+                g.FillEllipse(Brushes.Yellow, (x * width)+6, (y * height)+6, width-12, height-12);
+            }
+                
+            
+        }
+
+        private void panel1_MouseClick(object sender, MouseEventArgs e)
+        {
+            int width = panel1.Width / size;
+            int height = panel1.Height / size;
+            int mx = (e.X) / width;
+            int my = e.Y / height;
+            if ((mx < size) && (my < size))
+            {
+                map[mx, my] = (byte)(1 - map[mx, my]);
+                Refresh();
+            }
+
+        }
+    }
+    public class xyRange : IEqualityComparer<xyRange>
+    {
+        public xyRange(int x, int y, int z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
+
+        public int X;
+        public int Y;
+        public int Z;
+
+        public bool Equals(xyRange x, xyRange y)
+        {
+            if (x.X < y.X) return false;
+            if (x.X > y.X) return false;
+            if (x.Y < y.Y) return false;
+            if (x.Y > y.Y) return false;
+            return true;
+        }
+
+        public int GetHashCode(xyRange obj)
+        {
+            return (obj.X << 16) + (obj.Y <<8);
+        }
+        public override string ToString()
+        {
+            return "X:" + X + " Y:" + Y + " Z:" + Z;
+        }
+    }
+}
+
+
+
