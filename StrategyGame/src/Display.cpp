@@ -44,5 +44,10 @@ void Display::DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect)
 	SDL_RenderCopy(GetRenderer(), texture, nullptr, targetRect);
 }
 
+void Display::DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect, const SDL_Rect* subTexture)
+{
+	SDL_RenderCopy(GetRenderer(), texture, targetRect, subTexture);
+}
+
 /*Static members*/
 Display* Display::displayInstance;

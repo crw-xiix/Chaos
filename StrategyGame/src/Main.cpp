@@ -14,12 +14,18 @@ int main(int argc, char* argv[])
 	Game::Create();
 	Display::Create(720, 480);
 
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(Display::GetRenderer(), SDL_LoadBMP("assets/Example.bmp"));
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(Display::GetRenderer(), SDL_LoadBMP("assets/ColorExample.bmp"));
 	SDL_Rect texRect;
 	texRect.w = 100;
 	texRect.h = 100;
 	texRect.x = 50;
 	texRect.y = 50;
+
+	SDL_Rect subTex;
+	subTex.w = 100;
+	subTex.h = 100;
+	subTex.x = 50;
+	subTex.y = 50;
 
 	PerlinMap map = PerlinMap(10, 10, 99);
 	map.Randomize();
@@ -31,7 +37,7 @@ int main(int argc, char* argv[])
 		Game::ProcessEvents();
 
 		Display::Clear(255, 0, 0);
-		Display::DrawTexture(texture, &texRect);
+		Display::DrawTexture(texture, &texRect, &subTex);
 		Display::Present();
 	}
 
