@@ -119,7 +119,7 @@ int move_snake(snake_dir dir) {
 }
 
 
-int main(int argc, char* argv[])
+int snake_main(int argc, char* argv[])
 {
 	SDL_Window* win;
 	SDL_Renderer* ren;
