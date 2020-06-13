@@ -24,6 +24,11 @@
 *.exe
 *.out
 *.app
+*.obj
+
+#stupid log modules
+*.tlog
+
 
 ### VisualStudio ###
 ## Ignore Visual Studio temporary files, build results, and
