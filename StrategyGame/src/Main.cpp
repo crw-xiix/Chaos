@@ -9,7 +9,14 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	
-	Display display(1000, 1000);
+	Display::Create(720, 480);
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(Display::GetRenderer(), SDL_LoadBMP("assets/Example.bmp"));
+	SDL_Rect texRect;
+	texRect.w = 100;
+	texRect.h = 100;
+	texRect.x = 50;
+	texRect.y = 50;
 
 	while (true)
 	{
@@ -23,7 +30,9 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		SDL_RenderPresent(display.GetRenderer());
+		Display::Clear(255, 0, 0);
+		Display::DrawTexture(texture, &texRect);
+		Display::Present();
 	}
 
 	return 0;
