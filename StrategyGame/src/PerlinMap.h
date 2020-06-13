@@ -10,24 +10,9 @@ private:
 	float* evalues = nullptr;
 
 public:
-	PerlinMap(int x, int y, unsigned long seed) {
-		width = x;
-		height = y;
-		this->seed = seed;
-		evalues = new float[x * y];
-		svalues = new float[x * y];
-	}
+	PerlinMap(int x, int y, unsigned long seed);
+	~PerlinMap();
 
-	void Randomize() {
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < width; y++) {
-				//svalues[y*width+x] = rand
-
-			}
-		}
-	}
-
-	
-
-
+	void Randomize();
+	float getTestValue();
 };

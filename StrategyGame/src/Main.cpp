@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Display.h"
 #include "Game.h"
+#include "PerlinMap.h"
 
 int main(int argc, char* argv[])
 {
@@ -19,6 +20,11 @@ int main(int argc, char* argv[])
 	texRect.h = 100;
 	texRect.x = 50;
 	texRect.y = 50;
+
+	PerlinMap map = PerlinMap(10, 10, 99);
+	map.Randomize();
+	float v = map.getTestValue();
+
 
 	while (Game::IsRunning())
 	{
