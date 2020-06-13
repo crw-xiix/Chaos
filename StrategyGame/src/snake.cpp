@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+/*USE FOR REFERENCE*/
+
 const int DISPLAY_SCALE_FACTOR = 15;
 
 typedef struct snake_xy {
