@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Display.h"
+#include "Game.h"
 
 int main(int argc, char* argv[])
 {
@@ -9,6 +10,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	
+	Game::Create();
 	Display::Create(720, 480);
 
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(Display::GetRenderer(), SDL_LoadBMP("assets/Example.bmp"));
@@ -18,22 +20,15 @@ int main(int argc, char* argv[])
 	texRect.x = 50;
 	texRect.y = 50;
 
-	while (true)
+	while (Game::IsRunning())
 	{
-		SDL_Event e;
-		while (SDL_PollEvent(&e))
-		{
-			if (e.type == SDL_QUIT)
-			{
-				SDL_Quit();
-				return 0;
-			}
-		}
+		Game::ProcessEvents();
 
 		Display::Clear(255, 0, 0);
 		Display::DrawTexture(texture, &texRect);
 		Display::Present();
 	}
 
+	SDL_Quit();
 	return 0;
 }
