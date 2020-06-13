@@ -27,9 +27,8 @@ int main(int argc, char* argv[])
 	subTex.x = 50;
 	subTex.y = 50;
 
-	PerlinMap map = PerlinMap(10, 10, 99);
-	map.Randomize();
-	float v = map.getTestValue();
+	
+
 
 
 	while (Game::IsRunning())
@@ -37,7 +36,11 @@ int main(int argc, char* argv[])
 		Game::ProcessEvents();
 
 		Display::Clear(255, 0, 0);
+		//RW test func
+		
+
 		Display::DrawTexture(texture, &texRect, &subTex);
+		PerlinMap::TestDraw();
 		Display::Present();
 	}
 
