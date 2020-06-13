@@ -1,6 +1,6 @@
 #pragma once
 
-public class MapItem {
+class MapItem {
 private:
 public:
 
