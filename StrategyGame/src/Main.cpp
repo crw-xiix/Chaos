@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-	std::cout << "fuck\n";
+	std::cout <<"hello world";
 	/*TEST COMMIT*/
 	return 0;
 }
