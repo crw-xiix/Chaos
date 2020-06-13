@@ -1,6 +1,6 @@
 # stupid folders we don't want
-obj/
-bin/
+obj/**
+bin/**
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,c++
