@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 	SDL_Rect subTex;
 	subTex.w = 100;
 	subTex.h = 100;
-	subTex.x = 50;
+	subTex.x = 522;
 	subTex.y = 50;
 
 	

@@ -4,11 +4,11 @@
 #include <random>
 #include "Display.h"
 
-PerlinMap::PerlinMap(int x, int y, unsigned long seed)
+PerlinMap::PerlinMap(int x, int y)
 {
 	width = x;
 	height = y;
-	this->seed = seed;
+
 	evalues = new float[(size_t)x * y];
 	svalues = new float[(size_t)x * y];
 }
@@ -87,28 +87,26 @@ void PerlinMap::TestDraw()
 	int w = 512;
 	int h = 512;
 	int rval = rand() % 500;
-	PerlinMap map = PerlinMap(w, h,108);
-	map.Randomize();
+	PerlinMap map = PerlinMap(w, h);
+	map.Randomize(107);
 	map.MakePerlin();
 	map.Normalize();
 	SDL_Renderer* ren = Display::GetRenderer();
 	//now to draw it.........   ugh
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
-			int val = map.evalues[y * w + x] * 255;
+			int val = map.GetTerrain(x, y, 8) * 32;
 			if (val > 255) val = 255;
 			if (val < 0) val = 0;
-			val = map.GetTerrain(x, y, 8) * 32;
-		
 			SDL_SetRenderDrawColor(ren, val, val, val, 255);
 			SDL_RenderDrawPoint(ren, x, y);
 		}
 	}
 }
 
-void PerlinMap::Randomize()
+void PerlinMap::Randomize(int iseed)
 {
-    std::mt19937 gen(seed);
+    std::mt19937 gen(iseed);
     std::uniform_real_distribution<> dis(0.0, 1.0);
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {

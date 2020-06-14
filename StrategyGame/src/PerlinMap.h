@@ -1,5 +1,10 @@
 #pragma once
 
+
+
+/// <summary>
+/// Do not use new on this.  Just put it on the stack.  Loop through until paths are verified, then go out of scope.
+/// </summary>
 class PerlinMap {
 private:
 	int seed = 0;
@@ -9,9 +14,12 @@ private:
 	float* evalues = nullptr;
 	const int octaves = 6;
 public:
-	PerlinMap(int x, int y, unsigned long seed);
+	PerlinMap(int x, int y);
 	~PerlinMap();
-	void Randomize();
+	/// <summary>
+	/// Randomizes the source numbers, taking a new seed - if 
+	/// </summary>
+	void Randomize(int seed);
 	void MakePerlin();
 	void Normalize();
 	//this will be enum soon

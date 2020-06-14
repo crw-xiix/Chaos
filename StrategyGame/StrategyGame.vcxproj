@@ -179,6 +179,7 @@
     <ClInclude Include="src\GamePlayer.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\MapItem.h" />
+    <ClInclude Include="src\MapLocation.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\PerlinMap.h" />
   </ItemGroup>
