@@ -14,5 +14,6 @@ public:
 	static void Create();
 	static void ProcessEvents();
 
+
 	static inline bool IsRunning() { return gameInstance->running; }
 };

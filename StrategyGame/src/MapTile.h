@@ -22,6 +22,9 @@ private:
 	int imgOffset = 0;
 public:
 	MapTile();
+	MapTile(int val);
 	MapTile(MapCellType type);
 	void Draw(int x, int y);
+	inline int GetTestCellVal() { return (int)type; }
+	inline int GetTestCellOfs() { return imgOffset; }
 };

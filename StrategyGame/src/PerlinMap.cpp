@@ -74,8 +74,9 @@ void PerlinMap::Normalize()
 
 int PerlinMap::GetTerrain(int x, int y, int max)
 {
-	float val = evalues[y * width + x];
-	val = val * max;
+	//Scale to requested level
+	int val = (int)(evalues[y * width + x] * max);
+
 	if (val < 0) val = 0;
 	if (val >= max) val = max - 1;
 	return val;

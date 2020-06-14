@@ -5,14 +5,29 @@
 
 Map::Map()
 {
-	PerlinMap generator  = PerlinMap(Size, Size);
-	//xxxc adjust seed later.........
-	generator.Randomize(108);
-	generator.Normalize();
+
+}
+
+void Map::Generate()
+{
+	PerlinMap noise(Size,Size);
+	noise.Randomize(99);
+	noise.MakePerlin();
+	noise.Normalize();
 
 	for (int y = 0; y < Size; y++) {
 		for (int x = 0; x < Size; x++) {
-			map[y][x] = MapTile((MapCellType) generator.GetTerrain(x, y, 8));
+			int val =noise.GetTerrain(x, y, 8);
+			map[y][x] = MapTile(val);
 		}
 	}
+
+}
+
+int Map::get(int x, int y)
+{
+
+	int val = map[y][x].GetTestCellVal();
+	return val;
+	
 }

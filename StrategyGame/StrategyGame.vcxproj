@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AssetMgr.cpp" />
     <ClCompile Include="src\Display.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="src\PerlinMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AssetMgr.h" />
     <ClInclude Include="src\Display.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GamePlayer.h" />
