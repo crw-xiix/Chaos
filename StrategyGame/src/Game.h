@@ -5,6 +5,7 @@ class Game
 private:
 	static Game* gameInstance;
 	bool running;
+	int camX, camY;  //Camera Location
 
 	Game();
 	~Game();

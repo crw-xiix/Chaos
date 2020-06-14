@@ -2,6 +2,8 @@
 #include "Display.h"
 #include "Game.h"
 #include "PerlinMap.h"
+#include <SDL_image.h>
+
 
 int main(int argc, char* argv[])
 {
@@ -13,8 +15,9 @@ int main(int argc, char* argv[])
 	
 	Game::Create();
 	Display::Create(720, 480);
-
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(Display::GetRenderer(), SDL_LoadBMP("assets/ColorExample.bmp"));
+	IMG_Init(IMG_INIT_PNG);
+	SDL_Texture* texture = IMG_LoadTexture(Display::GetRenderer(), "assets/landscape.png");
+	//SDL_Texture* texture = SDL_CreateTextureFromSurface(Display::GetRenderer(), IMG_LoadTexture(Display::GetRenderer(), "assets/landscape.png"));
 	SDL_Rect texRect;
 	texRect.w = 100;
 	texRect.h = 100;
