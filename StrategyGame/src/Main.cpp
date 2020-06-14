@@ -39,6 +39,7 @@ int main(int argc, char* argv[])
 	AssetMgr::Load("assets/landscape.png", "LAND");
 	int cx = 0;
 	int cy = 0;
+	int scale = 3;
 	while (Game::IsRunning())
 	{
 		Game::ProcessEvents();
@@ -50,16 +51,17 @@ int main(int argc, char* argv[])
 		if (ks[SDL_SCANCODE_S]) cy++;
 		if (ks[SDL_SCANCODE_A]) cx--;
 		if (ks[SDL_SCANCODE_D]) cx++;
+
 		if (cx < 0) cx = 0;
 		if (cy < 0) cy = 0;
 
 		SDL_Rect destRect;
-		destRect.w = 32;
-		destRect.h = 32;
-		for (int y = 0; y < 32; y++) {
-			for (int x = 0; x < 55; x++) {
-				destRect.x = x * 32;
-				destRect.y = y * 32;
+		destRect.w = 32/scale;
+		destRect.h = 32/scale;
+		for (int y = 0; y < 32*scale; y++) {
+			for (int x = 0; x < 55*scale; x++) {
+				destRect.x = x * 32/scale;
+				destRect.y = y * 32/scale;
 				SDL_Rect myRect;
 				//messy, but just a test...  tx = texture x
 				int tx = GameMap.GetOfs(cx+x, cy+y);

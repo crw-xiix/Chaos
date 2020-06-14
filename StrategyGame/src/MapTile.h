@@ -14,7 +14,6 @@ enum class MapCellType {
 	DESTROYED
 };
 
-
 //This is a location on the map, stored inside the map
 class MapTile {
 private:
