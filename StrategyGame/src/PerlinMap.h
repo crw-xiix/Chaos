@@ -7,11 +7,14 @@ private:
 	int height = 0;
 	float* svalues = nullptr;
 	float* evalues = nullptr;
-	const int octaves = 8;
+	const int octaves = 6;
 public:
 	PerlinMap(int x, int y, unsigned long seed);
 	~PerlinMap();
-	void MakePerlin();
-	static void TestDraw();
 	void Randomize();
+	void MakePerlin();
+	void Normalize();
+	//this will be enum soon
+	int GetTerrain(int x, int y, int max);
+	static void TestDraw();
 };
