@@ -33,13 +33,13 @@ int main(int argc, char* argv[])
 	subTex.x = 512;
 	subTex.y = 256;
 
-	Map GameMap;
-	GameMap.Generate();
+	Map* GameMap = new Map();
+	GameMap->Generate();
 
 	AssetMgr::Load("assets/landscape.png", "LAND");
 	int cx = 0;
 	int cy = 0;
-	int scale = 3;
+	int scale = 1;
 	while (Game::IsRunning())
 	{
 		Game::ProcessEvents();
@@ -52,20 +52,29 @@ int main(int argc, char* argv[])
 		if (ks[SDL_SCANCODE_A]) cx--;
 		if (ks[SDL_SCANCODE_D]) cx++;
 
-		if (cx < 0) cx = 0;
-		if (cy < 0) cy = 0;
-
+		
 		SDL_Rect destRect;
 		destRect.w = 32/scale;
 		destRect.h = 32/scale;
-		for (int y = 0; y < 32*scale; y++) {
-			for (int x = 0; x < 55*scale; x++) {
+		int maxXCells = 1800 / destRect.w;
+		int maxYCells = 1000 / destRect.h;
+
+		if (cx < 0) cx = 0;
+		if (cy < 0) cy = 0;
+		int maxXCam = Map::Size - (1800 / 32);
+		int maxYCam = Map::Size - (1000 / 32);
+
+		if (cx > (maxXCam)) cx = maxXCam;
+		if (cy > (maxYCam)) cy = maxYCam;
+
+		for (int y = 0; y < maxYCells*scale; y++) {
+			for (int x = 0; x < maxXCells*scale; x++) {
 				destRect.x = x * 32/scale;
 				destRect.y = y * 32/scale;
 				SDL_Rect myRect;
 				//messy, but just a test...  tx = texture x
-				int tx = GameMap.GetOfs(cx+x, cy+y);
-				int ty = GameMap.get(cx+x, cy+y);
+				int tx = GameMap->GetOfs(cx+x, cy+y);
+				int ty = GameMap->get(cx+x, cy+y);
 				SDL_Texture* tempTex = AssetMgr::Get("LAND",32,tx,ty,myRect);
 				Display::DrawTexture(tempTex,&myRect, &destRect);
 			}
