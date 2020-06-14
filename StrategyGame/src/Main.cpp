@@ -19,16 +19,16 @@ int main(int argc, char* argv[])
 	SDL_Texture* texture = IMG_LoadTexture(Display::GetRenderer(), "assets/landscape.png");
 	//SDL_Texture* texture = SDL_CreateTextureFromSurface(Display::GetRenderer(), IMG_LoadTexture(Display::GetRenderer(), "assets/landscape.png"));
 	SDL_Rect texRect;
-	texRect.w = 100;
-	texRect.h = 100;
-	texRect.x = 50;
-	texRect.y = 50;
+	texRect.w = 256;
+	texRect.h = 512;
+	texRect.x = 0;
+	texRect.y = 0;
 
 	SDL_Rect subTex;
-	subTex.w = 100;
-	subTex.h = 100;
-	subTex.x = 522;
-	subTex.y = 50;
+	subTex.w = 256;
+	subTex.h = 256;
+	subTex.x = 512;
+	subTex.y = 256;
 
 	
 
@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 	{
 		Game::ProcessEvents();
 
-		Display::Clear(255, 0, 0);
+		Display::Clear(0, 0, 0);
 		//RW test func
 		
 
