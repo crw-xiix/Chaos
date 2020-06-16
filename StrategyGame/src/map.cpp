@@ -1,7 +1,6 @@
 #include "pch.h"
-#include "map.h"
+#include "Map.h"
 #include "PerlinMap.h"
-
 
 Map::Map()
 {
