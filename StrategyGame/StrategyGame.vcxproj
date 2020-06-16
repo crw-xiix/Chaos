@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\AssetMgr.cpp" />
     <ClCompile Include="src\Display.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -177,12 +178,14 @@
     <ClCompile Include="src\PerlinMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\AssetMgr.h" />
     <ClInclude Include="src\Display.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GamePlayer.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\MapItem.h" />
+    <ClInclude Include="src\MapTile.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\PerlinMap.h" />
     <ClInclude Include="src\Unit.h" />
