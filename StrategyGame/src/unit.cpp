@@ -28,6 +28,5 @@ void Unit::Move(int x, int y)
 
 void Unit::Spawn(int x, int y)
 {
-	
 	Move(x, y);
 }

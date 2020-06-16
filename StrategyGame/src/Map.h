@@ -7,6 +7,7 @@
 class Map {
 public:
 	static constexpr int Size = 128;  //Need a power of 2......
+	static int nogConstant;
 private:
 	MapTile map[Size][Size];
 public:

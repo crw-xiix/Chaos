@@ -51,31 +51,40 @@ int main(int argc, char* argv[])
 		if (ks[SDL_SCANCODE_S]) cy++;
 		if (ks[SDL_SCANCODE_A]) cx--;
 		if (ks[SDL_SCANCODE_D]) cx++;
+		if (ks[SDL_SCANCODE_F1]) {
+			Map::nogConstant++;
+		}
+		if (ks[SDL_SCANCODE_F2]) {
+			Map::nogConstant--;
+		}
+
 
 		
 		SDL_Rect destRect;
-		destRect.w = 32/scale;
-		destRect.h = 32/scale;
+		destRect.w = 64/scale;
+		destRect.h = 64/scale;
 		int maxXCells = 1800 / destRect.w;
 		int maxYCells = 1000 / destRect.h;
 
 		if (cx < 0) cx = 0;
 		if (cy < 0) cy = 0;
-		int maxXCam = Map::Size - (1800 / 32);
-		int maxYCam = Map::Size - (1000 / 32);
+		int maxXCam = Map::Size - (1800 / 64);
+		int maxYCam = Map::Size - (1000 / 64);
 
 		if (cx > (maxXCam)) cx = maxXCam;
 		if (cy > (maxYCam)) cy = maxYCam;
 
 		for (int y = 0; y < maxYCells*scale; y++) {
 			for (int x = 0; x < maxXCells*scale; x++) {
-				destRect.x = x * 32/scale;
-				destRect.y = y * 32/scale;
+				destRect.x = x * 64/scale;
+				destRect.y = y * 64/scale;
 				SDL_Rect myRect;
 				//messy, but just a test...  tx = texture x
 				int tx = GameMap->GetOfs(cx+x, cy+y);
 				int ty = GameMap->get(cx+x, cy+y);
-				SDL_Texture* tempTex = AssetMgr::Get("LAND",32,tx,ty,myRect);
+				if (ty < Map::nogConstant) ty = 2;
+
+				SDL_Texture* tempTex = AssetMgr::Get("LAND",64,tx,ty,myRect);
 				Display::DrawTexture(tempTex,&myRect, &destRect);
 			}
 		}
