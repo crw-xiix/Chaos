@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Map.h"
 #include "MapTile.h"
-
 
 class Map {
 public:

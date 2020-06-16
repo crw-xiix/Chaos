@@ -90,7 +90,6 @@ int main(int argc, char* argv[])
 		}
 		//END RW test func
 
-		
 //		Display::DrawTexture(texture, &texRect, &subTex);  //Dis test func
 		Display::Present();
 	}
