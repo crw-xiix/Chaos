@@ -51,3 +51,15 @@ void Display::DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect, cons
 
 /*Static members*/
 Display* Display::displayInstance;
+
+SDL_ClipRectSection::SDL_ClipRectSection(int x, int y, int w, int h)
+{
+	SDL_RenderGetClipRect(Display::GetRenderer(), &oldRect);
+	SDL_Rect clip= { x,y,w,h };
+	SDL_RenderSetClipRect(Display::GetRenderer(), &clip);
+}
+
+SDL_ClipRectSection::~SDL_ClipRectSection()
+{
+	SDL_RenderSetClipRect(Display::GetRenderer(), &oldRect);
+}

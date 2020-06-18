@@ -85,6 +85,7 @@ int PerlinMap::GetTerrain(int x, int y, int max)
 //static
 void PerlinMap::TestDraw()
 {
+	/*
 	int w = 512;
 	int h = 512;
 	int rval = rand() % 500;
@@ -103,6 +104,7 @@ void PerlinMap::TestDraw()
 			SDL_RenderDrawPoint(ren, x, y);
 		}
 	}
+	*/
 }
 
 void PerlinMap::Randomize(int iseed)

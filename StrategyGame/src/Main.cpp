@@ -5,6 +5,7 @@
 #include <SDL_image.h>
 #include <AssetMgr.h>
 #include "Map.h"
+#include "viewport.h"
 
 
 int main(int argc, char* argv[])
@@ -33,13 +34,16 @@ int main(int argc, char* argv[])
 	subTex.x = 512;
 	subTex.y = 256;
 
-	Map* GameMap = new Map();
-	GameMap->Generate();
+	Map* gameMap = new Map();
+	gameMap->Generate();
 
 	AssetMgr::Load("assets/landscape.png", "LAND");
-	int cx = 0;
-	int cy = 0;
+	double cx = 0;
+	double cy = 0;
 	int scale = 1;
+	ViewPort vp(50, 50, 1600, 800, 1.0f);
+	std::vector<Unit> units;
+
 	while (Game::IsRunning())
 	{
 		Game::ProcessEvents();
@@ -47,51 +51,21 @@ int main(int argc, char* argv[])
 
 		//RW test proc - there is no real range checking so relax.........
 		const uint8_t* ks = SDL_GetKeyboardState(NULL);
-		if (ks[SDL_SCANCODE_W]) cy--;
-		if (ks[SDL_SCANCODE_S]) cy++;
-		if (ks[SDL_SCANCODE_A]) cx--;
-		if (ks[SDL_SCANCODE_D]) cx++;
-		if (ks[SDL_SCANCODE_F1]) {
-			Map::nogConstant++;
-		}
-		if (ks[SDL_SCANCODE_F2]) {
-			Map::nogConstant--;
-		}
-
-
+		if (ks[SDL_SCANCODE_W]) cy-= 0.001;
+		if (ks[SDL_SCANCODE_S]) cy += 0.001; 
+		if (ks[SDL_SCANCODE_A]) cx -= 0.001; 
+		if (ks[SDL_SCANCODE_D]) cx += 0.001;
 		
-		SDL_Rect destRect;
-		destRect.w = 64/scale;
-		destRect.h = 64/scale;
-		int maxXCells = 1800 / destRect.w;
-		int maxYCells = 1000 / destRect.h;
-
-		if (cx < 0) cx = 0;
-		if (cy < 0) cy = 0;
-		int maxXCam = Map::Size - (1800 / 64);
-		int maxYCam = Map::Size - (1000 / 64);
-
-		if (cx > (maxXCam)) cx = maxXCam;
-		if (cy > (maxYCam)) cy = maxYCam;
-
-		for (int y = 0; y < maxYCells*scale; y++) {
-			for (int x = 0; x < maxXCells*scale; x++) {
-				destRect.x = x * 64/scale;
-				destRect.y = y * 64/scale;
-				SDL_Rect myRect;
-				//messy, but just a test...  tx = texture x
-				int tx = GameMap->GetOfs(cx+x, cy+y);
-				int ty = GameMap->get(cx+x, cy+y);
-				if (ty < Map::nogConstant) ty = 2;
-
-				SDL_Texture* tempTex = AssetMgr::Get("LAND",64,tx,ty,myRect);
-				Display::DrawTexture(tempTex,&myRect, &destRect);
-			}
-		}
+		
+		vp.SetCamera(cx, cy);
+		vp.Update(1);
+		vp.Draw(*gameMap, units);
+		
 		//END RW test func
 
 //		Display::DrawTexture(texture, &texRect, &subTex);  //Dis test func
 		Display::Present();
+		SDL_Delay(11);
 	}
 	AssetMgr::Destroy();
 	SDL_Quit();

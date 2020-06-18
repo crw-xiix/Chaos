@@ -176,6 +176,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\PerlinMap.cpp" />
+    <ClCompile Include="src\viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Animation.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\PerlinMap.h" />
     <ClInclude Include="src\Unit.h" />
+    <ClInclude Include="src\viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -10,14 +10,14 @@ Map::Map()
 void Map::Generate()
 {
 	PerlinMap noise(Size,Size);
-	noise.Randomize(99);
+	noise.Randomize(400000);
 	noise.MakePerlin();
 	noise.Normalize();
 
 	for (int y = 0; y < Size; y++) {
 		for (int x = 0; x < Size; x++) {
 			int val =noise.GetTerrain(x, y, 9);
-			if (val < nogConstant) val = 2;
+			
 			map[y][x] = MapTile(val);
 		}
 	}
