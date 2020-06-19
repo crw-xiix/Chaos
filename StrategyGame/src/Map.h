@@ -16,4 +16,5 @@ public:
 	inline int GetOfs(int x, int y) {
 		return map[x][y].GetTestCellOfs();
 	}
+	//void Draw();
 };

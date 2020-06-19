@@ -22,5 +22,6 @@ MapTile::MapTile(MapCellType type)
 
 void MapTile::Draw(int x, int y)
 {
+
 	//nothing yet.......
 }

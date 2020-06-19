@@ -25,6 +25,18 @@ SDL_Texture* AssetMgr::Get(std::string nick, int gridSize, int x, int y, SDL_Rec
 	return tex;
 }
 
+SDL_Texture* AssetMgr::GetAll(std::string nick, SDL_Rect& dest)
+{
+	SDL_Texture* tex = Images[nick];
+	Uint32 fmt;
+	int acs;
+	dest.x = 0;
+	dest.y = 0;
+	SDL_QueryTexture(tex, &fmt, &acs, &dest.w, &dest.h);
+		
+	return tex;
+}
+
 
 //Statics
 std::unordered_map<std::string, SDL_Texture*> AssetMgr::Images;

@@ -13,5 +13,6 @@ public:
 	static std::unordered_map<std::string, SDL_Texture*> Images;
 	static bool Load(std::string filename, std::string nick);
 	static SDL_Texture* Get(std::string nick, int gridSize, int x, int y, SDL_Rect& dest);
+	static SDL_Texture* GetAll(std::string nick, SDL_Rect& dest);
 };
 

@@ -58,17 +58,7 @@ void ViewPort::Draw(Map& map, std::vector<Unit> units)
 
 	int pcx = MScx % (Map::TileSize);
 	int pcy = MScy % (Map::TileSize);
-	if (pcx != 0) {
-		int bp = 1;
-		asdf++;
-		if (asdf > 20) {
-			int bp = 1;
-			//exit(0);
-		}
-		std::cout << "Pcx:" << pcx << ": cx " << cx << std::endl;
-	}
-
-
+	
 	if (cx < 0) cx = 0;
 	if (cy < 0) cy = 0;
 	
@@ -110,4 +100,13 @@ bool ViewPort::GetCellAtMouseXY(int mx, int my, int& x, int& y)
 void ViewPort::RenderTextureAt(int cx, int cy, int ocx, int ocy, SDL_Texture* tex, SDL_Rect* sourceRect)
 {
 	return;
+}
+
+bool ViewPort::MouseInViewPort(int x, int y)
+{
+	if (x < topX) return false;
+	if (y < topY) return false;
+	if (x >= (topX + width)) return false;
+	if (y >= (topY + height)) return false;
+	return true;
 }

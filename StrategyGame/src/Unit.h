@@ -1,3 +1,5 @@
+#pragma once
+
 #include "pch.h"
 
 enum Unit_Type {
