@@ -23,7 +23,8 @@ public:
 	MapTile();
 	MapTile(int val);
 	MapTile(MapCellType type);
-	void Draw(int x, int y);
+	void Draw(SDL_Rect dest);
 	inline int GetTestCellVal() { return (int)type; }
 	inline int GetTestCellOfs() { return imgOffset; }
+
 };

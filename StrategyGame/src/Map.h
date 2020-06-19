@@ -11,10 +11,12 @@ private:
 	MapTile map[Size][Size];
 public:
 	Map();
+
 	void Generate();
 	int get(int x, int y);
+	MapTile Get(int x, int y);
 	inline int GetOfs(int x, int y) {
 		return map[x][y].GetTestCellOfs();
 	}
-	//void Draw();
+
 };

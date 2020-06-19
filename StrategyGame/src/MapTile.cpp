@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "MapTile.h"
+#include "AssetMgr.h"
+#include "Map.h"
 
 MapTile::MapTile()
 {
@@ -20,8 +22,9 @@ MapTile::MapTile(MapCellType type)
 	this->type = type;
 }
 
-void MapTile::Draw(int x, int y)
+void MapTile::Draw(SDL_Rect dest)
 {
-
-	//nothing yet.......
+	SDL_Rect myRect;
+	SDL_Texture* tempTex = AssetMgr::Get("LAND", Map::TileSize, imgOffset,(int) type, myRect);
+	Display::DrawTexture(tempTex, &myRect, &dest);
 }

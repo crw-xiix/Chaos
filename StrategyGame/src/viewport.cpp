@@ -42,20 +42,16 @@ void ViewPort::Draw(Map& map, std::vector<Unit> units)
 	destRect.h = Map::TileSize;
 	int maxXCells = width / destRect.w;
 	int maxYCells = height / destRect.h;
-
-	int pofsx = 0;
-	int pofsy = 0;
-
-	//  interpolate:  X  0.0 -> 1.0   from 0 -> 20 Y
-	//  V = 20*x
-
+	
+	//Camera X/Y in cell grid location
 	int cx = (int)(camX * Map::Size );
 	int cy = (int)(camY * Map::Size );
 
+	//Camera X/Y in pixel location
 	int MScx = (int)(camX * Map::Size * Map::TileSize);
 	int MScy = (int)(camY * Map::Size * Map::TileSize);
 	
-
+	//Cell grid offset from 0,0 of each cell
 	int pcx = MScx % (Map::TileSize);
 	int pcy = MScy % (Map::TileSize);
 	
@@ -73,14 +69,7 @@ void ViewPort::Draw(Map& map, std::vector<Unit> units)
 		for (int x = 0; x < maxXCells+1/*scale*/; x++) {
 			destRect.x = x * Map::TileSize + topX -pcx;
 			destRect.y = y * Map::TileSize + topY -pcy;
-			SDL_Rect myRect;
-			//messy, but just a test...  tx = texture x
-			int tx = map.GetOfs(cx + x, cy + y);
-			int ty = map.get(cx + x, cy + y);
-
-
-			SDL_Texture* tempTex = AssetMgr::Get("LAND", Map::TileSize , tx, ty, myRect);
-			Display::DrawTexture(tempTex, &myRect, &destRect);
+			map.Get(cx + x, cy + y).Draw(destRect);
 		}
 	}
 }

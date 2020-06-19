@@ -19,12 +19,12 @@ private:
 	~Game();
 
 	//Stuff we need for game
-	Map* gameMap;
+	Map* gameMap = nullptr;
 	std::vector<Unit> units;
-
+	ViewPort viewPort;
 public:
 	static Game* gameInstance;
-	ViewPort viewPort;
+	
 	static void Create();
 	static void ProcessEvents();
 	void Process();
