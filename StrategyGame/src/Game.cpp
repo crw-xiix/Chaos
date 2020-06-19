@@ -65,10 +65,15 @@ void Game::StartUp(int x, int y)
 
 	AssetMgr::Load("assets/landscape.png", "LAND");
 	AssetMgr::Load("assets/background.png", "BKG");
-	AssetMgr::Load("assest/dudes.png", "UNITS");
+	AssetMgr::Load("assets/dudes.png", "UNITS");
+	AssetMgr::Load("assets/highlights.png", "HIGHLIGHT");
 
 	//These numbers come from the background image........
 	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);
+
+
+	(gameMap->Get(10, 10)).selected = true;
+
 	
 
 }

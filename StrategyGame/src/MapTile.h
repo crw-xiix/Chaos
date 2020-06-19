@@ -19,7 +19,9 @@ class MapTile {
 private:
 	MapCellType type = MapCellType::NONE;
 	int imgOffset = 0;
+
 public:
+	bool selected = false;
 	MapTile();
 	MapTile(int val);
 	MapTile(MapCellType type);

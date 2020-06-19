@@ -32,7 +32,7 @@ int Map::get(int x, int y)
 	
 }
 
-MapTile Map::Get(int x, int y)
+MapTile& Map::Get(int x, int y)
 {
 	return map[x][y];
 }

@@ -64,7 +64,6 @@ void ViewPort::Draw(Map& map, std::vector<Unit> units)
 	if (cx > (maxXCam)) cx = maxXCam;
 	if (cy > (maxYCam)) cy = maxYCam;
 	
-	
 	for (int y = 0; y < maxYCells+2 /* scale*/; y++) {
 		for (int x = 0; x < maxXCells+1/*scale*/; x++) {
 			destRect.x = x * Map::TileSize + topX -pcx;
