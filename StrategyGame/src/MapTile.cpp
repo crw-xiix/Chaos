@@ -8,7 +8,7 @@ MapTile::MapTile()
 
 }
 
-//Will have to figure out how to make the prettier
+//Will have to figure out how to make it prettier
 MapTile::MapTile(int val)
 {
 	imgOffset = rand() % 8;
@@ -30,9 +30,7 @@ void MapTile::Draw(SDL_Rect dest)
 	if (selected) {
 		SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 0, myRect);
 		Display::DrawTexture(highlightTex, &myRect, &dest);
-
-
-		SDL_Texture* dude = AssetMgr::Get("UNITS", Map::TileSize, 0, 2, myRect);
+		SDL_Texture* dude = AssetMgr::Get("UNITS", Map::TileSize, 0, 0, myRect);
 		Display::DrawTexture(dude, &myRect, &dest);
 	}
 }
