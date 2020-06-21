@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "viewport.h"
 #include "AssetMgr.h"
+#include "Game.h"
 
 
 ViewPort::ViewPort(int x, int y, int w, int h, float zoom)
@@ -66,9 +67,18 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players)
 	
 	for (int y = 0; y < maxYCells+2 /* scale*/; y++) {
 		for (int x = 0; x < maxXCells+1/*scale*/; x++) {
+
+
 			destRect.x = x * Map::TileSize + topX -pcx;
 			destRect.y = y * Map::TileSize + topY -pcy;
+
 			map.Get(cx + x, cy + y).Draw(destRect);
+			if ((Game::mCellX == (cx + x)) && ((Game::mCellY == cy + y))) {
+				SDL_Rect myRect;
+				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 0, myRect);
+				Display::DrawTexture(highlightTex, &myRect, &destRect);
+
+			}
 		}
 	}
 
@@ -87,11 +97,30 @@ void ViewPort::DoSomething()
 {
 	///some code......................
 }
-
+/// <summary>
+/// 
+/// </summary>
+/// <param name="mx">Mouse x</param>
+/// <param name="my">Mouse y</param>
+/// <param name="x">Ref OUT cell x</param>
+/// <param name="y">Ref OUT cell y</param>
+/// <returns>Cell location in map of map cell under cursor.....</returns>
 bool ViewPort::GetCellAtMouseXY(int mx, int my, int& x, int& y)
 {
-	x = 0;
-	y = 0;
+	
+	mx -= topX;
+	my -= topY;
+
+	mx = (int)(Map::Size*Map::TileSize * camX + mx) / Map::TileSize;
+	my = (int)(Map::Size*Map::TileSize * camY + my) / Map::TileSize;
+
+	if (camX > .1) {
+		int bp = 0;
+	}
+
+	x = mx;
+	y = my;
+
 	return false;
 }
 

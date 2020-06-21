@@ -22,7 +22,10 @@ private:
 	Map* gameMap = nullptr;
 	std::vector<GamePlayer> players;
 	ViewPort viewPort;
+
+	
 public:
+	static int mCellX, mCellY;
 	static Game* gameInstance;
 	
 	static void Create();

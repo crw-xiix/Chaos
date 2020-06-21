@@ -6,12 +6,12 @@
 
 class ViewPort {
 private:
-	int topX, topY;
-	int width, height;
+	int topX=0, topY=0;
+	int width=0, height=0;
 	float zoom = 1.0f;
 	//Camera Location
-	double camX, camY;  
-	double camTX, camTY;
+	double camX=0.0, camY=0.0;  
+	double camTX=0.0, camTY=0.0;
 public:
 	ViewPort(int x, int y, int w, int h, float zoom);
 	ViewPort() = default;
