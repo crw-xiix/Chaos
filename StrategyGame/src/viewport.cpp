@@ -76,8 +76,8 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players)
 	{
 		for (auto unit : player.GetUnits())
 		{
-			destRect.x = (unit.GetX() + cx) * Map::TileSize + topX - pcx;
-			destRect.y = (unit.GetY() + cy) * Map::TileSize + topY - pcy;
+			destRect.x = (unit.GetX()-cx ) * Map::TileSize + topX - pcx;
+			destRect.y = (unit.GetY()-cy ) * Map::TileSize + topY - pcy;
 			unit.Draw(destRect);
 		}
 	}
