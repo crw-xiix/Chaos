@@ -54,7 +54,7 @@ void Game::Process() {
 	Display::DrawTexture(tempTex, &myRect, &screen);
 
 	//Draw the map
-	viewPort.Draw(*gameMap, units);
+	viewPort.Draw(*gameMap, players);
 	//Draw the UI......
 }
 
@@ -73,9 +73,11 @@ void Game::StartUp(int x, int y)
 
 
 	(gameMap->Get(10, 10)).selected = true;
+	gameMap->Get(10, 11).selected = true;
+	gameMap->Get(10, 12).selected = true;
 
-	
-
+	GamePlayer player;
+	players.push_back(player);
 }
 
 /*private static members*/

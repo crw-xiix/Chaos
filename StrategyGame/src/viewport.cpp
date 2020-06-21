@@ -34,7 +34,7 @@ void ViewPort::Update(int ms)
 }
 
 int asdf = 0;
-void ViewPort::Draw(Map& map, std::vector<Unit> units)
+void ViewPort::Draw(Map& map, std::vector<GamePlayer> players)
 {
 	SDL_ClipRectSection myClip(topX, topY, width, height);
 	SDL_Rect destRect;
@@ -69,6 +69,16 @@ void ViewPort::Draw(Map& map, std::vector<Unit> units)
 			destRect.x = x * Map::TileSize + topX -pcx;
 			destRect.y = y * Map::TileSize + topY -pcy;
 			map.Get(cx + x, cy + y).Draw(destRect);
+		}
+	}
+
+	for (auto& player : players)
+	{
+		for (auto unit : player.GetUnits())
+		{
+			destRect.x = (unit.GetX() + cx) * Map::TileSize + topX - pcx;
+			destRect.y = (unit.GetY() + cy) * Map::TileSize + topY - pcy;
+			unit.Draw(destRect);
 		}
 	}
 }

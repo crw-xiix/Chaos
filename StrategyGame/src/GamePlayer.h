@@ -1,8 +1,15 @@
 #pragma once
-#include<vector>
+#include "pch.h"
+#include "Unit.h"
 
 class GamePlayer {
 private:
-	bool Is_turn;
+	std::vector<Unit> units;
+	//temp
+	static constexpr int initUnits = 4;
+
 public:
+	GamePlayer();
+
+	const inline std::vector<Unit>& GetUnits() const { return units; }
 };

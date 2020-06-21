@@ -3,6 +3,7 @@
 #include "AssetMgr.h"
 #include "Map.h"
 #include "Unit.h"
+#include "GamePlayer.h"
 
 MapTile::MapTile()
 {
@@ -34,8 +35,12 @@ void MapTile::Draw(SDL_Rect dest)
 
 		//SDL_Texture* dude = AssetMgr::Get("UNITS", Map::TileSize, 0, 2, myRect);
 		//Display::DrawTexture(dude, &myRect, &dest);
-		Unit dude(UnitType::Warrior);
-		dude.Draw(dest);
+		
+		//Unit dude(UnitType::Warrior);
+		//dude.Draw(dest);
 
+		GamePlayer player;
+		player.GetUnits();
+		
 	}
 }

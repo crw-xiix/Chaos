@@ -20,7 +20,7 @@ private:
 
 	//Stuff we need for game
 	Map* gameMap = nullptr;
-	std::vector<Unit> units;
+	std::vector<GamePlayer> players;
 	ViewPort viewPort;
 public:
 	static Game* gameInstance;

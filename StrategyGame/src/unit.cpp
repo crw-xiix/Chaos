@@ -4,9 +4,12 @@
 #include "Display.h"
 #include "AssetMgr.h"
 
-Unit::Unit(UnitType type)
+Unit::Unit(UnitType type, int x, int y)
 {
 	this->type = type;
+
+	this->x = x;
+	this->y = y;
 
 	texture = AssetMgr::Get("UNITS", Map::TileSize, 0, (int)type, rect);
 
