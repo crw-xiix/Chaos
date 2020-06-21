@@ -2,6 +2,7 @@
 #include "MapTile.h"
 #include "AssetMgr.h"
 #include "Map.h"
+#include "Unit.h"
 
 MapTile::MapTile()
 {
@@ -30,7 +31,11 @@ void MapTile::Draw(SDL_Rect dest)
 	if (selected) {
 		SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 0, myRect);
 		Display::DrawTexture(highlightTex, &myRect, &dest);
-		SDL_Texture* dude = AssetMgr::Get("UNITS", Map::TileSize, 0, 0, myRect);
-		Display::DrawTexture(dude, &myRect, &dest);
+
+		//SDL_Texture* dude = AssetMgr::Get("UNITS", Map::TileSize, 0, 2, myRect);
+		//Display::DrawTexture(dude, &myRect, &dest);
+		Unit dude(UnitType::Warrior);
+		dude.Draw(dest);
+
 	}
 }

@@ -1,37 +1,35 @@
 #pragma once
-
 #include "pch.h"
 
-enum Unit_Type {
-	Melee,
+enum class UnitType {
+	Warrior = 0,
 	Spear,
-	Range,
+	Archer,
 	Wizard,
-	Worker
 };
 
-struct Weapon
+enum class WeaponType
 {
-	enum class WeaponType
-	{
-		None = 0,
-		Melee,
-		Ranged,
-		Magic
-	} Type;
+	None = 0,
+	Melee,
+	Ranged,
+	Magic
 };
 
 class Unit {
 private:
-	int x, y;
-	float hp = 0.0f;
-	float strength = 0.0f;
-	float speed = 0.0f;
-	Unit_Type unitType;
+	UnitType type;
+	WeaponType weapon;
+	SDL_Rect rect;
+	SDL_Texture* texture;
+
+	float hp;
+	int speed;
+	int range;
+	float damage;
 
 public:
-	void Attack(Unit selected);
-	void Attack(int x, int y);
-	void Move(int x, int y);
-	void Spawn(int x, int y);
+	Unit(UnitType type);
+	
+	void Draw(SDL_Rect dest);
 };
