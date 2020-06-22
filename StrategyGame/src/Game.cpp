@@ -35,10 +35,6 @@ void Game::ProcessEvents()
 
 void Game::Process() {
 	Display::Clear(0, 0, 0);
-
-
-
-	
 	const uint8_t* ks = SDL_GetKeyboardState(NULL);
 	if (ks[SDL_SCANCODE_W]) cy -= 0.001;
 	if (ks[SDL_SCANCODE_S]) cy += 0.001;
