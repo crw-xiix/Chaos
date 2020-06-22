@@ -39,8 +39,8 @@ void MapTile::Draw(SDL_Rect dest)
 		//Unit dude(UnitType::Warrior);
 		//dude.Draw(dest);
 
-		GamePlayer player;
-		player.GetUnits();
+		GamePlayer thisTestPlayer;
+		thisTestPlayer.GetUnits();
 		
 	}
 }
