@@ -41,6 +41,6 @@ void MapTile::Draw(SDL_Rect dest)
 
 		GamePlayer myPlayer;
 		myPlayer.GetUnits();
-		
+	
 	}
 }
