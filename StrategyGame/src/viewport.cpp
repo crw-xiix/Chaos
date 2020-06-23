@@ -69,12 +69,6 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 			destRect.y = y * Map::TileSize + topY -pcy;
 			map.Get(cx + x, cy + y).Draw(destRect);
 
-			//Highlight Current Cell under the mouse.........
-			if ((Game::mCellX == (cx + x)) && ((Game::mCellY == cy + y))) {
-				SDL_Rect myRect;
-				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 0, myRect);
-				Display::DrawTexture(highlightTex, &myRect, &destRect);
-			}
 
 			//Now we need to handle the cells in the pathfinder.....
 			if (pathFinder->GetRange(cx + x, cy + y) > 0) {
@@ -82,6 +76,15 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 2, myRect);
 				Display::DrawTexture(highlightTex, &myRect, &destRect);
 			}
+
+			//Highlight Current Cell under the mouse.........
+			if ((Game::mCellX == (cx + x)) && ((Game::mCellY == cy + y))) {
+				SDL_Rect myRect;
+				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 0, myRect);
+				Display::DrawTexture(highlightTex, &myRect, &destRect);
+			}
+
+			
 		}
 	}
 
