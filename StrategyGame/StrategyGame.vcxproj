@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\PathFind.cpp" />
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\AssetMgr.cpp" />
     <ClCompile Include="src\Display.cpp" />
@@ -181,6 +182,7 @@
     <ClCompile Include="src\viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\PathFind.h" />
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\AssetMgr.h" />
     <ClInclude Include="src\Display.h" />

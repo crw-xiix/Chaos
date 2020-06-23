@@ -6,10 +6,11 @@ class GamePlayer {
 private:
 	std::vector<Unit> units;
 	//temp
-	static constexpr int initUnits = 4;
+	static constexpr int initUnits = 1;
 
 public:
 	GamePlayer();
 
 	const inline std::vector<Unit>& GetUnits() const { return units; }
+	const inline Unit& GetUnit(int idx) { return GetUnits().at(idx); }
 };

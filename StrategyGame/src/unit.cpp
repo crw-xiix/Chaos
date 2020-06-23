@@ -25,7 +25,7 @@ Unit::Unit(UnitType type, int x, int y)
 	case UnitType::Warrior:
 		weapon = WeaponType::Melee;
 		hp = 100.0f;
-		speed = 4;
+		speed = 12;
 		range = 1;
 		damage = 20.0f;
 		break;
@@ -33,7 +33,7 @@ Unit::Unit(UnitType type, int x, int y)
 	case UnitType::Spear:
 		weapon = WeaponType::Melee;
 		hp = 100.0f;
-		speed = 2;
+		speed = 24;
 		range = 1;
 		damage = 35.0f;
 		break;
@@ -41,7 +41,7 @@ Unit::Unit(UnitType type, int x, int y)
 	case UnitType::Archer:
 		weapon = WeaponType::Ranged;
 		hp = 75.0f;
-		speed = 2;
+		speed = 30;
 		range = 5;
 		damage = 20.0f;
 		break;
@@ -49,7 +49,7 @@ Unit::Unit(UnitType type, int x, int y)
 	case UnitType::Wizard:
 		weapon = WeaponType::Magic;
 		hp = 50.0f;
-		speed = 2;
+		speed = 20;
 		range = 2;
 		damage = 40.0f;
 		break;

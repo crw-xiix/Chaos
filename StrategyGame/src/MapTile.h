@@ -4,6 +4,7 @@
 enum class MapCellType {
 	DEEP_SEA = 0,
 	WATER,
+	SHALLOW_WATER,
 	MARSH,
 	GRASS,
 	STEPPE,
@@ -19,7 +20,9 @@ class MapTile {
 private:
 	MapCellType type = MapCellType::NONE;
 	int imgOffset = 0;
-
+	friend class PathFind;
+	int speed = 99;
+	int getSpeed();
 public:
 	bool selected = false;
 	MapTile();
@@ -28,5 +31,6 @@ public:
 	void Draw(SDL_Rect dest);
 	inline int GetTestCellVal() { return (int)type; }
 	inline int GetTestCellOfs() { return imgOffset; }
+	inline int GetSpeed() { return speed; }
 
 };

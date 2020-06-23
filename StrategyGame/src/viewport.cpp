@@ -18,24 +18,22 @@ void ViewPort::SetCamera(double &x, double &y)
 {
 	if (x < 0) x = 0;
 	if (y >= 1) y = 1;
-	if (x < 0) x = 0;
-	if (y >= 1) y = 1;
-
+	if (x >= 1) x = 1;
+	if (y <= 0) y = 0;
 	camTX = x ;
 	camTY = y ;
-
-	
 }
 
 //Ghetto cam pan
 void ViewPort::Update(int ms)
 {
-	camX = ((camX*4 + camTX) / 5.0);
-	camY = ((camY*4 + camTY) / 5.0);
+	float delay = 9;
+	camX = ((camX*delay + camTX) / (delay+1));
+	camY = ((camY*delay + camTY) / (delay+1));
 }
 
 int asdf = 0;
-void ViewPort::Draw(Map& map, std::vector<GamePlayer> players)
+void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathFinder)
 {
 	SDL_ClipRectSection myClip(topX, topY, width, height);
 	SDL_Rect destRect;
@@ -67,17 +65,22 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players)
 	
 	for (int y = 0; y < maxYCells+2 /* scale*/; y++) {
 		for (int x = 0; x < maxXCells+1/*scale*/; x++) {
-
-
 			destRect.x = x * Map::TileSize + topX -pcx;
 			destRect.y = y * Map::TileSize + topY -pcy;
-
 			map.Get(cx + x, cy + y).Draw(destRect);
+
+			//Highlight Current Cell under the mouse.........
 			if ((Game::mCellX == (cx + x)) && ((Game::mCellY == cy + y))) {
 				SDL_Rect myRect;
 				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 0, myRect);
 				Display::DrawTexture(highlightTex, &myRect, &destRect);
+			}
 
+			//Now we need to handle the cells in the pathfinder.....
+			if (pathFinder->GetRange(cx + x, cy + y) > 0) {
+				SDL_Rect myRect;
+				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 2, myRect);
+				Display::DrawTexture(highlightTex, &myRect, &destRect);
 			}
 		}
 	}

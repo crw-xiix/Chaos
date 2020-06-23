@@ -2,7 +2,7 @@
 #include "map.h"
 #include "Unit.h"
 #include "viewport.h"
-
+#include "PathFind.h"
 
 
 class Game
@@ -22,6 +22,8 @@ private:
 	Map* gameMap = nullptr;
 	std::vector<GamePlayer> players;
 	ViewPort viewPort;
+
+	PathFinder* pathFinder;
 
 	
 public:

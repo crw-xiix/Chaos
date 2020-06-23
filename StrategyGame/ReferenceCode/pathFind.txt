@@ -37,8 +37,6 @@ namespace PathFind
                 for (int x = 0; x < size; x++)
                 {
                     ranges[x, y] =  -1;
-                    //Obstacles or edges
-                    //if (map[x, y] != 0) ranges[x, y] = -1;
                 }
             }
         }
@@ -92,7 +90,6 @@ namespace PathFind
         {
             thePath.Clear();
             ResetRanges();            
-            //HashSet<xyRange> main = new HashSet<xyRange>();
             HashSet<xyRange> found = new HashSet<xyRange>(new xyRange(0,0,0));
             found.Add(new xyRange(endP.X, endP.Y, 1));
     

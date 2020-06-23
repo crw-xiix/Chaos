@@ -7,6 +7,7 @@
 Game::Game()
 	: running(true)
 {
+	
 }
 
 Game::~Game()
@@ -59,7 +60,7 @@ void Game::Process() {
 	viewPort.GetCellAtMouseXY(mx, my, mCellX, mCellY);
 
 	//Draw the map
-	viewPort.Draw(*gameMap, players);
+	viewPort.Draw(*gameMap, players, pathFinder);
 	//Draw the UI......
 }
 
@@ -68,6 +69,8 @@ void Game::StartUp(int x, int y)
 	gameMap = new Map();
 	gameMap->Generate();
 
+	pathFinder = new PathFinder(*gameMap);
+
 	AssetMgr::Load("assets/landscape.png", "LAND");
 	AssetMgr::Load("assets/background.png", "BKG");
 	AssetMgr::Load("assets/dudes.png", "UNITS");
@@ -75,14 +78,14 @@ void Game::StartUp(int x, int y)
 
 	//These numbers come from the background image........
 	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);
-
-
-	(gameMap->Get(10, 10)).selected = true;
-	gameMap->Get(10, 11).selected = true;
+	/*
 	gameMap->Get(10, 12).selected = true;
-
+	*/
 	GamePlayer player;
 	players.push_back(player);
+
+
+	pathFinder->DoUnitMaxDistanceTravel(players[0].GetUnit(0), 20);
 }
 
 /*private static members*/

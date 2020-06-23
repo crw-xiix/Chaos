@@ -5,6 +5,21 @@
 #include "Unit.h"
 #include "GamePlayer.h"
 
+int MapTile::getSpeed()
+{
+
+	switch (type) {
+	case MapCellType::MARSH: return 3;
+	case MapCellType::GRASS: return 1;
+	case MapCellType::STEPPE: return 2;
+	case MapCellType::HILL: return 3;
+	case MapCellType::ROCKY: return 10;
+	case MapCellType::DESTROYED: return 3;
+	}
+	//Impassable land...
+	return 255;
+}
+
 MapTile::MapTile()
 {
 
@@ -15,6 +30,7 @@ MapTile::MapTile(int val)
 {
 	imgOffset = rand() % 8;
 	type = (MapCellType) val;
+	speed = getSpeed();
 }
 
 MapTile::MapTile(MapCellType type)
@@ -22,6 +38,7 @@ MapTile::MapTile(MapCellType type)
 	//this will work for now.....
 	imgOffset = rand() % 8;
 	this->type = type;
+	speed = getSpeed();
 }
 
 void MapTile::Draw(SDL_Rect dest)
@@ -41,6 +58,6 @@ void MapTile::Draw(SDL_Rect dest)
 
 		GamePlayer myPlayer;
 		myPlayer.GetUnits();
-	
+		
 	}
 }

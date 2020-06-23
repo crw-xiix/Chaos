@@ -3,6 +3,7 @@
 #include <Map.h>
 #include <Unit.h>
 #include "GamePlayer.h"
+#include "PathFind.h"
 
 class ViewPort {
 private:
@@ -18,7 +19,7 @@ public:
 	
 	void SetCamera(double& x, double& y);
 	void Update(int ms);
-	void Draw(Map& map, std::vector<GamePlayer> players);
+	void Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathFinder);
 	void DoSomething();
 	bool GetCellAtMouseXY(int mx, int my, int& x, int& y);
 	void RenderTextureAt(int cx, int cy, int ocx, int ocy, SDL_Texture* tex, SDL_Rect* sourceRect);
