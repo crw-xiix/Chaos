@@ -31,8 +31,8 @@ private:
 	int range;
 	float damage;
 
-	int x;
-	int y;
+	float x;
+	float y;
 
 public:
 	static constexpr int ConstMax = 50;
@@ -40,10 +40,14 @@ public:
 
 	void Draw(SDL_Rect dest);
 
-	inline int GetX() const { return x; }
-	inline int GetY() const { return y; }
+	inline int GetX() const { return (int) x+.5f; }
+	inline int GetY() const { return (int) y+.5f; }
 	inline int GetSpeed() const { return speed; }
 	inline void Move(int dx, int dy) {
 		x = dx; y = dy;
 	}
+	inline void MoveF(float dx, float dy) {
+		x = dx; y = dy;
+	}
+
 };
