@@ -162,43 +162,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\sgamebackup\animation.h" />
-    <ClInclude Include="..\..\sgamebackup\assetmgr.h" />
-    <ClInclude Include="..\..\sgamebackup\display.h" />
-    <ClInclude Include="..\..\sgamebackup\game.h" />
-    <ClInclude Include="..\..\sgamebackup\gameplayer.h" />
-    <ClInclude Include="..\..\sgamebackup\map.h" />
-    <ClInclude Include="..\..\sgamebackup\maptile.h" />
-    <ClInclude Include="..\..\sgamebackup\pathfind.h" />
-    <ClInclude Include="..\..\sgamebackup\pch.h" />
-    <ClInclude Include="..\..\sgamebackup\perlinmap.h" />
-    <ClInclude Include="..\..\sgamebackup\unit.h" />
-    <ClInclude Include="..\..\sgamebackup\viewport.h" />
+    <ClInclude Include="src\animation.h" />
+    <ClInclude Include="src\assetmgr.h" />
+    <ClInclude Include="src\display.h" />
+    <ClInclude Include="src\game.h" />
+    <ClInclude Include="src\gameplayer.h" />
+    <ClInclude Include="src\map.h" />
     <ClInclude Include="src\MapItem.h" />
+    <ClInclude Include="src\maptile.h" />
+    <ClInclude Include="src\pathfind.h" />
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\perlinmap.h" />
+    <ClInclude Include="src\unit.h" />
+    <ClInclude Include="src\viewport.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\sgamebackup\compile.sh" />
-    <None Include="..\..\sgamebackup\main" />
-    <None Include="..\..\sgamebackup\src.zip" />
     <None Include="packages.config" />
+    <None Include="src\compile.sh" />
+    <None Include="src\main" />
+    <None Include="src\src.zip" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sgamebackup\animation.cpp" />
-    <ClCompile Include="..\..\sgamebackup\assetmgr.cpp" />
-    <ClCompile Include="..\..\sgamebackup\display.cpp" />
-    <ClCompile Include="..\..\sgamebackup\game.cpp" />
-    <ClCompile Include="..\..\sgamebackup\gameplayer.cpp" />
-    <ClCompile Include="..\..\sgamebackup\main.cpp" />
-    <ClCompile Include="..\..\sgamebackup\map.cpp" />
-    <ClCompile Include="..\..\sgamebackup\maptile.cpp" />
-    <ClCompile Include="..\..\sgamebackup\pathfind.cpp" />
-    <ClCompile Include="..\..\sgamebackup\pch.cpp" />
-    <ClCompile Include="..\..\sgamebackup\perlinmap.cpp" />
-    <ClCompile Include="..\..\sgamebackup\unit.cpp" />
-    <ClCompile Include="..\..\sgamebackup\viewport.cpp" />
+    <ClCompile Include="src\animation.cpp" />
+    <ClCompile Include="src\assetmgr.cpp" />
+    <ClCompile Include="src\display.cpp" />
+    <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\gameplayer.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\map.cpp" />
+    <ClCompile Include="src\maptile.cpp" />
+    <ClCompile Include="src\pathfind.cpp" />
+    <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\perlinmap.cpp" />
+    <ClCompile Include="src\unit.cpp" />
+    <ClCompile Include="src\viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\sgamebackup\txt.txt" />
+    <Text Include="src\txt.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

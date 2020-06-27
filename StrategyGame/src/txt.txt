@@ -1,0 +1,1447 @@
+#include "pch.h"
+#include "Animation.h"#pragma once
+
+class Animation
+{
+private:
+
+public:
+	virtual ~Animation() = default;
+
+	virtual void Start() = 0;
+};
+
+class AnimationArrow : public Animation
+{
+private:
+public:
+};#pragma once
+#include "pch.h"
+#include "AssetMgr.h"
+
+
+void AssetMgr::Destroy()
+{
+	for (auto i : AssetMgr::Images) SDL_DestroyTexture(i.second);
+}
+
+bool AssetMgr::Load(std::string filename, std::string nick)
+{
+	SDL_Texture* texture = IMG_LoadTexture(Display::GetRenderer(), filename.c_str());
+	Images[nick] = texture;
+	return false;
+}
+
+SDL_Texture* AssetMgr::Get(std::string nick, int gridSize, int x, int y, SDL_Rect& dest) {
+	SDL_Texture* tex = Images[nick];
+	if (tex == nullptr) return tex;
+	dest.x = gridSize * x;
+	dest.y = gridSize * y;
+	dest.w = gridSize;
+	dest.h = gridSize;
+	return tex;
+}
+
+SDL_Texture* AssetMgr::GetAll(std::string nick, SDL_Rect& dest)
+{
+	SDL_Texture* tex = Images[nick];
+	Uint32 fmt;
+	int acs;
+	dest.x = 0;
+	dest.y = 0;
+	SDL_QueryTexture(tex, &fmt, &acs, &dest.w, &dest.h);
+		
+	return tex;
+}
+
+
+//Statics
+std::unordered_map<std::string, SDL_Texture*> AssetMgr::Images;
+#pragma once
+#include "pch.h"
+#include "Display.h"
+#include "SDL_image.h"
+
+class AssetMgr {
+private:
+	
+	
+	
+public:
+	static void Destroy();
+	static std::unordered_map<std::string, SDL_Texture*> Images;
+	static bool Load(std::string filename, std::string nick);
+	static SDL_Texture* Get(std::string nick, int gridSize, int x, int y, SDL_Rect& dest);
+	static SDL_Texture* GetAll(std::string nick, SDL_Rect& dest);
+};
+
+#include "pch.h"
+#include "Display.h"
+
+Display::Display(int width, int height)
+	: window(nullptr), renderer(nullptr), width(width), height(height)
+{
+	if (SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer) < 0)
+	{
+		std::cout << "Failed to create display: " << SDL_GetError() << "\n";
+	}
+}
+
+Display::~Display()
+{
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+
+	delete displayInstance;
+}
+
+void Display::Create(int width, int height)
+{
+	displayInstance = new Display(width, height);
+}
+
+void Display::Clear(Uint8 r, Uint8 g, Uint8 b)
+{
+	SDL_SetRenderDrawColor(GetRenderer(), r, g, b, 255);
+	SDL_RenderClear(GetRenderer());
+}
+
+void Display::Present()
+{
+	SDL_RenderPresent(GetRenderer());
+}
+
+void Display::DrawTexture(SDL_Texture* texture)
+{
+	SDL_RenderCopy(GetRenderer(), texture, nullptr, nullptr);
+}
+
+void Display::DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect)
+{
+	SDL_RenderCopy(GetRenderer(), texture, nullptr, targetRect);
+}
+
+void Display::DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect, const SDL_Rect* subTexture)
+{
+	SDL_RenderCopy(GetRenderer(), texture, targetRect, subTexture);
+}
+
+/*Static members*/
+Display* Display::displayInstance;
+
+SDL_ClipRectSection::SDL_ClipRectSection(int x, int y, int w, int h)
+{
+	SDL_RenderGetClipRect(Display::GetRenderer(), &oldRect);
+	SDL_Rect clip= { x,y,w,h };
+	SDL_RenderSetClipRect(Display::GetRenderer(), &clip);
+}
+
+SDL_ClipRectSection::~SDL_ClipRectSection()
+{
+	SDL_RenderSetClipRect(Display::GetRenderer(), &oldRect);
+}
+#pragma once
+#include "pch.h"
+
+class Display
+{
+private:
+	static Display* displayInstance;
+
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+
+	int width;
+	int height;
+
+	Display(int width, int height);
+	~Display();
+
+public:
+
+	static void Create(int width, int height);
+
+	static void Clear(Uint8 r, Uint8 g, Uint8 b);
+	static void Present();
+	
+	static void DrawTexture(SDL_Texture* texture);
+	static void DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect);
+	static void DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect, const SDL_Rect* subTexture);
+
+	static inline SDL_Window* GetWindow() { return displayInstance->window; }
+	static inline SDL_Renderer* GetRenderer() { return displayInstance->renderer; }
+};
+
+
+class SDL_ClipRectSection {
+	SDL_Rect oldRect;
+public:
+	SDL_ClipRectSection(int x, int y, int w, int h);
+	~SDL_ClipRectSection(); 
+};#include "pch.h"
+#include "Game.h"
+#include "AssetMgr.h"
+#include "viewport.h"
+
+
+Game::Game()
+	: running(true)
+{
+}
+
+Game::~Game()
+{
+	delete gameInstance;
+}
+
+//static
+void Game::Create()
+{
+	gameInstance = new Game();
+}
+
+//static
+void Game::ProcessEvents()
+{
+	SDL_Event e;
+	while (SDL_PollEvent(&e))
+	{
+		if (e.type == SDL_QUIT)
+		{
+			gameInstance->running = false;
+		}
+	}
+}
+
+void Game::Process() {
+	Display::Clear(0, 0, 0);
+
+	
+	const uint8_t* ks = SDL_GetKeyboardState(NULL);
+	if (ks[SDL_SCANCODE_W]) cy -= 0.001;
+	if (ks[SDL_SCANCODE_S]) cy += 0.001;
+	if (ks[SDL_SCANCODE_A]) cx -= 0.001;
+	if (ks[SDL_SCANCODE_D]) cx += 0.001;
+	
+	viewPort.SetCamera(cx, cy);
+	viewPort.Update(1);
+	SDL_Rect myRect;
+
+	//Get the background up there.........
+	SDL_Texture* tempTex = AssetMgr::GetAll("BKG", myRect);
+	SDL_Rect screen = { 0,0,1600,800 };
+	SDL_RenderSetClipRect(Display::GetRenderer(), &screen);
+	Display::DrawTexture(tempTex, &myRect, &screen);
+
+	//Draw the map
+	viewPort.Draw(*gameMap, units);
+	//Draw the UI......
+}
+
+void Game::StartUp(int x, int y)
+{
+	gameMap = new Map();
+	gameMap->Generate();
+
+	AssetMgr::Load("assets/landscape.png", "LAND");
+	AssetMgr::Load("assets/background.png", "BKG");
+	AssetMgr::Load("assest/dudes.png", "UNITS");
+
+	//These numbers come from the background image........
+	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);
+	
+
+}
+
+/*private static members*/
+Game* Game::gameInstance;#pragma once
+#include "map.h"
+#include "Unit.h"
+#include "viewport.h"
+
+
+
+class Game
+{
+private:
+	
+	bool running;
+
+	//Camera Location
+	double cx = 0;
+	double cy = 0;
+
+	Game();
+	~Game();
+
+	//Stuff we need for game
+	Map* gameMap = nullptr;
+	std::vector<Unit> units;
+	ViewPort viewPort;
+public:
+	static Game* gameInstance;
+	
+	static void Create();
+	static void ProcessEvents();
+	void Process();
+	void StartUp(int x, int y);
+
+
+	static inline bool IsRunning() { return gameInstance->running; }
+};#pragma once
+#include<vector>
+
+class GamePlayer {
+private:
+	bool Is_turn;
+public:
+};
+#include "pch.h"
+#include "Display.h"
+#include "Game.h"
+#include "PerlinMap.h"
+#include <SDL_image.h>
+#include <AssetMgr.h>
+#include "Map.h"
+#include "viewport.h"
+
+
+int main(int argc, char* argv[])
+{
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	{
+		std::cout << "Failed to init SDL " << SDL_GetError() << "\n";
+		return -1;
+	}
+
+	Game::Create();
+	Display::Create(1600, 800);
+	IMG_Init(IMG_INIT_PNG);
+
+	Game::gameInstance->StartUp(1600, 800);
+
+	while (Game::IsRunning())
+	{
+		Game::ProcessEvents();
+		Game::gameInstance->Process();
+		Display::Present();
+		SDL_Delay(11);
+	}
+	AssetMgr::Destroy();
+	SDL_Quit();
+	return 0;
+}#include "pch.h"
+#include "Map.h"
+#include "PerlinMap.h"
+
+Map::Map()
+{
+
+}
+
+void Map::Generate()
+{
+	PerlinMap noise(Size,Size);
+	noise.Randomize(400000);
+	noise.MakePerlin();
+	noise.Normalize();
+
+	for (int y = 0; y < Size; y++) {
+		for (int x = 0; x < Size; x++) {
+			int val =noise.GetTerrain(x, y, 9);
+			
+			map[y][x] = MapTile(val);
+		}
+	}
+
+}
+
+int Map::get(int x, int y)
+{
+
+	int val = map[y][x].GetTestCellVal();
+	return val;
+	
+}
+
+
+ int Map::nogConstant = 2;#pragma once
+
+#include "MapTile.h"
+
+class Map {
+public:
+	static constexpr int Size = 128;  //Need a power of 2......
+	static constexpr int TileSize = 64;
+	static int nogConstant;
+private:
+	MapTile map[Size][Size];
+public:
+	Map();
+	void Generate();
+	int get(int x, int y);
+	inline int GetOfs(int x, int y) {
+		return map[x][y].GetTestCellOfs();
+	}
+	//void Draw();
+};
+#include "pch.h"
+#include "MapTile.h"
+
+MapTile::MapTile()
+{
+
+}
+
+//Will have to figure out how to make the prettier
+MapTile::MapTile(int val)
+{
+	imgOffset = rand() % 8;
+	type = (MapCellType) val;
+}
+
+MapTile::MapTile(MapCellType type)
+{
+	//this will work for now.....
+	imgOffset = rand() % 8;
+	this->type = type;
+}
+
+void MapTile::Draw(int x, int y)
+{
+
+	//nothing yet.......
+}
+#pragma once
+#include "pch.h"
+
+enum class MapCellType {
+	DEEP_SEA = 0,
+	WATER,
+	MARSH,
+	GRASS,
+	STEPPE,
+	HILL,
+	ROCKY,
+	SNOW,
+	NONE,
+	DESTROYED
+};
+
+//This is a location on the map, stored inside the map
+class MapTile {
+private:
+	MapCellType type = MapCellType::NONE;
+	int imgOffset = 0;
+public:
+	MapTile();
+	MapTile(int val);
+	MapTile(MapCellType type);
+	void Draw(int x, int y);
+	inline int GetTestCellVal() { return (int)type; }
+	inline int GetTestCellOfs() { return imgOffset; }
+};
+#include "pch.h"#pragma once
+
+#include <array>
+#include <list>
+#include <string>
+#include <vector>
+
+#include <iostream>
+#include <sstream>
+#include <fstream>
+
+#include <functional>
+#include <memory>
+
+#include <SDL/SDL.h>#pragma once
+#include "pch.h"
+#include "PerlinMap.h"
+#include <random>
+#include "Display.h"
+
+PerlinMap::PerlinMap(int x, int y)
+{
+	width = x;
+	height = y;
+
+	evalues = new float[(size_t)x * y];
+	svalues = new float[(size_t)x * y];
+}
+
+PerlinMap::~PerlinMap()
+{
+    if (svalues) delete[] svalues;
+    if (evalues) delete[] evalues;
+}
+
+void PerlinMap::MakePerlin()
+{
+	float fbias = 2.0f;
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++)
+		{
+			float fNoise = 0.0f;
+			float fScaleAcc = 0.0f;
+			float fScale = 1.0f;
+
+			for (int o = 0; o < (octaves-1); o++)
+			{
+				int nPitch = width >> o;
+				int nSampleX1 = (x / nPitch) * nPitch;
+				int nSampleY1 = (y / nPitch) * nPitch;
+
+				int nSampleX2 = (nSampleX1 + nPitch) % width;
+				int nSampleY2 = (nSampleY1 + nPitch) % width;
+
+				float fBlendX = (float)(x - nSampleX1) / (float)nPitch;
+				float fBlendY = (float)(y - nSampleY1) / (float)nPitch;
+
+				float fSampleT = (1.0f - fBlendX) * svalues[nSampleY1 * width + nSampleX1] + fBlendX * svalues[nSampleY1 * width + nSampleX2];
+				float fSampleB = (1.0f - fBlendX) * svalues[nSampleY2 * width + nSampleX1] + fBlendX * svalues[nSampleY2 * width + nSampleX2];
+
+				fScaleAcc += fScale;
+				fNoise += (fBlendY * (fSampleB - fSampleT) + fSampleT) * fScale;
+				fScale = fScale / fbias;
+			}
+			// Scale it
+			evalues[y * width + x] = fNoise / fScaleAcc;
+		}
+	}
+}
+
+void PerlinMap::Normalize()
+{
+	float max = -100.0f;
+	float min = 100.0f;
+	for (int i = 0; i < (width * height); i++) {
+		if (evalues[i] > max) max = evalues[i];
+		if (evalues[i] < min) min = evalues[i];
+	}
+	float diff = max - min;
+	float mult = 1 / diff;
+	for (int i = 0; i < (width * height); i++) {
+		evalues[i] -= min;
+		evalues[i] *= mult;
+	}
+}
+
+
+
+int PerlinMap::GetTerrain(int x, int y, int max)
+{
+	//Scale to requested level
+	int val = (int)(evalues[y * width + x] * max);
+
+	if (val < 0) val = 0;
+	if (val >= max) val = max - 1;
+	return val;
+}
+
+//static
+void PerlinMap::TestDraw()
+{
+	/*
+	int w = 512;
+	int h = 512;
+	int rval = rand() % 500;
+	PerlinMap map = PerlinMap(w, h);
+	map.Randomize(107);
+	map.MakePerlin();
+	map.Normalize();
+	SDL_Renderer* ren = Display::GetRenderer();
+	//now to draw it.........   ugh
+	for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
+			int val = map.GetTerrain(x, y, 8) * 32;
+			if (val > 255) val = 255;
+			if (val < 0) val = 0;
+			SDL_SetRenderDrawColor(ren, val, val, val, 255);
+			SDL_RenderDrawPoint(ren, x, y);
+		}
+	}
+	*/
+}
+
+void PerlinMap::Randomize(int iseed)
+{
+    std::mt19937 gen(iseed);
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            svalues[y * width + x] = dis(gen);
+        }
+    }
+}
+
+#pragma once
+
+
+
+/// <summary>
+/// Do not use new on this.  Just put it on the stack.  Loop through until paths are verified, then go out of scope.
+/// </summary>
+class PerlinMap {
+private:
+	int seed = 0;
+	int width = 0;
+	int height = 0;
+	float* svalues = nullptr;
+	float* evalues = nullptr;
+	const int octaves = 6;
+public:
+	PerlinMap(int x, int y);
+	~PerlinMap();
+	/// <summary>
+	/// Randomizes the source numbers, taking a new seed - if 
+	/// </summary>
+	void Randomize(int seed);
+	void MakePerlin();
+	void Normalize();
+	//this will be enum soon
+	int GetTerrain(int x, int y, int max);
+	static void TestDraw();
+};#include "pch.h"
+#include "Animation.h"#pragma once
+
+class Animation
+{
+private:
+
+public:
+	virtual ~Animation() = default;
+
+	virtual void Start() = 0;
+};
+
+class AnimationArrow : public Animation
+{
+private:
+public:
+};#pragma once
+#include "pch.h"
+#include "AssetMgr.h"
+
+
+void AssetMgr::Destroy()
+{
+	for (auto i : AssetMgr::Images) SDL_DestroyTexture(i.second);
+}
+
+bool AssetMgr::Load(std::string filename, std::string nick)
+{
+	SDL_Texture* texture = IMG_LoadTexture(Display::GetRenderer(), filename.c_str());
+	Images[nick] = texture;
+	return false;
+}
+
+SDL_Texture* AssetMgr::Get(std::string nick, int gridSize, int x, int y, SDL_Rect& dest) {
+	SDL_Texture* tex = Images[nick];
+	if (tex == nullptr) return tex;
+	dest.x = gridSize * x;
+	dest.y = gridSize * y;
+	dest.w = gridSize;
+	dest.h = gridSize;
+	return tex;
+}
+
+SDL_Texture* AssetMgr::GetAll(std::string nick, SDL_Rect& dest)
+{
+	SDL_Texture* tex = Images[nick];
+	Uint32 fmt;
+	int acs;
+	dest.x = 0;
+	dest.y = 0;
+	SDL_QueryTexture(tex, &fmt, &acs, &dest.w, &dest.h);
+		
+	return tex;
+}
+
+
+//Statics
+std::unordered_map<std::string, SDL_Texture*> AssetMgr::Images;
+#pragma once
+#include "pch.h"
+#include "Display.h"
+#include "SDL_image.h"
+
+class AssetMgr {
+private:
+	
+	
+	
+public:
+	static void Destroy();
+	static std::unordered_map<std::string, SDL_Texture*> Images;
+	static bool Load(std::string filename, std::string nick);
+	static SDL_Texture* Get(std::string nick, int gridSize, int x, int y, SDL_Rect& dest);
+	static SDL_Texture* GetAll(std::string nick, SDL_Rect& dest);
+};
+
+#include "pch.h"
+#include "Display.h"
+
+Display::Display(int width, int height)
+	: window(nullptr), renderer(nullptr), width(width), height(height)
+{
+	if (SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer) < 0)
+	{
+		std::cout << "Failed to create display: " << SDL_GetError() << "\n";
+	}
+}
+
+Display::~Display()
+{
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+
+	delete displayInstance;
+}
+
+void Display::Create(int width, int height)
+{
+	displayInstance = new Display(width, height);
+}
+
+void Display::Clear(Uint8 r, Uint8 g, Uint8 b)
+{
+	SDL_SetRenderDrawColor(GetRenderer(), r, g, b, 255);
+	SDL_RenderClear(GetRenderer());
+}
+
+void Display::Present()
+{
+	SDL_RenderPresent(GetRenderer());
+}
+
+void Display::DrawTexture(SDL_Texture* texture)
+{
+	SDL_RenderCopy(GetRenderer(), texture, nullptr, nullptr);
+}
+
+void Display::DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect)
+{
+	SDL_RenderCopy(GetRenderer(), texture, nullptr, targetRect);
+}
+
+void Display::DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect, const SDL_Rect* subTexture)
+{
+	SDL_RenderCopy(GetRenderer(), texture, targetRect, subTexture);
+}
+
+/*Static members*/
+Display* Display::displayInstance;
+
+SDL_ClipRectSection::SDL_ClipRectSection(int x, int y, int w, int h)
+{
+	SDL_RenderGetClipRect(Display::GetRenderer(), &oldRect);
+	SDL_Rect clip= { x,y,w,h };
+	SDL_RenderSetClipRect(Display::GetRenderer(), &clip);
+}
+
+SDL_ClipRectSection::~SDL_ClipRectSection()
+{
+	SDL_RenderSetClipRect(Display::GetRenderer(), &oldRect);
+}
+#pragma once
+#include "pch.h"
+
+class Display
+{
+private:
+	static Display* displayInstance;
+
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+
+	int width;
+	int height;
+
+	Display(int width, int height);
+	~Display();
+
+public:
+
+	static void Create(int width, int height);
+
+	static void Clear(Uint8 r, Uint8 g, Uint8 b);
+	static void Present();
+	
+	static void DrawTexture(SDL_Texture* texture);
+	static void DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect);
+	static void DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect, const SDL_Rect* subTexture);
+
+	static inline SDL_Window* GetWindow() { return displayInstance->window; }
+	static inline SDL_Renderer* GetRenderer() { return displayInstance->renderer; }
+};
+
+
+class SDL_ClipRectSection {
+	SDL_Rect oldRect;
+public:
+	SDL_ClipRectSection(int x, int y, int w, int h);
+	~SDL_ClipRectSection(); 
+};#include "pch.h"
+#include "Game.h"
+#include "AssetMgr.h"
+#include "viewport.h"
+
+
+Game::Game()
+	: running(true)
+{
+}
+
+Game::~Game()
+{
+	delete gameInstance;
+}
+
+//static
+void Game::Create()
+{
+	gameInstance = new Game();
+}
+
+//static
+void Game::ProcessEvents()
+{
+	SDL_Event e;
+	while (SDL_PollEvent(&e))
+	{
+		if (e.type == SDL_QUIT)
+		{
+			gameInstance->running = false;
+		}
+	}
+}
+
+void Game::Process() {
+	Display::Clear(0, 0, 0);
+
+	
+	const uint8_t* ks = SDL_GetKeyboardState(NULL);
+	if (ks[SDL_SCANCODE_W]) cy -= 0.001;
+	if (ks[SDL_SCANCODE_S]) cy += 0.001;
+	if (ks[SDL_SCANCODE_A]) cx -= 0.001;
+	if (ks[SDL_SCANCODE_D]) cx += 0.001;
+	
+	viewPort.SetCamera(cx, cy);
+	viewPort.Update(1);
+	SDL_Rect myRect;
+
+	//Get the background up there.........
+	SDL_Texture* tempTex = AssetMgr::GetAll("BKG", myRect);
+	SDL_Rect screen = { 0,0,1600,800 };
+	SDL_RenderSetClipRect(Display::GetRenderer(), &screen);
+	Display::DrawTexture(tempTex, &myRect, &screen);
+
+	//Draw the map
+	viewPort.Draw(*gameMap, units);
+	//Draw the UI......
+}
+
+void Game::StartUp(int x, int y)
+{
+	gameMap = new Map();
+	gameMap->Generate();
+
+	AssetMgr::Load("assets/landscape.png", "LAND");
+	AssetMgr::Load("assets/background.png", "BKG");
+	AssetMgr::Load("assest/dudes.png", "UNITS");
+
+	//These numbers come from the background image........
+	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);
+	
+
+}
+
+/*private static members*/
+Game* Game::gameInstance;#pragma once
+#include "map.h"
+#include "Unit.h"
+#include "viewport.h"
+
+
+
+class Game
+{
+private:
+	
+	bool running;
+
+	//Camera Location
+	double cx = 0;
+	double cy = 0;
+
+	Game();
+	~Game();
+
+	//Stuff we need for game
+	Map* gameMap = nullptr;
+	std::vector<Unit> units;
+	ViewPort viewPort;
+public:
+	static Game* gameInstance;
+	
+	static void Create();
+	static void ProcessEvents();
+	void Process();
+	void StartUp(int x, int y);
+
+
+	static inline bool IsRunning() { return gameInstance->running; }
+};#pragma once
+#include<vector>
+
+class GamePlayer {
+private:
+	bool Is_turn;
+public:
+};
+#include "pch.h"
+#include "Display.h"
+#include "Game.h"
+#include "PerlinMap.h"
+#include <SDL_image.h>
+#include <AssetMgr.h>
+#include "Map.h"
+#include "viewport.h"
+
+
+int main(int argc, char* argv[])
+{
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	{
+		std::cout << "Failed to init SDL " << SDL_GetError() << "\n";
+		return -1;
+	}
+
+	Game::Create();
+	Display::Create(1600, 800);
+	IMG_Init(IMG_INIT_PNG);
+
+	Game::gameInstance->StartUp(1600, 800);
+
+	while (Game::IsRunning())
+	{
+		Game::ProcessEvents();
+		Game::gameInstance->Process();
+		Display::Present();
+		SDL_Delay(11);
+	}
+	AssetMgr::Destroy();
+	SDL_Quit();
+	return 0;
+}#include "pch.h"
+#include "Map.h"
+#include "PerlinMap.h"
+
+Map::Map()
+{
+
+}
+
+void Map::Generate()
+{
+	PerlinMap noise(Size,Size);
+	noise.Randomize(400000);
+	noise.MakePerlin();
+	noise.Normalize();
+
+	for (int y = 0; y < Size; y++) {
+		for (int x = 0; x < Size; x++) {
+			int val =noise.GetTerrain(x, y, 9);
+			
+			map[y][x] = MapTile(val);
+		}
+	}
+
+}
+
+int Map::get(int x, int y)
+{
+
+	int val = map[y][x].GetTestCellVal();
+	return val;
+	
+}
+
+
+ int Map::nogConstant = 2;#pragma once
+
+#include "MapTile.h"
+
+class Map {
+public:
+	static constexpr int Size = 128;  //Need a power of 2......
+	static constexpr int TileSize = 64;
+	static int nogConstant;
+private:
+	MapTile map[Size][Size];
+public:
+	Map();
+	void Generate();
+	int get(int x, int y);
+	inline int GetOfs(int x, int y) {
+		return map[x][y].GetTestCellOfs();
+	}
+	//void Draw();
+};
+#include "pch.h"
+#include "MapTile.h"
+
+MapTile::MapTile()
+{
+
+}
+
+//Will have to figure out how to make the prettier
+MapTile::MapTile(int val)
+{
+	imgOffset = rand() % 8;
+	type = (MapCellType) val;
+}
+
+MapTile::MapTile(MapCellType type)
+{
+	//this will work for now.....
+	imgOffset = rand() % 8;
+	this->type = type;
+}
+
+void MapTile::Draw(int x, int y)
+{
+
+	//nothing yet.......
+}
+#pragma once
+#include "pch.h"
+
+enum class MapCellType {
+	DEEP_SEA = 0,
+	WATER,
+	MARSH,
+	GRASS,
+	STEPPE,
+	HILL,
+	ROCKY,
+	SNOW,
+	NONE,
+	DESTROYED
+};
+
+//This is a location on the map, stored inside the map
+class MapTile {
+private:
+	MapCellType type = MapCellType::NONE;
+	int imgOffset = 0;
+public:
+	MapTile();
+	MapTile(int val);
+	MapTile(MapCellType type);
+	void Draw(int x, int y);
+	inline int GetTestCellVal() { return (int)type; }
+	inline int GetTestCellOfs() { return imgOffset; }
+};
+#include "pch.h"#pragma once
+
+#include <array>
+#include <list>
+#include <string>
+#include <vector>
+
+#include <iostream>
+#include <sstream>
+#include <fstream>
+
+#include <functional>
+#include <memory>
+
+#include <SDL/SDL.h>#pragma once
+#include "pch.h"
+#include "PerlinMap.h"
+#include <random>
+#include "Display.h"
+
+PerlinMap::PerlinMap(int x, int y)
+{
+	width = x;
+	height = y;
+
+	evalues = new float[(size_t)x * y];
+	svalues = new float[(size_t)x * y];
+}
+
+PerlinMap::~PerlinMap()
+{
+    if (svalues) delete[] svalues;
+    if (evalues) delete[] evalues;
+}
+
+void PerlinMap::MakePerlin()
+{
+	float fbias = 2.0f;
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++)
+		{
+			float fNoise = 0.0f;
+			float fScaleAcc = 0.0f;
+			float fScale = 1.0f;
+
+			for (int o = 0; o < (octaves-1); o++)
+			{
+				int nPitch = width >> o;
+				int nSampleX1 = (x / nPitch) * nPitch;
+				int nSampleY1 = (y / nPitch) * nPitch;
+
+				int nSampleX2 = (nSampleX1 + nPitch) % width;
+				int nSampleY2 = (nSampleY1 + nPitch) % width;
+
+				float fBlendX = (float)(x - nSampleX1) / (float)nPitch;
+				float fBlendY = (float)(y - nSampleY1) / (float)nPitch;
+
+				float fSampleT = (1.0f - fBlendX) * svalues[nSampleY1 * width + nSampleX1] + fBlendX * svalues[nSampleY1 * width + nSampleX2];
+				float fSampleB = (1.0f - fBlendX) * svalues[nSampleY2 * width + nSampleX1] + fBlendX * svalues[nSampleY2 * width + nSampleX2];
+
+				fScaleAcc += fScale;
+				fNoise += (fBlendY * (fSampleB - fSampleT) + fSampleT) * fScale;
+				fScale = fScale / fbias;
+			}
+			// Scale it
+			evalues[y * width + x] = fNoise / fScaleAcc;
+		}
+	}
+}
+
+void PerlinMap::Normalize()
+{
+	float max = -100.0f;
+	float min = 100.0f;
+	for (int i = 0; i < (width * height); i++) {
+		if (evalues[i] > max) max = evalues[i];
+		if (evalues[i] < min) min = evalues[i];
+	}
+	float diff = max - min;
+	float mult = 1 / diff;
+	for (int i = 0; i < (width * height); i++) {
+		evalues[i] -= min;
+		evalues[i] *= mult;
+	}
+}
+
+
+
+int PerlinMap::GetTerrain(int x, int y, int max)
+{
+	//Scale to requested level
+	int val = (int)(evalues[y * width + x] * max);
+
+	if (val < 0) val = 0;
+	if (val >= max) val = max - 1;
+	return val;
+}
+
+//static
+void PerlinMap::TestDraw()
+{
+	/*
+	int w = 512;
+	int h = 512;
+	int rval = rand() % 500;
+	PerlinMap map = PerlinMap(w, h);
+	map.Randomize(107);
+	map.MakePerlin();
+	map.Normalize();
+	SDL_Renderer* ren = Display::GetRenderer();
+	//now to draw it.........   ugh
+	for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
+			int val = map.GetTerrain(x, y, 8) * 32;
+			if (val > 255) val = 255;
+			if (val < 0) val = 0;
+			SDL_SetRenderDrawColor(ren, val, val, val, 255);
+			SDL_RenderDrawPoint(ren, x, y);
+		}
+	}
+	*/
+}
+
+void PerlinMap::Randomize(int iseed)
+{
+    std::mt19937 gen(iseed);
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            svalues[y * width + x] = dis(gen);
+        }
+    }
+}
+
+#pragma once
+
+
+
+/// <summary>
+/// Do not use new on this.  Just put it on the stack.  Loop through until paths are verified, then go out of scope.
+/// </summary>
+class PerlinMap {
+private:
+	int seed = 0;
+	int width = 0;
+	int height = 0;
+	float* svalues = nullptr;
+	float* evalues = nullptr;
+	const int octaves = 6;
+public:
+	PerlinMap(int x, int y);
+	~PerlinMap();
+	/// <summary>
+	/// Randomizes the source numbers, taking a new seed - if 
+	/// </summary>
+	void Randomize(int seed);
+	void MakePerlin();
+	void Normalize();
+	//this will be enum soon
+	int GetTerrain(int x, int y, int max);
+	static void TestDraw();
+};#include "pch.h"
+#include "Animation.h"#pragma once
+
+class Animation
+{
+private:
+
+public:
+	virtual ~Animation() = default;
+
+	virtual void Start() = 0;
+};
+
+class AnimationArrow : public Animation
+{
+private:
+public:
+};#pragma once
+#include "pch.h"
+#include "AssetMgr.h"
+
+
+void AssetMgr::Destroy()
+{
+	for (auto i : AssetMgr::Images) SDL_DestroyTexture(i.second);
+}
+
+bool AssetMgr::Load(std::string filename, std::string nick)
+{#include"unit.h"
+
+Unit::Unit() {
+	x = 10;
+	y = 43;
+	hp = 10;
+	strength = 5;
+	speed = 2;
+	type = Melee;
+}
+
+
+void Unit::Attack(Unit selected)
+{
+	Unit Knight = new Unit();
+}
+
+void Unit::Attack(int x, int y)
+{
+}
+
+void Unit::Move(int x, int y)
+{
+	this->x = x;
+	this->y = y;
+	
+}
+
+void Unit::Spawn(int x, int y)
+{
+	Move(x, y);
+}
+#pragma once
+
+#include "pch.h"
+
+enum Unit_Type {
+	Melee,
+	Spear,
+	Range,
+	Wizard,
+	Worker
+};
+
+struct Weapon
+{
+	enum class WeaponType
+	{
+		None = 0,
+		Melee,
+		Ranged,
+		Magic
+	} Type;
+};
+
+class Unit {
+private:
+	int x, y;
+	float hp = 0.0f;
+	float strength = 0.0f;
+	float speed = 0.0f;
+	Unit_Type unitType;
+
+public:
+	void Attack(Unit selected);
+	void Attack(int x, int y);
+	void Move(int x, int y);
+	void Spawn(int x, int y);
+};#include "pch.h"
+#include "viewport.h"
+#include "AssetMgr.h"
+
+
+ViewPort::ViewPort(int x, int y, int w, int h, float zoom)
+{
+	topX = x; topY = y; width = w; height = h;
+	zoom = 1.0f;
+	camTX = 0;
+	camTY = 0;
+	camX = 0;
+	camY = 0;
+}
+
+void ViewPort::SetCamera(double &x, double &y)
+{
+	if (x < 0) x = 0;
+	if (y >= 1) y = 1;
+	if (x < 0) x = 0;
+	if (y >= 1) y = 1;
+
+	camTX = x ;
+	camTY = y ;
+
+	
+}
+
+//Ghetto cam pan
+void ViewPort::Update(int ms)
+{
+	camX = ((camX*4 + camTX) / 5.0);
+	camY = ((camY*4 + camTY) / 5.0);
+}
+
+int asdf = 0;
+void ViewPort::Draw(Map& map, std::vector<Unit> units)
+{
+	SDL_ClipRectSection myClip(topX, topY, width, height);
+	SDL_Rect destRect;
+	destRect.w = Map::TileSize;
+	destRect.h = Map::TileSize;
+	int maxXCells = width / destRect.w;
+	int maxYCells = height / destRect.h;
+
+	int pofsx = 0;
+	int pofsy = 0;
+
+	//  interpolate:  X  0.0 -> 1.0   from 0 -> 20 Y
+	//  V = 20*x
+
+	int cx = (int)(camX * Map::Size );
+	int cy = (int)(camY * Map::Size );
+
+	int MScx = (int)(camX * Map::Size * Map::TileSize);
+	int MScy = (int)(camY * Map::Size * Map::TileSize);
+	
+
+	int pcx = MScx % (Map::TileSize);
+	int pcy = MScy % (Map::TileSize);
+	
+	if (cx < 0) cx = 0;
+	if (cy < 0) cy = 0;
+	
+	int maxXCam = Map::Size - (width / Map::TileSize) -1;
+	int maxYCam = Map::Size - (height / Map::TileSize) -1;
+
+	if (cx > (maxXCam)) cx = maxXCam;
+	if (cy > (maxYCam)) cy = maxYCam;
+	
+	
+	for (int y = 0; y < maxYCells+2 /* scale*/; y++) {
+		for (int x = 0; x < maxXCells+1/*scale*/; x++) {
+			destRect.x = x * Map::TileSize + topX -pcx;
+			destRect.y = y * Map::TileSize + topY -pcy;
+			SDL_Rect myRect;
+			//messy, but just a test...  tx = texture x
+			int tx = map.GetOfs(cx + x, cy + y);
+			int ty = map.get(cx + x, cy + y);
+
+
+			SDL_Texture* tempTex = AssetMgr::Get("LAND", Map::TileSize , tx, ty, myRect);
+			Display::DrawTexture(tempTex, &myRect, &destRect);
+		}
+	}
+}
+
+void ViewPort::DoSomething()
+{
+	///some code......................
+}
+
+bool ViewPort::GetCellAtMouseXY(int mx, int my, int& x, int& y)
+{
+	x = 0;
+	y = 0;
+	return false;
+}
+
+void ViewPort::RenderTextureAt(int cx, int cy, int ocx, int ocy, SDL_Texture* tex, SDL_Rect* sourceRect)
+{
+	return;
+}
+
+bool ViewPort::MouseInViewPort(int x, int y)
+{
+	if (x < topX) return false;
+	if (y < topY) return false;
+	if (x >= (topX + width)) return false;
+	if (y >= (topY + height)) return false;
+	return true;
+}
+#pragma once
+#include "pch.h"
+#include <Map.h>
+#include <Unit.h>
+
+class ViewPort {
+private:
+	int topX, topY;
+	int width, height;
+	float zoom = 1.0f;
+	//Camera Location
+	double camX, camY;  
+	double camTX, camTY;
+public:
+	ViewPort(int x, int y, int w, int h, float zoom);
+	ViewPort() = default;
+	
+	void SetCamera(double& x, double& y);
+	void Update(int ms);
+	void Draw(Map& map, std::vector<Unit> units);
+	void DoSomething();
+	bool GetCellAtMouseXY(int mx, int my, int& x, int& y);
+	void RenderTextureAt(int cx, int cy, int ocx, int ocy, SDL_Texture* tex, SDL_Rect* sourceRect);
+	bool MouseInViewPort(int x, int y);
+
+
+
+
+
+
+};

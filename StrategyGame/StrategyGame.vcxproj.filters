@@ -18,91 +18,91 @@
     <ClInclude Include="src\MapItem.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\gameplayer.h">
+    <ClInclude Include="src\animation.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\map.h">
+    <ClInclude Include="src\assetmgr.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\maptile.h">
+    <ClInclude Include="src\display.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\pathfind.h">
+    <ClInclude Include="src\game.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\pch.h">
+    <ClInclude Include="src\gameplayer.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\perlinmap.h">
+    <ClInclude Include="src\map.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\unit.h">
+    <ClInclude Include="src\maptile.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\viewport.h">
+    <ClInclude Include="src\pathfind.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\animation.h">
+    <ClInclude Include="src\pch.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\assetmgr.h">
+    <ClInclude Include="src\perlinmap.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\display.h">
+    <ClInclude Include="src\unit.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sgamebackup\game.h">
+    <ClInclude Include="src\viewport.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="..\..\sgamebackup\main" />
-    <None Include="..\..\sgamebackup\src.zip" />
-    <None Include="..\..\sgamebackup\compile.sh" />
+    <None Include="src\compile.sh" />
+    <None Include="src\main" />
+    <None Include="src\src.zip" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sgamebackup\gameplayer.cpp">
+    <ClCompile Include="src\animation.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\main.cpp">
+    <ClCompile Include="src\assetmgr.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\map.cpp">
+    <ClCompile Include="src\display.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\maptile.cpp">
+    <ClCompile Include="src\game.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\pathfind.cpp">
+    <ClCompile Include="src\gameplayer.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\pch.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\perlinmap.cpp">
+    <ClCompile Include="src\map.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\unit.cpp">
+    <ClCompile Include="src\maptile.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\viewport.cpp">
+    <ClCompile Include="src\pathfind.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\animation.cpp">
+    <ClCompile Include="src\pch.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\assetmgr.cpp">
+    <ClCompile Include="src\perlinmap.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\display.cpp">
+    <ClCompile Include="src\unit.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sgamebackup\game.cpp">
+    <ClCompile Include="src\viewport.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\sgamebackup\txt.txt" />
+    <Text Include="src\txt.txt" />
   </ItemGroup>
 </Project>
