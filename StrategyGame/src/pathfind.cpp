@@ -4,13 +4,13 @@
 
 PathFinder::PathFinder(Map& imap) : map(imap)
 {
-	dMap = new std::array<std::array<int, Map::Size>, Map::Size>();
+//	dMap = new std::array<std::array<int, Map::Size>, Map::Size>();
 	dRange = new std::array<std::array<int, Map::Size>, Map::Size>();
 }
 
 void PathFinder::DoUnitMaxDistanceTravel(const Unit& who, int val)
 {
-	resetMap();
+	ResetMap();
 	calcFlood(who.GetX(),who.GetY(),who.GetSpeed());
 }
 
@@ -24,14 +24,14 @@ int PathFinder::GetRange(int x, int y)
 	return (*dRange)[y][x];
 }
 
-void PathFinder::resetMap()
+void PathFinder::ResetMap()
 {
 	for (int y = 0; y < Map::Size; y++) {
 		for (int x = 0; x < Map::Size; x++) {
 			//These are just other ways to access it...
 			//dMap->at(j).at(i) = -1;
 			//dMap->at(j)[i] = -1;
-			(*dMap)[y][x] = -1;
+			//(*dMap)[y][x] = -1;
 			(*dRange)[y][x] = -1;
 		}
 	}
@@ -95,5 +95,5 @@ bool PathFinder::PathGood(int x, int y, int d)
 
 PathFinder::~PathFinder()
 {
-	delete dMap;
+	delete dRange;
 }

@@ -43,4 +43,7 @@ public:
 	inline int GetX() const { return x; }
 	inline int GetY() const { return y; }
 	inline int GetSpeed() const { return speed; }
+	inline void Move(int dx, int dy) {
+		x = dx; y = dy;
+	}
 };

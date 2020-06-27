@@ -7,7 +7,7 @@
 Game::Game()
 	: running(true)
 {
-	
+
 }
 
 Game::~Game()
@@ -15,10 +15,90 @@ Game::~Game()
 	delete gameInstance;
 }
 
+void Game::handleMouse()
+{
+
+	int mx, my;
+	uint32_t mouseState = SDL_GetMouseState(&mx, &my);
+	//Update the hover locations
+	viewPort.GetCellAtMouseXY(mx, my, mCellX, mCellY);
+
+	bool tMouseDown = mouseState & SDL_BUTTON_LEFT;
+	if (tMouseDown != mouseDown) {   //State changed.
+		if (tMouseDown) {
+			viewPort.GetCellAtMouseXY(mx, my, lastMouseCell.x, lastMouseCell.y);
+		}
+		else { //Upclick
+			int imx, imy;
+			viewPort.GetCellAtMouseXY(mx, my, imx, imy);
+			if ((imx == lastMouseCell.x) && (imy = lastMouseCell.y)) {
+				click();
+				lastMouseCell.x = -1;
+				lastMouseCell.y = -1;
+			}
+		}
+		mouseDown = tMouseDown;
+	}
+}
+
+void Game::click()
+{
+	int sp, su;
+	if (getCharacterAt(lastMouseCell.x, lastMouseCell.y, sp, su)) {
+		//We have a character......
+		int bp = 0;
+		if (sp == curPlayer) {
+			if (su != selUnit) {
+				selectUnit(sp, su);
+			};
+		}
+	}
+	else {
+		if (pathFinder->GetRange(lastMouseCell.x, lastMouseCell.y) > -1) {
+			//This should be a valid move.
+			auto& thisUnit = players[curPlayer].GetUnit(selUnit);
+			thisUnit.Move(lastMouseCell.x, lastMouseCell.y);
+			int bp = 0;
+		}
+		selUnit = -1;
+		pathFinder->ResetMap();
+	}
+}
+
+void Game::selectUnit(int sp, int su)
+{
+	int bp = 0;
+	selUnit = su;
+	pathFinder->DoUnitMaxDistanceTravel(players[curPlayer].GetUnit(selUnit),10);
+
+}
+
+
+
+bool Game::getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit)
+{
+	int pnum = 0;
+	int unum = 0;
+	for (auto iplayer : players) {
+		for (auto unit : iplayer.GetUnits()) {
+			if ((unit.GetX() == cx) && (unit.GetY() == cy)) {
+				sPlayer = pnum;
+				sUnit = unum;
+				return true;
+			}
+			unum++;
+		}
+		pnum++;
+	}
+	return false;
+}
+
 //static
 void Game::Create()
 {
 	gameInstance = new Game();
+
+	
 }
 
 //static
@@ -35,30 +115,27 @@ void Game::ProcessEvents()
 }
 
 void Game::Process() {
-	Display::Clear(0, 0, 0);
+	
 	const uint8_t* ks = SDL_GetKeyboardState(NULL);
 	if (ks[SDL_SCANCODE_W]) cy -= 0.001;
 	if (ks[SDL_SCANCODE_S]) cy += 0.001;
 	if (ks[SDL_SCANCODE_A]) cx -= 0.001;
 	if (ks[SDL_SCANCODE_D]) cx += 0.001;
 
-	int mx, my;
-
 	
-	SDL_GetMouseState(&mx, &my);
+	handleMouse();
 	
 	viewPort.SetCamera(cx, cy);
 	viewPort.Update(1);
 	SDL_Rect myRect;
 
+	Display::Clear(0, 0, 0);
 	//Get the background up there.........
 	SDL_Texture* tempTex = AssetMgr::GetAll("BKG", myRect);
 	SDL_Rect screen = { 0,0,1600,800 };
 	SDL_RenderSetClipRect(Display::GetRenderer(), &screen);
 	Display::DrawTexture(tempTex, &myRect, &screen);
 	//Ref out for mCell*
-	viewPort.GetCellAtMouseXY(mx, my, mCellX, mCellY);
-
 	//Draw the map
 	viewPort.Draw(*gameMap, players, pathFinder);
 	//Draw the UI......
@@ -78,14 +155,17 @@ void Game::StartUp(int x, int y)
 
 	//These numbers come from the background image........
 	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);
-	/*
-	gameMap->Get(10, 12).selected = true;
-	*/
+	
 	GamePlayer player;
 	players.push_back(player);
+	curPlayer = 0;
+	selUnit = -1; //No unit;
+}
 
-
-	pathFinder->DoUnitMaxDistanceTravel(players[0].GetUnit(0), 20);
+void Game::NextPlayer()
+{
+	curPlayer++;
+	curPlayer = curPlayer % players.size();
 }
 
 /*private static members*/

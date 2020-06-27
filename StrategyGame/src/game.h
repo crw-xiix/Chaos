@@ -23,9 +23,20 @@ private:
 	std::vector<GamePlayer> players;
 	ViewPort viewPort;
 
-	PathFinder* pathFinder;
+	PathFinder* pathFinder = nullptr;
 
-	
+	int curPlayer = -1;
+	int selUnit = -1;
+
+	SDL_Point lastMouseCell{ -1,-1 };
+	bool mouseDown;
+
+private:
+	void handleMouse();
+	void click();
+	void selectUnit(int sp, int su);
+	//Gets the character at cell x,y (not mouse location)
+	bool getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit);
 public:
 	static int mCellX, mCellY;
 	static Game* gameInstance;
@@ -34,7 +45,6 @@ public:
 	static void ProcessEvents();
 	void Process();
 	void StartUp(int x, int y);
-
-
+	void NextPlayer();
 	static inline bool IsRunning() { return gameInstance->running; }
 };

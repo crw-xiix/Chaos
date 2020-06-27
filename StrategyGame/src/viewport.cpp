@@ -83,8 +83,6 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 0, myRect);
 				Display::DrawTexture(highlightTex, &myRect, &destRect);
 			}
-
-			
 		}
 	}
 
