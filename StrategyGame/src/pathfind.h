@@ -1,11 +1,10 @@
 #pragma once
 
 #include "pch.h"
-#include "mapTile.h"
+#include "maptile.h"
 #include "map.h"
 #include <vector>
 #include "unit.h"
-
 
 
 class PathFinder {
@@ -31,4 +30,3 @@ public:
     bool PathGood(int x, int y, int d);
     ~PathFinder();
 };
-

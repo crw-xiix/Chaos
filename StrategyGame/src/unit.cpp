@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Unit.h"
-#include "Map.h"
-#include "Display.h"
-#include "AssetMgr.h"
+#include "unit.h"
+#include "map.h"
+#include "display.h"
+#include "assetmgr.h"
 
 Unit::Unit(UnitType type, int x, int y)
 {

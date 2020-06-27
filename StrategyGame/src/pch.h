@@ -11,5 +11,6 @@
 
 #include <functional>
 #include <memory>
+#include <map>
 
-#include <SDL/SDL.h>
+#include <SDL.h>

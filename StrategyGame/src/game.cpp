@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Game.h"
-#include "AssetMgr.h"
+#include "game.h"
+#include "assetmgr.h"
 #include "viewport.h"
 
 

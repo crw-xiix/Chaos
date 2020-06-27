@@ -1,8 +1,8 @@
 #pragma once
 #include "map.h"
-#include "Unit.h"
+#include "unit.h"
 #include "viewport.h"
-#include "PathFind.h"
+#include "pathfind.h"
 
 
 class Game

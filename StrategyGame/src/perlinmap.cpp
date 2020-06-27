@@ -1,8 +1,8 @@
 #pragma once
 #include "pch.h"
-#include "PerlinMap.h"
+#include "perlinmap.h"
 #include <random>
-#include "Display.h"
+#include "display.h"
 
 PerlinMap::PerlinMap(int x, int y)
 {

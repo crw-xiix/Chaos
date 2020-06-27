@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Display.h"
-#include "Game.h"
-#include "PerlinMap.h"
+#include "display.h"
+#include "game.h"
+#include "perlinmap.h"
 #include <SDL_image.h>
-#include <AssetMgr.h>
-#include "Map.h"
+#include "assetmgr.h"
+#include "map.h"
 #include "viewport.h"
 
 

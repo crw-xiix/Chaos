@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "PathFind.h"
+#include "pathfind.h"
 #include <set>
 
 PathFinder::PathFinder(Map& imap) : map(imap)

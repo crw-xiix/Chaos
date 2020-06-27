@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "MapTile.h"
-#include "AssetMgr.h"
-#include "Map.h"
-#include "Unit.h"
-#include "GamePlayer.h"
+#include "maptile.h"
+#include "assetmgr.h"
+#include "map.h"
+#include "unit.h"
+#include "gameplayer.h"
 
 int MapTile::getSpeed()
 {

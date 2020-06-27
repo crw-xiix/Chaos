@@ -1,9 +1,9 @@
 #pragma once
 #include "pch.h"
-#include <Map.h>
-#include <Unit.h>
-#include "GamePlayer.h"
-#include "PathFind.h"
+#include "map.h"
+#include "unit.h"
+#include "gameplayer.h"
+#include "pathfind.h"
 
 class ViewPort {
 private:

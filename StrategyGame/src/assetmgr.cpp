@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "AssetMgr.h"
+#include "assetmgr.h"
 
 
 void AssetMgr::Destroy()
@@ -39,4 +39,4 @@ SDL_Texture* AssetMgr::GetAll(std::string nick, SDL_Rect& dest)
 
 
 //Statics
-std::unordered_map<std::string, SDL_Texture*> AssetMgr::Images;
+std::map<std::string, SDL_Texture*> AssetMgr::Images;

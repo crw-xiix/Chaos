@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Display.h"
+#include "display.h"
 
 Display::Display(int width, int height)
 	: window(nullptr), renderer(nullptr), width(width), height(height)

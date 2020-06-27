@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "viewport.h"
-#include "AssetMgr.h"
-#include "Game.h"
+#include "assetmgr.h"
+#include "game.h"
 
 
 ViewPort::ViewPort(int x, int y, int w, int h, float zoom)

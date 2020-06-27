@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "GamePlayer.h"
+#include "gameplayer.h"
 
 GamePlayer::GamePlayer()
 {
