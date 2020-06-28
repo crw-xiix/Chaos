@@ -93,12 +93,28 @@ bool Game::getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit)
 	return false;
 }
 
+//This has to be static unless we want to pass 100K vars around.
+//Each action, when it closes, adds an action.
+void Game::addAction(Action* action, Action* ref)
+{
+	if (ref == nullptr) {
+		gameInstance->actions.push_back(action);
+	}/*
+	else {
+		for (int i = 0; i < gameInstance->actions.size(); i++) {
+			if 
+		}
+		if (gameInstance->actions.find(ref) != gameInstance->end()) {
+			//insert before 
+
+		}
+	}*/
+}
+
 //static
 void Game::Create()
 {
 	gameInstance = new Game();
-
-	
 }
 
 //static
@@ -121,7 +137,6 @@ void Game::Process() {
 	if (ks[SDL_SCANCODE_S]) cy += 0.001;
 	if (ks[SDL_SCANCODE_A]) cx -= 0.001;
 	if (ks[SDL_SCANCODE_D]) cx += 0.001;
-
 	
 	handleMouse();
 	

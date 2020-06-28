@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\action.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\assetmgr.h" />
     <ClInclude Include="src\display.h" />
@@ -183,6 +184,7 @@
     <None Include="src\src.zip" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\action.cpp" />
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\assetmgr.cpp" />
     <ClCompile Include="src\display.cpp" />

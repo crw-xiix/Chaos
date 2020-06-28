@@ -27,9 +27,9 @@ void ViewPort::SetCamera(double &x, double &y)
 //Ghetto cam pan
 void ViewPort::Update(int ms)
 {
-	float delay = 9;
-	camX = ((camX*delay + camTX) / (delay+1));
-	camY = ((camY*delay + camTY) / (delay+1));
+	float delay = 9.0f;
+	camX = ((camX*delay + camTX) / (delay+1.0f));
+	camY = ((camY*delay + camTY) / (delay+1.0f));
 }
 
 int asdf = 0;
@@ -90,8 +90,8 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 	{
 		for (auto unit : player.GetUnits())
 		{
-			destRect.x = (unit.GetX()-cx ) * Map::TileSize + topX - pcx;
-			destRect.y = (unit.GetY()-cy ) * Map::TileSize + topY - pcy;
+			destRect.x =(int) (unit.GetXF()-cx ) * Map::TileSize + topX - pcx;
+			destRect.y =(int) (unit.GetYF()-cy ) * Map::TileSize + topY - pcy;
 			unit.Draw(destRect);
 		}
 	}

@@ -37,6 +37,11 @@ void PathFinder::ResetMap()
 	}
 }
 
+std::vector<SDL_Point> PathFinder::GetPathTo(int x, int y)
+{
+	return std::vector<SDL_Point>();
+}
+
 bool PathFinder::rangeOpen(int x, int y, int& speed)
 {
 	speed = 255;
