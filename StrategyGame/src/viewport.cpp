@@ -2,9 +2,9 @@
 #include "viewport.h"
 #include "assetmgr.h"
 #include "game.h"
-#include "SDL_ttf.h"
 
-TTF_Font* font;
+bool cellDistanceShow = false;
+
 
 ViewPort::ViewPort(int x, int y, int w, int h, float zoom)
 {
@@ -14,7 +14,7 @@ ViewPort::ViewPort(int x, int y, int w, int h, float zoom)
 	camTY = 0;
 	camX = 0;
 	camY = 0;
-	font = TTF_OpenFont("./assets/myfont.ttf", 20);
+	
 }
 
 
@@ -81,7 +81,11 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 				SDL_Rect myRect;
 				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 2, myRect);
 				Display::DrawTexture(highlightTex, &myRect, &destRect);
-				DrawNumer(destRect, pathFinder->GetRange(cx + x, cy + y));
+
+				//This is for testing only....
+				if (cellDistanceShow) {
+					DrawNumer(destRect, pathFinder->GetRange(cx + x, cy + y));
+				}
 
 				
 
@@ -105,21 +109,6 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 			unit.Draw(destRect);
 		}
 	}
-	/*
-	int x = topX + 5;
-	int y = topY + 5;
-	for (char c : "1024") {
-		SDL_Rect myRect;
-		destRect.x = x;
-		destRect.y = y;
-		destRect.w = 16;
-		destRect.h = 16;
-		SDL_Texture* fontText = AssetMgr::Get("FONT16", 16, (c-'0'), 0, myRect);
-		Display::DrawTexture(fontText, &myRect, &destRect);
-		x += 16;
-
-	}
-	*/
 }
 
 void ViewPort::DoSomething()

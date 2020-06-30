@@ -132,10 +132,19 @@ void PathFinder::calcFlood(int x, int y, int maxSpeed)
 		}
 		found.clear();
 		for (xyRange xy : mainSet) {
-			//This following line DFW  
-			//XXXC CRW
-			if (found.find(xy) == found.end()) {
-				std::tie(sx, sy, d) = xy;
+			std::tie(sx, sy, d) = xy;
+			bool isFound = false;
+			//Figure out if that position is already found, we don't want to search 2-20x.
+			//double searching makes bad paths.
+			for (auto position : found) {
+				int isx, isy, isd;
+				std::tie(isx, isy, isd) = position;
+				if ((sx == isx) && (sy == isy)) {
+					isFound = true;
+					break;
+				}
+			}
+			if (!isFound) {
 				//Check our max speed now
 				if (d <= maxSpeed) {
 					found.insert(xy);
@@ -144,12 +153,10 @@ void PathFinder::calcFlood(int x, int y, int maxSpeed)
 			else {
 				int bp = 0;
 			}
-			
 		}
 		mainSet.clear();
 	}
 }
-
 
 PathFinder::~PathFinder()
 {

@@ -61,7 +61,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="src\compile.sh" />
-    <None Include="src\main" />
     <None Include="src\src.zip" />
   </ItemGroup>
   <ItemGroup>

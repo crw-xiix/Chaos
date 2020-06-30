@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -180,7 +180,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="src\compile.sh" />
-    <None Include="src\main" />
     <None Include="src\src.zip" />
   </ItemGroup>
   <ItemGroup>
@@ -190,11 +189,15 @@
     <ClCompile Include="src\display.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gameplayer.cpp" />
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\main.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\map.cpp" />
     <ClCompile Include="src\maptile.cpp" />
     <ClCompile Include="src\pathfind.cpp" />
-    <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\perlinmap.cpp" />
     <ClCompile Include="src\unit.cpp" />
     <ClCompile Include="src\viewport.cpp" />

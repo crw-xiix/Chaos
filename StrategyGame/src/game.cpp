@@ -153,7 +153,8 @@ void Game::Process() {
 
 	int size = actions.size();
 	if (size > 0) {
-		if (actions[size - 1]->Process(deltaTime)) {
+		if (actions[size - 1u]->Process(deltaTime)) {
+			delete actions[size - 1u];
 			actions.pop_back();
 			//XXXC need to delete this.............
 		}
