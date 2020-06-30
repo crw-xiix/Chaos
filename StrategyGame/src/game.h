@@ -33,6 +33,8 @@ private:
 
 	std::vector<Action*> actions;
 
+	Uint64 now;
+	Uint64 last;
 private:
 	void handleMouse();
 	void click();

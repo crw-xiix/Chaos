@@ -110,5 +110,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\txt.txt" />
+    <Text Include="ReferenceCode\frameTime.txt" />
   </ItemGroup>
 </Project>

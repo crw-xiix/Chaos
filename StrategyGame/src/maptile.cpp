@@ -12,8 +12,8 @@ int MapTile::getSpeed()
 	case MapCellType::MARSH: return 3;
 	case MapCellType::GRASS: return 1;
 	case MapCellType::STEPPE: return 2;
-	case MapCellType::HILL: return 3;
-	case MapCellType::ROCKY: return 10;
+	case MapCellType::HILL: return 7;
+	case MapCellType::ROCKY: return 14;
 	case MapCellType::DESTROYED: return 3;
 	}
 	//Impassable land...

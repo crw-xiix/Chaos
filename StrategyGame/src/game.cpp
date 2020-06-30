@@ -1,7 +1,10 @@
 #include "pch.h"
+#include "pch.h"
 #include "game.h"
 #include "assetmgr.h"
 #include "viewport.h"
+
+
 
 
 Game::Game()
@@ -57,7 +60,13 @@ void Game::click()
 		if (pathFinder->GetRange(lastMouseCell.x, lastMouseCell.y) > -1) {
 			//This should be a valid move.
 			auto& thisUnit = players[curPlayer].GetUnit(selUnit);
-			thisUnit.Move(lastMouseCell.x, lastMouseCell.y);
+			auto fuckme = pathFinder->GetPathTo(lastMouseCell.x, lastMouseCell.y);
+			for (auto me : fuckme) {
+				addAction(new ActionMovePlayer(thisUnit, me.x, me.y));
+				/*actions.insert(actions.begin(), ActionMovePlayer(thisUnit, me.x, me.y));
+				actions.insert()*/
+				}
+			//thisUnit.Move(lastMouseCell.x, lastMouseCell.y);
 			int bp = 0;
 		}
 		selUnit = -1;
@@ -131,15 +140,27 @@ void Game::ProcessEvents()
 }
 
 void Game::Process() {
-	
+	last = now;
+	now = SDL_GetPerformanceCounter();
+
+	double deltaTime = (double)((now- last)  / (double)SDL_GetPerformanceFrequency());
+	//std::cout << "Frame time: " << deltaTime << "\n";
 	const uint8_t* ks = SDL_GetKeyboardState(NULL);
 	if (ks[SDL_SCANCODE_W]) cy -= 0.001;
 	if (ks[SDL_SCANCODE_S]) cy += 0.001;
 	if (ks[SDL_SCANCODE_A]) cx -= 0.001;
 	if (ks[SDL_SCANCODE_D]) cx += 0.001;
-	
-	handleMouse();
-	
+
+	int size = actions.size();
+	if (size > 0) {
+		if (actions[size - 1]->Process(deltaTime)) {
+			actions.pop_back();
+			//XXXC need to delete this.............
+		}
+	}
+	else {
+		handleMouse();
+	}
 	viewPort.SetCamera(cx, cy);
 	viewPort.Update(1);
 	SDL_Rect myRect;
@@ -167,7 +188,8 @@ void Game::StartUp(int x, int y)
 	AssetMgr::Load("assets/background.png", "BKG");
 	AssetMgr::Load("assets/dudes.png", "UNITS");
 	AssetMgr::Load("assets/highlights.png", "HIGHLIGHT");
-
+	AssetMgr::Load("assets/font16.png", "FONT16");
+		
 	//These numbers come from the background image........
 	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);
 	

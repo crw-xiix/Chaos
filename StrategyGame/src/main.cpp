@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
 		std::cout << "Failed to init SDL " << SDL_GetError() << "\n";
 		return -1;
 	}
+	
 
 	Game::Create();
 	Display::Create(1600, 800);

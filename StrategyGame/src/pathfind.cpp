@@ -2,9 +2,10 @@
 #include "pathfind.h"
 #include <set>
 
+
+
 PathFinder::PathFinder(Map& imap) : map(imap)
 {
-//	dMap = new std::array<std::array<int, Map::Size>, Map::Size>();
 	dRange = new std::array<std::array<int, Map::Size>, Map::Size>();
 }
 
@@ -37,9 +38,60 @@ void PathFinder::ResetMap()
 	}
 }
 
+PathFinder::xyRange PathFinder::pathGood(int x, int y)
+{
+	int d = ((*dRange)[y][x]);
+	if (d < 0) d = Map::Size*2+1;
+	return xyRange{ x,y,d };
+}
+
+/// <summary>
+/// Get path to starts at x, y, and ends at pathfinder 0.  
+/// This shall not be called if a path is not already possible.
+/// </summary>
+/// <param name="x">target x cell</param>
+/// <param name="y">targer y cell</param>
+/// <returns></returns>
 std::vector<SDL_Point> PathFinder::GetPathTo(int x, int y)
 {
-	return std::vector<SDL_Point>();
+	int sx = x;
+	int sy = y;
+	typedef std::tuple<int, int, int> xyRange;
+	std::list<xyRange> found;
+
+	std::vector<SDL_Point> thePath;
+	//This is out starting location.
+	
+	thePath.push_back(SDL_Point{ x,y });
+
+	//It's zero when we find the target
+	while ((*dRange)[y][x] > 1)
+	{
+		int d = (*dRange)[y][x];
+
+		std::cout << "Pos" << x << "," << y << " Dist: " << d << "\n";
+
+		found.push_back(pathGood(x, y - 1));
+		found.push_back(pathGood(x, y + 1));
+		found.push_back(pathGood(x - 1, y));
+		found.push_back(pathGood(x + 1, y));
+
+		found.sort([]( xyRange& a, xyRange& b) {
+			return std::get<2>(a) < std::get<2>(b); 
+			});
+
+		int d1;
+		std::tie(x, y, d1) = found.front();
+
+		d = d1;
+		found.clear();
+		//thePath.insert(thePath.begin(), SDL_Point{ x,y });
+		thePath.push_back( SDL_Point{ x,y });
+		if (thePath.size() > 20) {
+			int bp = 0;
+		}
+	}
+	return thePath;
 }
 
 bool PathFinder::rangeOpen(int x, int y, int& speed)
@@ -80,6 +132,8 @@ void PathFinder::calcFlood(int x, int y, int maxSpeed)
 		}
 		found.clear();
 		for (xyRange xy : mainSet) {
+			//This following line DFW  
+			//XXXC CRW
 			if (found.find(xy) == found.end()) {
 				std::tie(sx, sy, d) = xy;
 				//Check our max speed now
@@ -87,16 +141,15 @@ void PathFinder::calcFlood(int x, int y, int maxSpeed)
 					found.insert(xy);
 				}
 			}
+			else {
+				int bp = 0;
+			}
 			
 		}
 		mainSet.clear();
 	}
 }
 
-bool PathFinder::PathGood(int x, int y, int d)
-{
-	return false;
-}
 
 PathFinder::~PathFinder()
 {

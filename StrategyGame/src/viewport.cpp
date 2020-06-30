@@ -2,7 +2,9 @@
 #include "viewport.h"
 #include "assetmgr.h"
 #include "game.h"
+#include "SDL_ttf.h"
 
+TTF_Font* font;
 
 ViewPort::ViewPort(int x, int y, int w, int h, float zoom)
 {
@@ -12,7 +14,11 @@ ViewPort::ViewPort(int x, int y, int w, int h, float zoom)
 	camTY = 0;
 	camX = 0;
 	camY = 0;
+	font = TTF_OpenFont("./assets/myfont.ttf", 20);
 }
+
+
+
 
 void ViewPort::SetCamera(double &x, double &y)
 {
@@ -75,6 +81,10 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 				SDL_Rect myRect;
 				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 2, myRect);
 				Display::DrawTexture(highlightTex, &myRect, &destRect);
+				DrawNumer(destRect, pathFinder->GetRange(cx + x, cy + y));
+
+				
+
 			}
 
 			//Highlight Current Cell under the mouse.........
@@ -90,11 +100,26 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 	{
 		for (auto unit : player.GetUnits())
 		{
-			destRect.x =(int) (unit.GetXF()-cx ) * Map::TileSize + topX - pcx;
-			destRect.y =(int) (unit.GetYF()-cy ) * Map::TileSize + topY - pcy;
+			destRect.x =(int) ((unit.GetXF()-(float)cx ) * (float)Map::TileSize + (float)topX - (float)pcx);
+			destRect.y =(int) ((unit.GetYF()-(float)cy ) * (float)Map::TileSize + (float)topY - (float)pcy);
 			unit.Draw(destRect);
 		}
 	}
+	/*
+	int x = topX + 5;
+	int y = topY + 5;
+	for (char c : "1024") {
+		SDL_Rect myRect;
+		destRect.x = x;
+		destRect.y = y;
+		destRect.w = 16;
+		destRect.h = 16;
+		SDL_Texture* fontText = AssetMgr::Get("FONT16", 16, (c-'0'), 0, myRect);
+		Display::DrawTexture(fontText, &myRect, &destRect);
+		x += 16;
+
+	}
+	*/
 }
 
 void ViewPort::DoSomething()
@@ -140,4 +165,24 @@ bool ViewPort::MouseInViewPort(int x, int y)
 	if (x >= (topX + width)) return false;
 	if (y >= (topY + height)) return false;
 	return true;
+}
+
+void ViewPort::DrawNumer(SDL_Rect location, int value)
+{
+	int x = location.x;
+	int y = location.y;
+	char buf[80];
+	snprintf(buf,15,"%d",  value);
+	//char* temp = itoa(value);
+	for (char c : buf) {
+		SDL_Rect myRect;
+		SDL_Rect textRect;
+		textRect.x = x;
+		textRect.y = y;
+		textRect.w = 16;
+		textRect.h = 16;
+		SDL_Texture* fontText = AssetMgr::Get("FONT16", 16, (c - '0'), 0, myRect);
+		Display::DrawTexture(fontText, &myRect, &textRect);
+		x += 16;
+	}
 }
