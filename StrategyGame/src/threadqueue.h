@@ -1,5 +1,4 @@
 #pragma once
-
 #include <queue>
 #include <mutex>
 #include <condition_variable>
@@ -19,7 +18,7 @@ public:
     {}
 
     // Add an element to the queue.
-    void enqueue(T t)
+    void Enqueue(T t)
     {
         std::lock_guard<std::mutex> lock(m);
         q.push(t);
@@ -27,7 +26,7 @@ public:
     }
     // Get the "front"-element.
     // If the queue is empty, wait till a element is avaiable.
-    T dequeue(void)
+    T Dequeue(void)
     {
         std::unique_lock<std::mutex> lock(m);
         while (q.empty())

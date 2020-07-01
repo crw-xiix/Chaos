@@ -25,6 +25,7 @@ bool ActionMovePlayer::Process(double time)
     dx /= l; 
     dy /= l;
     actor.MoveF(actor.GetXF() + dx*time*4, actor.GetYF() + dy*time*4);
+    //XXXC CRW - need to store old direction to see if we reversed - went too far, lag, etc.
     if (l < 0.05) {
         actor.Move(tx, ty);
         return true;

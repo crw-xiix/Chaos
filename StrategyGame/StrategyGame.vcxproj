@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="3rd\jute.h" />
     <ClInclude Include="src\action.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\assetmgr.h" />
@@ -186,6 +187,7 @@
     <None Include="src\src.zip" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="3rd\jute.cpp" />
     <ClCompile Include="src\action.cpp" />
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\assetmgr.cpp" />
