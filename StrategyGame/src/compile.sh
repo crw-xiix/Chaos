@@ -1,4 +1,4 @@
 clear
-g++ -I/usr/include/SDL2 -I. game.cpp assetmgr.cpp pathfind.cpp map.cpp unit.cpp gameplayer.cpp viewport.cpp perlinmap.cpp display.cpp maptile.cpp main.cpp -o main `sdl2-config --cflags --libs` -lSDL2 -lSDL2_image
+g++ -I/usr/include/SDL2 -I. action.cpp animation.cpp assetmgr.cpp display.cpp easywsclient.cpp game.cpp gameplayer.cpp main.cpp  map.cpp maptile.cpp pathfind.cpp pch.cpp perlinmap.cpp unit.cpp viewport.cpp -o main `sdl2-config --cflags --libs` -lSDL2 -lSDL2_image
 ./main
 

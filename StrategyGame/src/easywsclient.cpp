@@ -465,6 +465,7 @@ easywsclient::WebSocket::pointer from_url(const std::string& url, bool useMask, 
       fprintf(stderr, "ERROR: origin size limit exceeded: %s\n", origin.c_str());
       return NULL;
     }
+#ifdef _WIN32
     if (false) { }
     else if (sscanf_s(url.c_str(), "ws://%[^:/]:%d/%s", host,512, &port, path,512) == 3) {
     }
@@ -482,6 +483,26 @@ easywsclient::WebSocket::pointer from_url(const std::string& url, bool useMask, 
         fprintf(stderr, "ERROR: Could not parse WebSocket url: %s\n", url.c_str());
         return NULL;
     }
+#else
+    if (false) {}
+    else if (sscanf(url.c_str(), "ws://%[^:/]:%d/%s", host, &port, path) == 3) {
+    }
+    else if (sscanf(url.c_str(), "ws://%[^:/]/%s", host, path) == 2) {
+        port = 80;
+    }
+    else if (sscanf(url.c_str(), "ws://%[^:/]:%d", host, &port) == 2) {
+        path[0] = '\0';
+    }
+    else if (sscanf(url.c_str(), "ws://%[^:/]", host) == 1) {
+        port = 80;
+        path[0] = '\0';
+    }
+    else {
+        fprintf(stderr, "ERROR: Could not parse WebSocket url: %s\n", url.c_str());
+        return NULL;
+    }
+#endif
+
     //fprintf(stderr, "easywsclient: connecting: host=%s port=%d path=/%s\n", host, port, path);
     socket_t sockfd = hostname_connect(host, port);
     if (sockfd == INVALID_SOCKET) {
@@ -511,7 +532,11 @@ easywsclient::WebSocket::pointer from_url(const std::string& url, bool useMask, 
         for (i = 0; i < 2 || (i < 1023 && line[i-2] != '\r' && line[i-1] != '\n'); ++i) { if (recv(sockfd, line+i, 1, 0) == 0) { return NULL; } }
         line[i] = 0;
         if (i == 1023) { fprintf(stderr, "ERROR: Got invalid status line connecting to: %s\n", url.c_str()); return NULL; }
+#ifdef _WIN32 
         if (sscanf_s(line, "HTTP/1.1 %d", &status) != 1 || status != 101) { fprintf(stderr, "ERROR: Got bad status connecting to %s: %s", url.c_str(), line); return NULL; }
+#else
+        if (sscanf(line, "HTTP/1.1 %d", &status) != 1 || status != 101) { fprintf(stderr, "ERROR: Got bad status connecting to %s: %s", url.c_str(), line); return NULL; }
+#endif
         // TODO: verify response headers,
         while (true) {
             for (i = 0; i < 2 || (i < 1023 && line[i-2] != '\r' && line[i-1] != '\n'); ++i) { if (recv(sockfd, line+i, 1, 0) == 0) { return NULL; } }
