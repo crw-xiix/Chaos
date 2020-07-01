@@ -166,6 +166,7 @@
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\assetmgr.h" />
     <ClInclude Include="src\display.h" />
+    <ClInclude Include="src\easywsclient.hpp" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gameplayer.h" />
     <ClInclude Include="src\map.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="src\pathfind.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\perlinmap.h" />
+    <ClInclude Include="src\threadqueue.h" />
     <ClInclude Include="src\unit.h" />
     <ClInclude Include="src\viewport.h" />
   </ItemGroup>
@@ -187,6 +189,9 @@
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\assetmgr.cpp" />
     <ClCompile Include="src\display.cpp" />
+    <ClCompile Include="src\easywsclient.cpp" />
+    <ClCompile Include="ReferenceCode\example-client-cpp11.cpp" />
+    <ClCompile Include="ReferenceCode\example-client.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gameplayer.cpp" />
     <ClCompile Include="src\main.cpp">

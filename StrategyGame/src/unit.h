@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include <string>
 
 enum class UnitType {
 	Warrior = 0,
@@ -23,7 +24,7 @@ private:
 	SDL_Rect rect;
 	SDL_Texture* texture;
 
-	float hp;
+	int hp = 50;
 	//Speed is how many regular tiles it can travel per round/Tile slowness.
 	int speed = 20;
 
@@ -31,13 +32,13 @@ private:
 	int range;
 	float damage;
 
-	float x;
-	float y;
+	float x=1;
+	float y=2;
 
 public:
 	static constexpr int ConstMax = 50;
 	Unit(UnitType type, int x, int y);
-
+	std::string GetJson();
 	void Draw(SDL_Rect dest);
 
 	inline int GetX() const { return (int) x+.5f; }

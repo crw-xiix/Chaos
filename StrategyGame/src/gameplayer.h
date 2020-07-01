@@ -10,6 +10,7 @@ private:
 
 public:
 	GamePlayer();
+	std::string GetJson();
 	inline std::vector<Unit>& GetUnits()  { return units; }
 	inline Unit& GetUnit(int idx) { return units[idx]; }
 };

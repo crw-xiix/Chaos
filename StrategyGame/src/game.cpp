@@ -3,9 +3,15 @@
 #include "game.h"
 #include "assetmgr.h"
 #include "viewport.h"
+#include "easywsclient.hpp"
+
+/*
+#include "websocketpp/config/asio_no_tls_client.hpp"
+#include "websocketpp/client.hpp"
+*/
 
 
-
+//XXXC CRW Need an action for requestion new room, joining room, etc.
 
 Game::Game()
 	: running(true)
@@ -151,22 +157,23 @@ void Game::Process() {
 	if (ks[SDL_SCANCODE_A]) cx -= 0.001;
 	if (ks[SDL_SCANCODE_D]) cx += 0.001;
 
-	int size = actions.size();
+	size_t size = actions.size();
 	if (size > 0) {
-		if (actions[size - 1u]->Process(deltaTime)) {
-			delete actions[size - 1u];
+		if (actions[size - 1]->Process(deltaTime)) {
+			delete actions[size - 1];
 			actions.pop_back();
-			//XXXC need to delete this.............
 		}
 	}
 	else {
+		//No mouse during action time for now
 		handleMouse();
 	}
 	viewPort.SetCamera(cx, cy);
 	viewPort.Update(1);
 	SDL_Rect myRect;
 
-	Display::Clear(0, 0, 0);
+	//Don't need to clear anything now
+		//Display::Clear(0, 0, 0);
 	//Get the background up there.........
 	SDL_Texture* tempTex = AssetMgr::GetAll("BKG", myRect);
 	SDL_Rect screen = { 0,0,1600,800 };
