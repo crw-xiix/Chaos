@@ -69,7 +69,7 @@ std::vector<SDL_Point> PathFinder::GetPathTo(int x, int y)
 	{
 		int d = (*dRange)[y][x];
 
-		std::cout << "Pos" << x << "," << y << " Dist: " << d << "\n";
+		//std::cout << "Pos" << x << "," << y << " Dist: " << d << "\n";
 
 		found.push_back(pathGood(x, y - 1));
 		found.push_back(pathGood(x, y + 1));
@@ -85,7 +85,6 @@ std::vector<SDL_Point> PathFinder::GetPathTo(int x, int y)
 
 		d = d1;
 		found.clear();
-		//thePath.insert(thePath.begin(), SDL_Point{ x,y });
 		thePath.push_back( SDL_Point{ x,y });
 		if (thePath.size() > 20) {
 			int bp = 0;

@@ -165,6 +165,7 @@
     <ClInclude Include="src\action.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\assetmgr.h" />
+    <ClInclude Include="src\console.h" />
     <ClInclude Include="src\display.h" />
     <ClInclude Include="src\easywsclient.hpp" />
     <ClInclude Include="src\game.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="src\action.cpp" />
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\assetmgr.cpp" />
+    <ClCompile Include="src\console.cpp" />
     <ClCompile Include="src\display.cpp" />
     <ClCompile Include="src\easywsclient.cpp" />
     <ClCompile Include="ReferenceCode\example-client-cpp11.cpp" />

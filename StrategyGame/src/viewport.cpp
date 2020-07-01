@@ -5,7 +5,6 @@
 
 bool cellDistanceShow = false;
 
-
 ViewPort::ViewPort(int x, int y, int w, int h, float zoom)
 {
 	topX = x; topY = y; width = w; height = h;
@@ -14,11 +13,7 @@ ViewPort::ViewPort(int x, int y, int w, int h, float zoom)
 	camTY = 0;
 	camX = 0;
 	camY = 0;
-	
 }
-
-
-
 
 void ViewPort::SetCamera(double &x, double &y)
 {
@@ -33,9 +28,9 @@ void ViewPort::SetCamera(double &x, double &y)
 //Ghetto cam pan
 void ViewPort::Update(int ms)
 {
-	float delay = 9.0f;
-	camX = ((camX*delay + camTX) / (delay+1.0f));
-	camY = ((camY*delay + camTY) / (delay+1.0f));
+	double delay = 9.0f;
+	camX = ((camX*delay + camTX) / (delay+1.0));
+	camY = ((camY*delay + camTY) / (delay+1.0));
 }
 
 int asdf = 0;
@@ -83,7 +78,7 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 
 				//This is for testing only....
 				if (cellDistanceShow) {
-					DrawNumer(destRect, pathFinder->GetRange(cx + x, cy + y));
+					DrawNumber(destRect, pathFinder->GetRange(cx + x, cy + y));
 				}
 			}
 			//Highlight Current Cell under the mouse.........
@@ -151,7 +146,7 @@ bool ViewPort::MouseInViewPort(int x, int y)
 	return true;
 }
 
-void ViewPort::DrawNumer(SDL_Rect location, int value)
+void ViewPort::DrawNumber(SDL_Rect location, int value)
 {
 	int x = location.x;
 	int y = location.y;

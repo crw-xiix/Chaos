@@ -24,7 +24,7 @@ public:
 	bool GetCellAtMouseXY(int mx, int my, int& x, int& y);
 	void RenderTextureAt(int cx, int cy, int ocx, int ocy, SDL_Texture* tex, SDL_Rect* sourceRect);
 	bool MouseInViewPort(int x, int y);
-	void DrawNumer(SDL_Rect location, int value);
+	void DrawNumber(SDL_Rect location, int value);
 
 
 

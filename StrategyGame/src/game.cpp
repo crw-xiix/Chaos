@@ -10,7 +10,6 @@
 #include "websocketpp/client.hpp"
 */
 
-
 //XXXC CRW Need an action for requestion new room, joining room, etc.
 
 Game::Game()
@@ -22,6 +21,7 @@ Game::Game()
 Game::~Game()
 {
 	delete gameInstance;
+	delete console;
 }
 
 void Game::handleMouse()
@@ -53,6 +53,10 @@ void Game::handleMouse()
 void Game::click()
 {
 	int sp, su;
+	//Bail out, out of range click
+	if ((lastMouseCell.x < 0) || (lastMouseCell.y < 0)) return;
+	if ((lastMouseCell.x >=Map::Size) || (lastMouseCell.y > Map::Size)) return;
+
 	if (getCharacterAt(lastMouseCell.x, lastMouseCell.y, sp, su)) {
 		//We have a character......
 		int bp = 0;
@@ -63,17 +67,25 @@ void Game::click()
 		}
 	}
 	else {
-		if (pathFinder->GetRange(lastMouseCell.x, lastMouseCell.y) > -1) {
-			//This should be a valid move.
-			auto& thisUnit = players[curPlayer].GetUnit(selUnit);
-			auto fuckme = pathFinder->GetPathTo(lastMouseCell.x, lastMouseCell.y);
-			for (auto me : fuckme) {
-				addAction(new ActionMovePlayer(thisUnit, me.x, me.y));
-				/*actions.insert(actions.begin(), ActionMovePlayer(thisUnit, me.x, me.y));
-				actions.insert()*/
+		if (selUnit != -1) {
+			if (pathFinder->GetRange(lastMouseCell.x, lastMouseCell.y) > -1) {
+				//This should be a valid move.
+
+				auto& thisUnit = players[curPlayer].GetUnit(selUnit);
+				std::string msg = "Move to:";
+				msg += std::to_string(lastMouseCell.x) + " ";
+				msg += std::to_string(lastMouseCell.y) + " ";
+
+				console->AddLine(msg);
+				auto thePath = pathFinder->GetPathTo(lastMouseCell.x, lastMouseCell.y);
+				for (auto me : thePath) {
+					addAction(new ActionMovePlayer(thisUnit, me.x, me.y));
+					/*actions.insert(actions.begin(), ActionMovePlayer(thisUnit, me.x, me.y));
+					actions.insert()*/
 				}
-			//thisUnit.Move(lastMouseCell.x, lastMouseCell.y);
-			int bp = 0;
+				//thisUnit.Move(lastMouseCell.x, lastMouseCell.y);
+				int bp = 0;
+			}
 		}
 		selUnit = -1;
 		pathFinder->ResetMap();
@@ -85,7 +97,6 @@ void Game::selectUnit(int sp, int su)
 	int bp = 0;
 	selUnit = su;
 	pathFinder->DoUnitMaxDistanceTravel(players[curPlayer].GetUnit(selUnit),10);
-
 }
 
 
@@ -182,6 +193,8 @@ void Game::Process() {
 	//Ref out for mCell*
 	//Draw the map
 	viewPort.Draw(*gameMap, players, pathFinder);
+	SDL_RenderSetClipRect(Display::GetRenderer(), &screen);
+	console->Draw();
 	//Draw the UI......
 }
 
@@ -200,7 +213,10 @@ void Game::StartUp(int x, int y)
 		
 	//These numbers come from the background image........
 	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);
-	
+
+	console = new ConsoleView(16, 464, 272, 320, 18);
+	console->AddLine("Starting");
+	console->AddLine("testing 1234567890123456789012345678901234");
 	GamePlayer player;
 	players.push_back(player);
 	curPlayer = 0;

@@ -4,6 +4,7 @@
 #include "viewport.h"
 #include "pathfind.h"
 #include "action.h"
+#include "console.h"
 
 class Game
 {
@@ -22,6 +23,8 @@ private:
 	Map* gameMap = nullptr;
 	std::vector<GamePlayer> players;
 	ViewPort viewPort;
+	ConsoleView *console;
+
 
 	PathFinder* pathFinder = nullptr;
 
