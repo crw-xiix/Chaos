@@ -1,0 +1,9 @@
+files are lowercase (if they are ours)
+private is lowerCase
+public is UppperCase
+Class is ClassName
+functions args are lowerCase
+
+
+
+
