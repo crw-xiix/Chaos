@@ -25,7 +25,7 @@ public: //static
 private:
 	SocketQueue *socketQueue=nullptr;
 
-	bool running;
+	bool running= false;
 	//Camera Location
 	double cx = 0;
 	double cy = 0;
@@ -37,7 +37,7 @@ private:
 	Map* gameMap = nullptr;
 	std::vector<GamePlayer> players;
 	ViewPort viewPort;
-	ConsoleView *console;
+	ConsoleView* console = nullptr;
 
 	PathFinder* pathFinder = nullptr;
 
@@ -45,10 +45,10 @@ private:
 	int selUnit = -1;
 
 	SDL_Point lastMouseCell{ -1,-1 };
-	bool mouseDown;
+	bool mouseDown = false;
 	std::vector<Action*> actions;
-	Uint64 now;
-	Uint64 last;
+	Uint64 now = 0;
+	Uint64 last = 0;
 	void handleMouse();
 	void click();
 	void selectUnit(int sp, int su);

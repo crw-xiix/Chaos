@@ -1,36 +1,17 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
-  "engines": {
-    "node": "8.9.1"
-  },
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "test": "node test.js"
-  },
-  "dependencies": {
-    "bufferutil": "3.0.3",
-    "cool-ascii-faces": "1.3.4",
-    "ejs": "^2.5.6",
-    "express": "4.16.2",
-    "node": "^12.1.0",
-    "p5": "0.6.0",
-    "utf-8-validate": "4.0.0",
-    "ws": "4.1.0"
-  },
-  "devDependencies": {
-    "request": "^2.81.0",
-    "tape": "^4.7.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Raybarg/after-all-hope.git"
-  },
-  "keywords": [
-    "node",
-    "express"
-  ],
-  "license": "MIT"
+    "name": "azi",
+    "version": "1.0.0",
+    "keywords": [
+        "util",
+        "functional",
+        "server",
+        "client",
+        "browser"
+    ],
+    "author": "charles",
+    "contributors": [],
+    "dependencies": {
+        "express": "^4.17.1",
+        "ws": "^7.3.0"
+    }
 }

@@ -11,12 +11,12 @@
 #include "websocketpp/client.hpp"
 */
 
-//XXXC CRW Need an action for requestion new room, joining room, etc.
+//XXXC CRW Need an action for requesting new room, joining room, etc.
 
-Game::Game()
-	: running(true)
+Game::Game() : running(true), console{ nullptr }
 {
-	socketQueue = new SocketQueue("ws://71.56.75.25:82/chat");
+	//socketQueue = new SocketQueue("ws://71.56.75.25:82/chat");
+	socketQueue = new SocketQueue("ws://127.0.0.1:82/chat");
 }
 
 
