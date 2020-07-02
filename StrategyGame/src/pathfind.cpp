@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "pathfind.h"
 #include <set>
+#include <algorithm>
+#include <random>
+
+
 
 
 
@@ -57,10 +61,10 @@ std::vector<SDL_Point> PathFinder::GetPathTo(int x, int y)
 	int sx = x;
 	int sy = y;
 	typedef std::tuple<int, int, int> xyRange;
-	std::list<xyRange> found;
+	std::vector<xyRange> found;
 
 	std::vector<SDL_Point> thePath;
-	//This is out starting location.
+	//This is our starting location.
 	
 	thePath.push_back(SDL_Point{ x,y });
 
@@ -76,12 +80,23 @@ std::vector<SDL_Point> PathFinder::GetPathTo(int x, int y)
 		found.push_back(pathGood(x - 1, y));
 		found.push_back(pathGood(x + 1, y));
 
-		found.sort([]( xyRange& a, xyRange& b) {
-			return std::get<2>(a) < std::get<2>(b); 
-			});
+		auto rng = std::default_random_engine{};
+		std::shuffle(found.begin(), found.begin()+2,rng);
 
+		std::sort(found.begin(), found.end() , 
+			[](xyRange& a, xyRange& b) {
+				return std::get<2>(a) < std::get<2>(b);
+			}
+			);
+
+		//This gives us a little randomness in motion so they don't walk straight lines.
 		int d1;
-		std::tie(x, y, d1) = found.front();
+		int idx = 0;
+		if (std::get<2>(found[0]) == std::get<2>(found[1])) {
+			idx = rand() % 2;
+		}
+
+		std::tie(x, y, d1) = found[idx];
 
 		d = d1;
 		found.clear();
@@ -142,7 +157,7 @@ void PathFinder::calcFlood(int x, int y, int maxSpeed)
 					isFound = true;
 					break;
 				}
-			}
+			} //Back from break above
 			if (!isFound) {
 				//Check our max speed now
 				if (d <= maxSpeed) {

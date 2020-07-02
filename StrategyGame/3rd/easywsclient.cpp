@@ -1,4 +1,7 @@
 #include "pch.h"
+
+/* This is a 3rd party free to use library*/
+
 #ifdef _WIN32
     #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
         #define _CRT_SECURE_NO_WARNINGS // _CRT_SECURE_NO_WARNINGS for sscanf errors in MSVC2013 Express
@@ -40,6 +43,8 @@
     #define socketerrno WSAGetLastError()
     #define SOCKET_EAGAIN_EINPROGRESS WSAEINPROGRESS
     #define SOCKET_EWOULDBLOCK WSAEWOULDBLOCK
+    #pragma push;
+    #pragma disable(warning: 26812)
 #else
     #include <fcntl.h>
     #include <netdb.h>
@@ -68,6 +73,7 @@
     #define SOCKET_EAGAIN_EINPROGRESS EAGAIN
     #define SOCKET_EWOULDBLOCK EWOULDBLOCK
 #endif
+
 
 #include <vector>
 #include <string>
@@ -527,11 +533,14 @@ easywsclient::WebSocket::pointer from_url(const std::string& url, bool useMask, 
             snprintf(line, 1024, "Origin: %s\r\n", origin.c_str()); ::send(sockfd, line, strlen(line), 0);
         }
         snprintf(line, 1024, "Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==\r\n"); ::send(sockfd, line, strlen(line), 0);
-        snprintf(line, 1024, "Sec-WebSocket-Version: 13\r\n"); ::send(sockfd, line, strlen(line), 0);
-        snprintf(line, 1024, "\r\n"); ::send(sockfd, line, strlen(line), 0);
+        snprintf(line, 1024, "Sec-WebSocket-Version: 13\r\n"); 
+        ::send(sockfd, line, strlen(line), 0);
+        snprintf(line, 1024, "\r\n"); 
+        ::send(sockfd, line, strlen(line), 0);
         for (i = 0; i < 2 || (i < 1023 && line[i-2] != '\r' && line[i-1] != '\n'); ++i) { if (recv(sockfd, line+i, 1, 0) == 0) { return NULL; } }
         line[i] = 0;
-        if (i == 1023) { fprintf(stderr, "ERROR: Got invalid status line connecting to: %s\n", url.c_str()); return NULL; }
+        if (i == 1023) { 
+            fprintf(stderr, "ERROR: Got invalid status line connecting to: %s\n", url.c_str()); return NULL; }
 #ifdef _WIN32 
         if (sscanf_s(line, "HTTP/1.1 %d", &status) != 1 || status != 101) { fprintf(stderr, "ERROR: Got bad status connecting to %s: %s", url.c_str(), line); return NULL; }
 #else
@@ -566,7 +575,6 @@ WebSocket::pointer WebSocket::create_dummy() {
     return dummy;
 }
 
-
 WebSocket::pointer WebSocket::from_url(const std::string& url, const std::string& origin) {
     return ::from_url(url, true, origin);
 }
@@ -577,3 +585,7 @@ WebSocket::pointer WebSocket::from_url_no_mask(const std::string& url, const std
 
 
 } // namespace easywsclient
+
+#ifdef _WIN32 
+#pragma pop
+#endif

@@ -3,7 +3,8 @@
 #include "game.h"
 #include "assetmgr.h"
 #include "viewport.h"
-#include "easywsclient.hpp"
+
+
 
 /*
 #include "websocketpp/config/asio_no_tls_client.hpp"
@@ -15,14 +16,9 @@
 Game::Game()
 	: running(true)
 {
-
+	socketQueue = new SocketQueue("ws://71.56.75.25:82/chat");
 }
 
-Game::~Game()
-{
-	delete gameInstance;
-	delete console;
-}
 
 void Game::handleMouse()
 {
@@ -75,8 +71,10 @@ void Game::click()
 				std::string msg = "Move to:";
 				msg += std::to_string(lastMouseCell.x) + " ";
 				msg += std::to_string(lastMouseCell.y) + " ";
-
+				std::string test = "{\"request\":\"create\"}";
+				//console->AddLine(msg);
 				console->AddLine(msg);
+				socketQueue->Send(test);
 				auto thePath = pathFinder->GetPathTo(lastMouseCell.x, lastMouseCell.y);
 				for (auto me : thePath) {
 					addAction(new ActionMovePlayer(thisUnit, me.x, me.y));
@@ -147,6 +145,7 @@ void Game::Create()
 void Game::ProcessEvents()
 {
 	SDL_Event e;
+	
 	while (SDL_PollEvent(&e))
 	{
 		if (e.type == SDL_QUIT)
@@ -154,6 +153,17 @@ void Game::ProcessEvents()
 			gameInstance->running = false;
 		}
 	}
+
+	gameInstance->socketQueue->Process();
+	//int sz = gameInstance->socketQueue->Avail();
+	if (gameInstance->socketQueue->Avail()) {
+		//The temp is for setting breakpoints
+		std::string temp = gameInstance->socketQueue->Get();
+		gameInstance->console->AddLine(temp);
+		std::cout << temp << std::endl;
+		int bp = 0;
+	}
+
 }
 
 void Game::Process() {
@@ -221,6 +231,7 @@ void Game::StartUp(int x, int y)
 	players.push_back(player);
 	curPlayer = 0;
 	selUnit = -1; //No unit;
+	socketQueue->Start();
 }
 
 void Game::NextPlayer()
@@ -228,6 +239,16 @@ void Game::NextPlayer()
 	curPlayer++;
 	curPlayer = curPlayer % players.size();
 }
+
+Game::~Game()
+{
+	delete socketQueue;
+	delete console;
+	delete gameInstance;
+	
+}
+
+
 
 /*private static members*/
 Game* Game::gameInstance;

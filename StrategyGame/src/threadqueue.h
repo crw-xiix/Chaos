@@ -24,6 +24,13 @@ public:
         q.push(t);
         c.notify_one();
     }
+
+    //Return the size, avoids stalls on dequeue
+    size_t Size() {
+        std::unique_lock<std::mutex> lock(m);
+        return q.size();
+    }
+
     // Get the "front"-element.
     // If the queue is empty, wait till a element is avaiable.
     T Dequeue(void)

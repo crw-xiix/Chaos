@@ -6,7 +6,7 @@
 #include "assetmgr.h"
 #include "map.h"
 #include "viewport.h"
-#include "easywsclient.hpp"
+#include "../3rd/easywsclient.hpp"
 
 #ifdef _WIN32
 #pragma comment( lib, "ws2_32" )
