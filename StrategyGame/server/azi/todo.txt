@@ -1,0 +1,4 @@
+./public/shared and ./shared folders have common .js modules, one for server and one for client
+because server has node syntax with require() and client loads them in html-file.
+So need to figure out how to "Browserify" those node modules and load them asynchronously on the 
+client side.
