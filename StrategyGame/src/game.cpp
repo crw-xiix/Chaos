@@ -207,7 +207,7 @@ void Game::StartUp(int x, int y)
 
 	AssetMgr::Load("assets/landscape.png", "LAND");
 	AssetMgr::Load("assets/background.png", "BKG");
-	AssetMgr::Load("assets/dudes.png", "UNITS");
+	AssetMgr::Load("assets/Dudes.png", "UNITS");
 	AssetMgr::Load("assets/highlights.png", "HIGHLIGHT");
 	AssetMgr::Load("assets/font16.png", "FONT16");
 		
