@@ -36,6 +36,12 @@ ActionSelectServer::ActionSelectServer()
     mouseMan = new MouseManager(&controls);
 }
 
+ActionSelectServer::~ActionSelectServer()
+{
+    for (auto i : controls) delete i;
+    delete mouseMan;
+}
+
 bool ActionSelectServer::Process(double time)
 {
     int mx, my;
