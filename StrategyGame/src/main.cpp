@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 	while (Game::IsRunning())
 	{
 		Game::ProcessEvents();
-		Game::gameInstance->Process();
+        if (!Game::gameInstance->Process()) break;
 		Display::Present();
 		SDL_Delay(11);
 	}

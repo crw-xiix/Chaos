@@ -4,13 +4,15 @@
 #include "assetmgr.h"
 #include "viewport.h"
 #include "actionintro.h"
+#include <functional>
 
 //XXXC CRW Need an action for requesting new room, joining room, etc.
 
 Game::Game() : running(true), console{ nullptr }
 {
 	//socketQueue = new SocketQueue("ws://71.56.75.25:82/chat");
-	socketQueue = new SocketQueue("ws://127.0.0.1:82/chat");
+	//socketQueue = new SocketQueue("ws://127.0.0.1:82/chat");
+	socketQueue = nullptr;
 }
 
 
@@ -73,7 +75,9 @@ void Game::click()
 				std::string test = "{\"request\":\"create\"}";
 				//console->AddLine(msg);
 				console->AddLine(msg);
-				socketQueue->Send(test);
+				if (socketQueue) {
+					socketQueue->Send(test);
+				}
 				auto thePath = pathFinder->GetPathTo(lastMouseCell.x, lastMouseCell.y);
 				for (auto me : thePath) {
 					addAction(new ActionMovePlayer(thisUnit, me.x, me.y));
@@ -116,6 +120,15 @@ bool Game::getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit)
 	return false;
 }
 
+void Game::onSelectServerCallback(std::string url)
+{
+	if (url == "QUIT") {
+		running = false;
+	}
+	socketQueue = new SocketQueue(url);
+	socketQueue->Start();
+}
+
 //This has to be static unless we want to pass 100K vars around.
 //Each action, when it closes, adds an action.
 void Game::addAction(Action* action, Action* ref)
@@ -152,20 +165,21 @@ void Game::ProcessEvents()
 			gameInstance->running = false;
 		}
 	}
-
-	gameInstance->socketQueue->Process();
-	//int sz = gameInstance->socketQueue->Avail();
-	if (gameInstance->socketQueue->Avail()) {
-		//The temp is for setting breakpoints
-		std::string temp = gameInstance->socketQueue->Get();
-		gameInstance->console->AddLine(temp);
-		std::cout << temp << std::endl;
-		int bp = 0;
+	if (gameInstance->socketQueue) {
+		gameInstance->socketQueue->Process();
+		//int sz = gameInstance->socketQueue->Avail();
+		if (gameInstance->socketQueue->Avail()) {
+			//The temp is for setting breakpoints
+			std::string temp = gameInstance->socketQueue->Get();
+			gameInstance->console->AddLine(temp);
+			std::cout << temp << std::endl;
+			int bp = 0;
+		}
 	}
 
 }
 
-void Game::Process() {
+bool Game::Process() {
 	last = now;
 	now = SDL_GetPerformanceCounter();
 
@@ -218,6 +232,7 @@ void Game::Process() {
 
 	console->Draw();
 	//Draw the UI......
+	return running;
 }
 
 void Game::StartUp(int x, int y)
@@ -246,7 +261,7 @@ void Game::StartUp(int x, int y)
 	players.push_back(player);
 	curPlayer = 0;
 	selUnit = -1; //No unit;
-	socketQueue->Start();
+	
 	//Get our time setup properly.....
 	now = SDL_GetPerformanceCounter();
 	addAction(new ActionIntro());

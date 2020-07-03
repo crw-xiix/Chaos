@@ -15,13 +15,13 @@ public:
 
 	static void Create();
 	static void ProcessEvents();
-	void Process();
+	bool Process();
 	void StartUp(int x, int y);
 	void NextPlayer();
 	static inline bool IsRunning() { return gameInstance->running; }
 public: //static
 	static void addAction(Action* action, Action* ref = nullptr);
-
+	void onSelectServerCallback(std::string url);
 private:
 	SocketQueue *socketQueue=nullptr;
 
@@ -54,4 +54,6 @@ private:
 	void selectUnit(int sp, int su);
 	//Gets the character at cell x,y (not mouse location)
 	bool getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit);
+
+	
 };

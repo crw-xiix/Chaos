@@ -169,6 +169,7 @@
     <ClInclude Include="src\actionselectserver.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\assetmgr.h" />
+    <ClInclude Include="src\button.h" />
     <ClInclude Include="src\console.h" />
     <ClInclude Include="src\display.h" />
     <ClInclude Include="3rd\easywsclient.hpp" />
@@ -197,6 +198,7 @@
     <ClCompile Include="src\actionselectserver.cpp" />
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\assetmgr.cpp" />
+    <ClCompile Include="src\button.cpp" />
     <ClCompile Include="src\console.cpp" />
     <ClCompile Include="src\display.cpp" />
     <ClCompile Include="3rd\easywsclient.cpp" />

@@ -11,6 +11,9 @@ void AssetMgr::Destroy()
 bool AssetMgr::Load(std::string filename, std::string nick)
 {
 	SDL_Texture* texture = IMG_LoadTexture(Display::GetRenderer(), filename.c_str());
+	if (texture == nullptr) {
+		std::cout << "Failed to load:" << filename << "\n";
+	}
 	Images[nick] = texture;
 	return false;
 }

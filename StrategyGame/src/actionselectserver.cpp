@@ -1,17 +1,50 @@
 #include "pch.h"
 #include "actionselectserver.h"
 #include "assetmgr.h"
+#include "game.h"
+
 
 ActionSelectServer::ActionSelectServer()
 {
+    location = SDL_Rect {
+        (Display::Width - 600) >> 1,
+        (Display::Height - 300) >> 1,
+        600, 300};
+
+    SDL_Rect temp;
+    SDL_Texture* bTex = AssetMgr::GetAll("BUTTON",temp);
+
+    Button *bRemote = new Button(location.x+10, location.y+20, 256, 48);
+    bRemote->SetText("Remote:82");
+    bRemote->SetTexture(bTex);
+    bRemote->SetOnClick(std::bind(&ActionSelectServer::localClick,this));
+    
+
+    Button *bLocal = new Button(location.x+10, location.y+80, 256, 48);
+    bLocal->SetText("127.0.0.1:82");
+    bLocal->SetTexture(bTex);
+    bLocal->SetOnClick(std::bind(&ActionSelectServer::remoteClick, this));
+
+    Button* bExit = new Button(location.x + 10, location.y + 140, 256, 48);
+    bExit->SetText("Quit");
+    bExit->SetTexture(bTex);
+    bExit->SetOnClick(std::bind(&ActionSelectServer::quitClick, this));
+
+    controls.push_back(bRemote);
+    controls.push_back(bLocal);
+    controls.push_back(bExit);
+    mouseMan = new MouseManager(&controls);
 }
 
 bool ActionSelectServer::Process(double time)
 {
+    int mx, my;
+    uint32_t mouseState = SDL_GetMouseState(&mx, &my);
+    mouseMan->Process(mx, my, mouseState);
+
     eTime += time;
-    if ((eTime > 3) || (clicked)) {
+    if ((eTime > 30000) || (clicked)) {
         int bp = 0;
-        
         return true;
     }
     draw();
@@ -20,25 +53,89 @@ bool ActionSelectServer::Process(double time)
 
 void ActionSelectServer::Click()
 {
-    clicked = true;
+    //clicked = true;
 }
 
 void ActionSelectServer::Mouse(int x, int y, int b)
 {
 }
 
+void ActionSelectServer::localClick()
+{
+    Url = "ws://127.0.0.1:82/chat";
+    Game::gameInstance->onSelectServerCallback(Url);
+    clicked = true;
+}
+
+void ActionSelectServer::remoteClick()
+{
+    Url = "ws://71.56.75.25:82/chat";
+    Game::gameInstance->onSelectServerCallback(Url);
+    clicked = true;
+}
+
+void ActionSelectServer::quitClick()
+{
+    Url = "QUIT";
+    Game::gameInstance->onSelectServerCallback(Url);
+    clicked = true;
+}
+
 void ActionSelectServer::draw()
 {
-
     SDL_Rect rect;
     SDL_Texture* img = AssetMgr::GetAll("MENUBKG", rect);
     int i = SDL_SetTextureAlphaMod(img, 0);
     int x = (Display::Width - 600) >> 1;
     int y = (Display::Height - 300) >> 1;
     SDL_Rect dest{ x,y,600,300 };
-    SDL_SetRenderDrawBlendMode(Display::GetRenderer(), SDL_BLENDMODE_BLEND);
+
     Display::DrawTexture(img, &rect, &dest);
-    SDL_SetRenderDrawBlendMode(Display::GetRenderer(), SDL_BLENDMODE_NONE);
+    for (auto c : controls) {
+        c->Draw();
+    }
     return;
-   
+}
+
+MouseManager::MouseManager(std::vector<VisBase*> *items)
+{
+    viewItems = items;
+}
+
+void MouseManager::Process(int mx, int my, int mb)
+{
+    VisBase* found = nullptr;
+    SDL_Point pt{ mx,my };
+    for (auto visBase : *viewItems) {
+        if (SDL_PointInRect(&pt, &visBase->location)) {
+            found = visBase;
+        }
+    }
+    if (found != lastHover) {
+        if (lastHover) {
+            lastHover->MouseOut();
+            lastDown = nullptr;
+
+        }
+        if (found) {
+            found->MouseIn();
+        }
+        lastHover = found;
+    }
+    if (lastHover != nullptr) {
+        if (mouseDown != mb) {
+            if (mb==1) {
+                lastHover->MouseDown();
+                lastDown = lastHover;
+
+            }
+            else {
+                lastHover->MouseUp();
+                if (lastDown == lastHover) lastHover->MouseClick(mx,my);
+            }
+        }
+        mouseDown = mb;
+
+    }
+
 }
