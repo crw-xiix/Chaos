@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="3rd\jute.h" />
     <ClInclude Include="src\action.h" />
+    <ClInclude Include="src\actionintro.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\assetmgr.h" />
     <ClInclude Include="src\console.h" />
@@ -190,6 +191,7 @@
   <ItemGroup>
     <ClCompile Include="3rd\jute.cpp" />
     <ClCompile Include="src\action.cpp" />
+    <ClCompile Include="src\actionintro.cpp" />
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\assetmgr.cpp" />
     <ClCompile Include="src\console.cpp" />

@@ -3,13 +3,7 @@
 #include "game.h"
 #include "assetmgr.h"
 #include "viewport.h"
-
-
-
-/*
-#include "websocketpp/config/asio_no_tls_client.hpp"
-#include "websocketpp/client.hpp"
-*/
+#include "actionintro.h"
 
 //XXXC CRW Need an action for requesting new room, joining room, etc.
 
@@ -27,6 +21,7 @@ void Game::handleMouse()
 	uint32_t mouseState = SDL_GetMouseState(&mx, &my);
 	//Update the hover locations
 	viewPort.GetCellAtMouseXY(mx, my, mCellX, mCellY);
+
 
 	bool tMouseDown = mouseState & SDL_BUTTON_LEFT;
 	if (tMouseDown != mouseDown) {   //State changed.
@@ -48,6 +43,10 @@ void Game::handleMouse()
 
 void Game::click()
 {
+	if (actions.size() > 0) {
+		actions[actions.size() - 1]->Click();
+		return;
+	}
 	int sp, su;
 	//Bail out, out of range click
 	if ((lastMouseCell.x < 0) || (lastMouseCell.y < 0)) return;
@@ -178,17 +177,6 @@ void Game::Process() {
 	if (ks[SDL_SCANCODE_A]) cx -= 0.001;
 	if (ks[SDL_SCANCODE_D]) cx += 0.001;
 
-	size_t size = actions.size();
-	if (size > 0) {
-		if (actions[size - 1]->Process(deltaTime)) {
-			delete actions[size - 1];
-			actions.pop_back();
-		}
-	}
-	else {
-		//No mouse during action time for now
-		handleMouse();
-	}
 	viewPort.SetCamera(cx, cy);
 	viewPort.Update(1);
 	SDL_Rect myRect;
@@ -204,6 +192,18 @@ void Game::Process() {
 	//Draw the map
 	viewPort.Draw(*gameMap, players, pathFinder);
 	SDL_RenderSetClipRect(Display::GetRenderer(), &screen);
+	//Do actions, if they need to draw....
+
+	size_t size = actions.size();
+	if (size > 0) {
+		if (actions[size - 1]->Process(deltaTime)) {
+			delete actions[size - 1];
+			actions.pop_back();
+		}
+	}
+	//No mouse during action time for now
+	handleMouse();
+
 	console->Draw();
 	//Draw the UI......
 }
@@ -220,7 +220,8 @@ void Game::StartUp(int x, int y)
 	AssetMgr::Load("assets/Dudes.png", "UNITS");
 	AssetMgr::Load("assets/highlights.png", "HIGHLIGHT");
 	AssetMgr::Load("assets/font16.png", "FONT16");
-		
+	AssetMgr::Load("assets/intro.png", "INTRO");
+			
 	//These numbers come from the background image........
 	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);
 
@@ -232,6 +233,9 @@ void Game::StartUp(int x, int y)
 	curPlayer = 0;
 	selUnit = -1; //No unit;
 	socketQueue->Start();
+	//Get our time setup properly.....
+	now = SDL_GetPerformanceCounter();
+	addAction(new ActionIntro());
 }
 
 void Game::NextPlayer()

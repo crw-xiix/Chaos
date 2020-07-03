@@ -9,13 +9,12 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 
-	int width;
-	int height;
-
 	Display(int width, int height);
 	~Display();
 
 public:
+	static int Width;
+	static int Height;
 
 	static void Create(int width, int height);
 

@@ -2,8 +2,11 @@
 #include "display.h"
 
 Display::Display(int width, int height)
-	: window(nullptr), renderer(nullptr), width(width), height(height)
+	: window(nullptr), renderer(nullptr) 
 {
+
+	Display::Width = width;
+	Display::Height = height;
 	if (SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer) < 0)
 	{
 		std::cout << "Failed to create display: " << SDL_GetError() << "\n";
@@ -47,10 +50,15 @@ void Display::DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect)
 void Display::DrawTexture(SDL_Texture* texture, const SDL_Rect* targetRect, const SDL_Rect* subTexture)
 {
 	SDL_RenderCopy(GetRenderer(), texture, targetRect, subTexture);
+	
 }
 
 /*Static members*/
 Display* Display::displayInstance;
+
+int Display::Width = 0;
+int Display::Height = 0;
+
 
 SDL_ClipRectSection::SDL_ClipRectSection(int x, int y, int w, int h)
 {

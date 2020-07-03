@@ -92,6 +92,7 @@ wss.on('connection', (ws) => {
             }
         };
     } catch (e) {
+        console.log(e.toString());
         console.log("err");
     };
     });
