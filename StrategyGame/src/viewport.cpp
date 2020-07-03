@@ -2,8 +2,9 @@
 #include "viewport.h"
 #include "assetmgr.h"
 #include "game.h"
+#include "font16.h"
 
-bool cellDistanceShow = false;
+bool cellDistanceShow = true;
 
 ViewPort::ViewPort(int x, int y, int w, int h, float zoom)
 {
@@ -148,20 +149,6 @@ bool ViewPort::MouseInViewPort(int x, int y)
 
 void ViewPort::DrawNumber(SDL_Rect location, int value)
 {
-	int x = location.x;
-	int y = location.y;
-	char buf[80];
-	snprintf(buf,15,"%d",  value);
-	//char* temp = itoa(value);
-	for (char c : buf) {
-		SDL_Rect myRect;
-		SDL_Rect textRect;
-		textRect.x = x;
-		textRect.y = y;
-		textRect.w = 16;
-		textRect.h = 16;
-		SDL_Texture* fontText = AssetMgr::Get("FONT16", 16, 16, (c - '0'), 0, myRect);
-		Display::DrawTexture(fontText, &myRect, &textRect);
-		x += 16;
-	}
+	std::string str = std::to_string(value);
+	Font16::DrawText(str, location.x, location.y);
 }

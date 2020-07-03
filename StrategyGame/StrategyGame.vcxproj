@@ -173,11 +173,13 @@
     <ClInclude Include="src\console.h" />
     <ClInclude Include="src\display.h" />
     <ClInclude Include="3rd\easywsclient.hpp" />
+    <ClInclude Include="src\font16.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gameplayer.h" />
     <ClInclude Include="src\map.h" />
     <ClInclude Include="src\MapItem.h" />
     <ClInclude Include="src\maptile.h" />
+    <ClInclude Include="src\mousemanager.h" />
     <ClInclude Include="src\pathfind.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\perlinmap.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="src\threadqueue.h" />
     <ClInclude Include="src\unit.h" />
     <ClInclude Include="src\viewport.h" />
+    <ClInclude Include="src\visualbase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -202,6 +205,7 @@
     <ClCompile Include="src\console.cpp" />
     <ClCompile Include="src\display.cpp" />
     <ClCompile Include="3rd\easywsclient.cpp" />
+    <ClCompile Include="src\font16.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gameplayer.cpp" />
     <ClCompile Include="src\main.cpp">
@@ -209,6 +213,7 @@
     </ClCompile>
     <ClCompile Include="src\map.cpp" />
     <ClCompile Include="src\maptile.cpp" />
+    <ClCompile Include="src\mousemanager.cpp" />
     <ClCompile Include="src\pathfind.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

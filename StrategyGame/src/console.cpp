@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "console.h"
 #include "assetmgr.h"
+#include "font16.h"
 
 ConsoleView::ConsoleView(int x, int y, int w, int h, int lines)
 {
@@ -43,12 +44,18 @@ void ConsoleView::Draw()
 	SDL_ClipRectSection myClip(window.x, window.y, window.w, window.h);
 	//Change 16 to font size later on.
 	SDL_Rect topLeft = SDL_Rect{ window.x,window.y, 16,16 };
-	for (auto str : data) {
+	for (auto str : data) { 
+		Font16::DrawText(str, topLeft.x, topLeft.y);
+		
+		
+		/*
 		for (char c : str) {
 			DrawNumber(topLeft, c );
 			topLeft.x += 16;
 		}
-		topLeft.x = window.x;
+		topLeft.x = window.x;*/
+
 		topLeft.y += 16;
+
 	}
 }

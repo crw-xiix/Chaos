@@ -1,17 +1,13 @@
+/*
+Author:
+Charles Wood
+7-2-2020
+*/
+
 #pragma once
 #include "action.h"
 #include "button.h"
-
-class MouseManager {
-public:
-	MouseManager(std::vector<VisBase*> *items);
-	void Process(int mx, int my, int mb);
-private:
-	std::vector<VisBase*>* viewItems = nullptr;
-	VisBase* lastHover = nullptr;
-	VisBase* lastDown = nullptr;
-	int mouseDown = 0;
-};
+#include "mousemanager.h"
 
 class ActionSelectServer : public Action {
 public:

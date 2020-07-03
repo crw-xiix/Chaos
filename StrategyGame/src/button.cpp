@@ -1,7 +1,14 @@
+/*
+Author:
+Charles Wood
+7-2-2020
+*/
+
 #include "pch.h"
 #include "button.h"
 #include "display.h"
 #include "assetmgr.h"
+#include "font16.h"
 
 Button::Button(int x, int y, int w, int h)
 {
@@ -56,17 +63,8 @@ void Button::DrawNumber(SDL_Rect ilocation, char c)
 	}
 	if (idx == -1) return;
 	SDL_Rect texRect;
-	
-
 	SDL_Texture* fontText = AssetMgr::Get("FONT16",16,16,idx, 0,texRect);
-/*
-	texRect.w = 16;
-	texRect.h = 16;
-	texRect.x = idx * 16;
-	texRect.y = 0;
-*/
 	Display::DrawTexture(fontText,   &texRect, &ilocation);
-
 }
 
 
@@ -81,14 +79,13 @@ void Button::Draw()
 	//Change 16 to font size later on.
 	SDL_Rect topLeft = SDL_Rect{ location.x,location.y, 16,16 };
 	int xs, ys;
-	xs = (location.w - (label.size()*16)) >> 1;
+	int labelL = Font16::TextLength(label);
+
+	xs = (location.w - labelL) >> 1;
 	ys = (location.h - 16) >> 1;
 	topLeft.x += xs;
 	topLeft.y += ys;
-	for (char c : label) {
-		DrawNumber(topLeft, c);
-		topLeft.x += 16;
-	}
+	Font16::DrawText(label, topLeft.x, topLeft.y);
 }
 
 void Button::MouseClick(int mx, int my)
