@@ -196,9 +196,21 @@ void Game::Process() {
 
 	size_t size = actions.size();
 	if (size > 0) {
-		if (actions[size - 1]->Process(deltaTime)) {
-			delete actions[size - 1];
-			actions.pop_back();
+		//We need the last Action/Current Action iterator, so we can delete later.
+		auto location = (actions.end() - 1);
+		//Now we have the action...
+		Action* action = *location;
+		if (action->Process(deltaTime)) {
+			//We have to delete the current one before we can add the new one(s) on top...
+			std::list<Action*> tempActions = action->GetNext();
+			actions.erase(location);
+			if (tempActions.size() != 0) {
+				for (auto a : tempActions) {
+					addAction(a);
+				}
+			}
+			//Must do this last.
+			delete action;
 		}
 	}
 	//No mouse during action time for now
@@ -221,6 +233,8 @@ void Game::StartUp(int x, int y)
 	AssetMgr::Load("assets/highlights.png", "HIGHLIGHT");
 	AssetMgr::Load("assets/font16.png", "FONT16");
 	AssetMgr::Load("assets/intro.png", "INTRO");
+	AssetMgr::Load("assets/menubkg.png", "MENUBKG");
+	AssetMgr::Load("assets/button.png", "BUTTON");
 			
 	//These numbers come from the background image........
 	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);

@@ -73,7 +73,7 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 			//Now we need to handle the cells in the pathfinder.....
 			if (pathFinder->GetRange(cx + x, cy + y) > 0) {
 				SDL_Rect myRect;
-				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 2, myRect);
+				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, Map::TileSize, 0, 2, myRect);
 				Display::DrawTexture(highlightTex, &myRect, &destRect);
 
 				//This is for testing only....
@@ -84,7 +84,7 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 			//Highlight Current Cell under the mouse.........
 			if ((Game::mCellX == (cx + x)) && ((Game::mCellY == cy + y))) {
 				SDL_Rect myRect;
-				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 0, myRect);
+				SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, Map::TileSize, 0, 0, myRect);
 				Display::DrawTexture(highlightTex, &myRect, &destRect);
 			}
 		}
@@ -160,7 +160,7 @@ void ViewPort::DrawNumber(SDL_Rect location, int value)
 		textRect.y = y;
 		textRect.w = 16;
 		textRect.h = 16;
-		SDL_Texture* fontText = AssetMgr::Get("FONT16", 16, (c - '0'), 0, myRect);
+		SDL_Texture* fontText = AssetMgr::Get("FONT16", 16, 16, (c - '0'), 0, myRect);
 		Display::DrawTexture(fontText, &myRect, &textRect);
 		x += 16;
 	}

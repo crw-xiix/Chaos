@@ -41,15 +41,15 @@ public:
 	std::string GetJson();
 	void Draw(SDL_Rect dest);
 
-	inline int GetX() const { return (int) x+.5f; }
-	inline int GetY() const { return (int) y+.5f; }
+	inline int GetX() const { return (int) (x+.5f); }
+	inline int GetY() const { return (int) (y+.5f); }
 	//These return the float positions.
 	inline float GetXF() const { return x; }
 	inline float GetYF() const { return y; }
 
 	inline int GetSpeed() const { return speed; }
 	inline void Move(int dx, int dy) {
-		x = dx; y = dy;
+		x = (float) dx; y = (float) dy;
 	}
 	//This is for animations, to partial move the character.
 	inline void MoveF(float dx, float dy) {

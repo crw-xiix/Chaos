@@ -8,10 +8,10 @@ Unit::Unit(UnitType type, int x, int y)
 {
 	this->type = type;
 
-	this->x = x;
-	this->y = y;
+	this->x = (float) x;
+	this->y = (float) y;
 
-	texture = AssetMgr::Get("UNITS", Map::TileSize, 0, (int)type, rect);
+	texture = AssetMgr::Get("UNITS", Map::TileSize, Map::TileSize, 0, (int)type, rect);
 
 	weapon = WeaponType::None;
 	hp = 0;

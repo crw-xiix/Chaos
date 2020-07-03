@@ -37,6 +37,11 @@ void ActionMovePlayer::Click()
 {
 }
 
+void Action::Mouse(int mx, int my, int b)
+{
+    //Do nothing.
+}
+
 Action::Action()
 {
 }

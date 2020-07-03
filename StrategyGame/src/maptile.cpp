@@ -44,10 +44,10 @@ MapTile::MapTile(MapCellType type)
 void MapTile::Draw(SDL_Rect dest)
 {
 	SDL_Rect myRect;
-	SDL_Texture* tempTex = AssetMgr::Get("LAND", Map::TileSize, imgOffset,(int) type, myRect);
+	SDL_Texture* tempTex = AssetMgr::Get("LAND", Map::TileSize, Map::TileSize, imgOffset,(int) type, myRect);
 	Display::DrawTexture(tempTex, &myRect, &dest);
 	if (selected) {
-		SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, 0, 0, myRect);
+		SDL_Texture* highlightTex = AssetMgr::Get("HIGHLIGHT", Map::TileSize, Map::TileSize, 0, 0, myRect);
 		Display::DrawTexture(highlightTex, &myRect, &dest);
 
 		//SDL_Texture* dude = AssetMgr::Get("UNITS", Map::TileSize, 0, 2, myRect);

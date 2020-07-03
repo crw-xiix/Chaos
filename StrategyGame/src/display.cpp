@@ -4,7 +4,6 @@
 Display::Display(int width, int height)
 	: window(nullptr), renderer(nullptr) 
 {
-
 	Display::Width = width;
 	Display::Height = height;
 	if (SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer) < 0)

@@ -15,13 +15,13 @@ bool AssetMgr::Load(std::string filename, std::string nick)
 	return false;
 }
 
-SDL_Texture* AssetMgr::Get(std::string nick, int gridSize, int x, int y, SDL_Rect& dest) {
+SDL_Texture* AssetMgr::Get(std::string nick, int gridSizeX, int gridSizeY, int x, int y, SDL_Rect& dest) {
 	SDL_Texture* tex = Images[nick];
 	if (tex == nullptr) return tex;
-	dest.x = gridSize * x;
-	dest.y = gridSize * y;
-	dest.w = gridSize;
-	dest.h = gridSize;
+	dest.x = gridSizeX * x;
+	dest.y = gridSizeY * y;
+	dest.w = gridSizeX;
+	dest.h = gridSizeY;
 	return tex;
 }
 

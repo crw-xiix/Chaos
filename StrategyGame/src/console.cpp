@@ -34,7 +34,7 @@ void ConsoleView::DrawNumber(SDL_Rect location, char c)
 	}
 	if (idx == -1) return;
 	SDL_Rect texRect;
-	SDL_Texture* fontText = AssetMgr::Get("FONT16", 16, idx, 0, texRect);
+	SDL_Texture* fontText = AssetMgr::Get("FONT16", 16,16, idx, 0, texRect);
 	Display::DrawTexture(fontText, &texRect, &location);
 	
 }

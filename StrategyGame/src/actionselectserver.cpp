@@ -1,36 +1,44 @@
 #include "pch.h"
-#include "ActionIntro.h"
-#include "assetmgr.h"
-#include "SDL.h"
-#include "game.h"
 #include "actionselectserver.h"
+#include "assetmgr.h"
 
-ActionIntro::ActionIntro()
+ActionSelectServer::ActionSelectServer()
 {
-    //Assets are loaded, nothing to do...
 }
 
-bool ActionIntro::Process(double time)
+bool ActionSelectServer::Process(double time)
 {
     eTime += time;
     if ((eTime > 3) || (clicked)) {
         int bp = 0;
-        nextActions.push_back(new ActionSelectServer());
+        
         return true;
     }
+    draw();
+    return false;
+}
+
+void ActionSelectServer::Click()
+{
+    clicked = true;
+}
+
+void ActionSelectServer::Mouse(int x, int y, int b)
+{
+}
+
+void ActionSelectServer::draw()
+{
+
     SDL_Rect rect;
-    SDL_Texture* img = AssetMgr::GetAll("INTRO",rect);
+    SDL_Texture* img = AssetMgr::GetAll("MENUBKG", rect);
     int i = SDL_SetTextureAlphaMod(img, 0);
     int x = (Display::Width - 600) >> 1;
-    int y = (Display::Height- 300) >> 1;
+    int y = (Display::Height - 300) >> 1;
     SDL_Rect dest{ x,y,600,300 };
     SDL_SetRenderDrawBlendMode(Display::GetRenderer(), SDL_BLENDMODE_BLEND);
     Display::DrawTexture(img, &rect, &dest);
     SDL_SetRenderDrawBlendMode(Display::GetRenderer(), SDL_BLENDMODE_NONE);
-    return false;
-}
-
-void ActionIntro::Click()
-{
-    clicked = true;
+    return;
+   
 }
