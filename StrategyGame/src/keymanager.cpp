@@ -13,7 +13,7 @@ void KeyboardManager::Process(double ms) {
     if (keyQueue.size() > 0) {
         int val = *(keyQueue.begin());
         keyQueue.pop_front();
-        callBack(val);
+        if (callBack) callBack(val);
     }
 }
 

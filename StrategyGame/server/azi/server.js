@@ -69,7 +69,7 @@ wss.on('connection', (ws) => {
                 switch (data.request) {
                     case "create":
                         let roomCode = rc();
-                        let room = JSON.parse(`{"${roomCode}": []}`)
+                        let room = JSON.parse(`{"${roomCode}": []}`);
                         room[roomCode].push(ws.id);
                         map.set(roomCode, [JSON.stringify(room)]);
                         console.log("ROOM CREATED");

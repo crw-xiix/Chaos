@@ -11,20 +11,17 @@
 
 Game::Game() : running(true), console{ nullptr }
 {
-	//socketQueue = new SocketQueue("ws://71.56.75.25:82/chat");
-	//socketQueue = new SocketQueue("ws://127.0.0.1:82/chat");
 	socketQueue = nullptr;
 }
 
-
 void Game::handleMouse()
 {
-
 	int mx, my;
 	uint32_t mouseState = SDL_GetMouseState(&mx, &my);
 	//Update the hover locations
 	viewPort.GetCellAtMouseXY(mx, my, mCellX, mCellY);
 	bool tMouseDown = mouseState & SDL_BUTTON_LEFT;
+
 	if (tMouseDown != mouseDown) {   //State changed.
 		if (tMouseDown) {
 			viewPort.GetCellAtMouseXY(mx, my, lastMouseCell.x, lastMouseCell.y);
@@ -118,6 +115,10 @@ bool Game::getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit)
 	return false;
 }
 
+void Game::keyPressed(int val)
+{
+}
+
 void Game::onSelectServerCallback(std::string url)
 {
 	if (url == "QUIT") {
@@ -149,6 +150,15 @@ void Game::addAction(Action* action, Action* ref)
 void Game::Create()
 {
 	gameInstance = new Game();
+}
+
+bool Game::keyDown(int val)
+{
+	if (keys.find(val) == keys.end()) {
+		keys[val] = 0;
+	}
+
+	return keys[val] > 0;
 }
 
 void Game::HandleEvent(double ms) {
@@ -212,6 +222,7 @@ void Game::ProcessEvents()
 }
 
 bool Game::Process() {
+	bool doKeyb = true;
 	last = now;
 	now = SDL_GetPerformanceCounter();
 
@@ -221,15 +232,23 @@ bool Game::Process() {
 		//We need the last Action/Current Action iterator, so we can delete later.
 		auto location = (actions.end() - 1);
 		auto action = *location;
-		if (!action->HasKeyboardControl()) {
-			const uint8_t* ks = SDL_GetKeyboardState(NULL);
-			if (ks[SDL_SCANCODE_W]) cy -= 0.001;
-			if (ks[SDL_SCANCODE_S]) cy += 0.001;
-			if (ks[SDL_SCANCODE_A]) cx -= 0.001;
-			if (ks[SDL_SCANCODE_D]) cx += 0.001;
-			viewPort.SetCamera(cx, cy);
+		if (action->HasKeyboardControl()) {
+			doKeyb = false;
 		}
 	}
+	
+	if (doKeyb) {
+		//keyMan.Process(deltaTime);
+		const uint8_t* ks = SDL_GetKeyboardState(NULL);
+		if (ks[SDL_SCANCODE_W] > 0) cy -= 0.001;
+		if (ks[SDL_SCANCODE_S] > 0) cy += 0.001;
+		if (ks[SDL_SCANCODE_A] > 0) cx -= 0.001;
+		if (ks[SDL_SCANCODE_D] > 0) {
+			cx += 0.001;
+		}
+	}
+
+	viewPort.SetCamera(cx, cy);
 
 	viewPort.Update(1);
 	SDL_Rect myRect;

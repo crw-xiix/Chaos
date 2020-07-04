@@ -6,6 +6,7 @@
 #include "action.h"
 #include "console.h"
 #include "socketqueue.h"
+#include "keymanager.h"
 
 class Game
 {
@@ -22,7 +23,9 @@ public:
 public: //static
 	void onSelectServerCallback(std::string url);
 private:
+	KeyboardManager keyMan;
 	std::map<int, double> keys;  //numbers to wild for array....
+	bool keyDown(int val);
 	void HandleEvent(double ms);
 	//This can only be used locally.
 	static void addAction(Action* action, Action* ref = nullptr);
@@ -57,6 +60,7 @@ private:
 	void selectUnit(int sp, int su);
 	//Gets the character at cell x,y (not mouse location)
 	bool getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit);
+	void keyPressed(int val);
 
 	
 };
