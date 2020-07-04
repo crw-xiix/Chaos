@@ -165,6 +165,7 @@
     <ClInclude Include="3rd\jute.h" />
     <ClInclude Include="src\action.h" />
     <ClInclude Include="src\actionintro.h" />
+    <ClInclude Include="src\actionjoincreate.h" />
     <ClInclude Include="src\actionplaying.h" />
     <ClInclude Include="src\actionselectserver.h" />
     <ClInclude Include="src\animation.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="src\socketqueue.h" />
     <ClInclude Include="src\threadqueue.h" />
     <ClInclude Include="src\unit.h" />
+    <ClInclude Include="src\label.h" />
     <ClInclude Include="src\viewport.h" />
     <ClInclude Include="src\visualbase.h" />
   </ItemGroup>
@@ -198,6 +200,7 @@
     <ClCompile Include="3rd\jute.cpp" />
     <ClCompile Include="src\action.cpp" />
     <ClCompile Include="src\actionintro.cpp" />
+    <ClCompile Include="src\actionjoincreate.cpp" />
     <ClCompile Include="src\actionselectserver.cpp" />
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\assetmgr.cpp" />
@@ -221,6 +224,7 @@
     <ClCompile Include="src\perlinmap.cpp" />
     <ClCompile Include="src\socketqueue.cpp" />
     <ClCompile Include="src\unit.cpp" />
+    <ClCompile Include="src\label.cpp" />
     <ClCompile Include="src\viewport.cpp" />
   </ItemGroup>
   <ItemGroup>

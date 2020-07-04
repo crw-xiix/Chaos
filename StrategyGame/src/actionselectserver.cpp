@@ -8,6 +8,7 @@ Charles Wood
 #include "actionselectserver.h"
 #include "assetmgr.h"
 #include "game.h"
+#include "actionjoincreate.h"
 
 
 ActionSelectServer::ActionSelectServer()
@@ -76,6 +77,8 @@ void ActionSelectServer::localClick()
 {
     Url = "ws://127.0.0.1:82/chat";
     Game::gameInstance->onSelectServerCallback(Url);
+    nextActions.push_back(new ActionJoinCreate());
+    
     clicked = true;
 }
 
@@ -83,6 +86,7 @@ void ActionSelectServer::remoteClick()
 {
     Url = "ws://71.56.75.25:82/chat";
     Game::gameInstance->onSelectServerCallback(Url);
+    nextActions.push_back(new ActionJoinCreate());
     clicked = true;
 }
 
@@ -101,7 +105,6 @@ void ActionSelectServer::draw()
     int x = (Display::Width - 600) >> 1;
     int y = (Display::Height - 300) >> 1;
     SDL_Rect dest{ x,y,600,300 };
-
     Display::DrawTexture(img, &rect, &dest);
     for (auto c : controls) {
         c->Draw();

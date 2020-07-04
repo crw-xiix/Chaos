@@ -20,9 +20,11 @@ public:
 	void NextPlayer();
 	static inline bool IsRunning() { return gameInstance->running; }
 public: //static
-	static void addAction(Action* action, Action* ref = nullptr);
+	
 	void onSelectServerCallback(std::string url);
 private:
+	//This can only be used locally.
+	static void addAction(Action* action, Action* ref = nullptr);
 	SocketQueue *socketQueue=nullptr;
 
 	bool running= false;
