@@ -40,7 +40,7 @@ void Button::MouseOut()
 	hover = false;
 }
 
-void Button::MouseDown()
+void Button::MouseDown(int mx, int my)
 {
 	down = true;
 }
@@ -91,4 +91,8 @@ void Button::Draw()
 void Button::MouseClick(int mx, int my)
 {
 	onClick();
+}
+
+void Button::Process(double ms)
+{
 }

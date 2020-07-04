@@ -30,7 +30,7 @@ void Label::MouseOut()
 {
 }
 
-void Label::MouseDown()
+void Label::MouseDown(int mx, int my)
 {
 }
 
@@ -50,5 +50,9 @@ void Label::Draw()
 }
 
 void Label::MouseClick(int mx, int my)
+{
+}
+
+void Label::Process(double ms)
 {
 }

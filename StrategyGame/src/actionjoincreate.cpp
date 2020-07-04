@@ -3,9 +3,13 @@
 #include "assetmgr.h"
 #include "display.h"
 #include "label.h"
+#include "textbox.h"
+#include <functional>
+
 
 ActionJoinCreate::ActionJoinCreate()
 {
+    using namespace std::placeholders;
     location = SDL_Rect{
         (Display::Width - 600) >> 1,
         (Display::Height - 300) >> 1,
@@ -14,7 +18,7 @@ ActionJoinCreate::ActionJoinCreate()
     SDL_Rect temp;
     SDL_Texture* bTex = AssetMgr::GetAll("BUTTON", temp);
 
-    Label* lTitle = new Label(location.x, location.y+5, location.w, 20);
+    Label *lTitle = new Label(location.x, location.y+5, location.w, 20);
     lTitle->SetText("Join a current room or create a new one");
 
     Button* bJoin = new Button(location.x + 10, location.y + 30, 256, 48);
@@ -22,6 +26,8 @@ ActionJoinCreate::ActionJoinCreate()
     bJoin->SetTexture(bTex);
     bJoin->SetOnClick(std::bind(&ActionJoinCreate::joinClick, this));
 
+    tRoomCode = new TextBox(location.x + 300, location.y + 35, 256, 20);
+    tRoomCode->SetText("");
 
     Button* bCreate = new Button(location.x + 10, location.y + 90, 256, 48);
     bCreate->SetText("Join Room");
@@ -32,11 +38,16 @@ ActionJoinCreate::ActionJoinCreate()
     bExit->SetText("Just Wander");
     bExit->SetTexture(bTex);
     bExit->SetOnClick(std::bind(&ActionJoinCreate::backClick, this));
+
     controls.push_back(lTitle);
     controls.push_back(bJoin);
+    controls.push_back(tRoomCode);
     controls.push_back(bCreate);
     controls.push_back(bExit);
     mouseMan = new MouseManager(&controls);
+    //auto fuckMe = std::bind(&ActionJoinCreate::keyPressed, this);
+    keyMan.SetCallBack(std::bind(&ActionJoinCreate::keyPressed,this,_1));
+    int bp = 0;
 }
 
 ActionJoinCreate::~ActionJoinCreate()
@@ -50,7 +61,13 @@ bool ActionJoinCreate::Process(double time)
     //should ::Process() here
     int mx, my;
     uint32_t mouseState = SDL_GetMouseState(&mx, &my);
+    for (auto c : controls) {
+        c->Process(time);
+    }
+
     mouseMan->Process(mx, my, mouseState);
+    keyMan.Process(time);
+
 
     if (clicked) {
         int bp = 0;
@@ -79,6 +96,11 @@ void ActionJoinCreate::createClick()
 void ActionJoinCreate::backClick()
 {
     clicked = true;
+}
+
+void ActionJoinCreate::keyPressed(int val)
+{
+    tRoomCode->KeyIn(val);
 }
 
 void ActionJoinCreate::draw()

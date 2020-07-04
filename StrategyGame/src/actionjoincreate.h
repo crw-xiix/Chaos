@@ -8,7 +8,8 @@ Charles Wood
 #include "action.h"
 #include "button.h"
 #include "mousemanager.h"
-
+#include "keymanager.h"
+#include "textbox.h"
 
 class ActionJoinCreate : public Action {
 public:
@@ -23,7 +24,10 @@ protected:
 	void createClick();
 	void backClick();
 private:
+	void keyPressed(int val);
+	TextBox* tRoomCode = nullptr;
 	MouseManager* mouseMan = nullptr;
+	KeyboardManager keyMan;
 	SDL_Rect location{ 0 };
 	std::vector<VisBase*> controls;
 	std::string serverUrl = "";

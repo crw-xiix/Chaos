@@ -5,6 +5,7 @@
 #include "viewport.h"
 #include "actionintro.h"
 #include <functional>
+#include "keymanager.h"
 
 //XXXC CRW Need an action for requesting new room, joining room, etc.
 
@@ -23,14 +24,11 @@ void Game::handleMouse()
 	uint32_t mouseState = SDL_GetMouseState(&mx, &my);
 	//Update the hover locations
 	viewPort.GetCellAtMouseXY(mx, my, mCellX, mCellY);
-
-
 	bool tMouseDown = mouseState & SDL_BUTTON_LEFT;
 	if (tMouseDown != mouseDown) {   //State changed.
 		if (tMouseDown) {
 			viewPort.GetCellAtMouseXY(mx, my, lastMouseCell.x, lastMouseCell.y);
-		}
-		else { //Upclick
+		} else { //Upclick
 			int imx, imy;
 			viewPort.GetCellAtMouseXY(mx, my, imx, imy);
 			if ((imx == lastMouseCell.x) && (imy = lastMouseCell.y)) {
@@ -153,18 +151,52 @@ void Game::Create()
 	gameInstance = new Game();
 }
 
+void Game::HandleEvent(double ms) {
+	// message processing loop
+	SDL_Event event;
+	int val;
+	if (SDL_PollEvent(&event)) {
+
+		switch (event.type) {
+
+		case SDL_KEYDOWN:
+			val = event.key.keysym.sym;
+			if (keys.find(val) != keys.end()) {
+				keys[val] = 0;
+			}
+			if (keys[val] == 0) {
+				//This is where a key gets entered........
+				KeyboardManager::KeyManager->AddKeyDown(val);
+			}
+			keys[val] += ms;
+			if (val == SDLK_BACKSPACE) {
+				if (keys[val]> 0.50) ms = 0;
+			}
+			else {
+				if (keys[val] > 0.25) ms = 0;
+			}
+
+			break;
+		case SDL_KEYUP:
+			val = event.key.keysym.sym;
+			keys[val] = 0;
+			break;
+		case SDL_QUIT:
+			{
+				gameInstance->running = false;
+			}
+		default:
+			break;
+		}
+	}
+}
 //static
 void Game::ProcessEvents()
 {
 	SDL_Event e;
+
+	Game::gameInstance->HandleEvent(0);
 	
-	while (SDL_PollEvent(&e))
-	{
-		if (e.type == SDL_QUIT)
-		{
-			gameInstance->running = false;
-		}
-	}
 	if (gameInstance->socketQueue) {
 		gameInstance->socketQueue->Process();
 		//int sz = gameInstance->socketQueue->Avail();
@@ -185,13 +217,20 @@ bool Game::Process() {
 
 	double deltaTime = (double)((now- last)  / (double)SDL_GetPerformanceFrequency());
 	//std::cout << "Frame time: " << deltaTime << "\n";
-	const uint8_t* ks = SDL_GetKeyboardState(NULL);
-	if (ks[SDL_SCANCODE_W]) cy -= 0.001;
-	if (ks[SDL_SCANCODE_S]) cy += 0.001;
-	if (ks[SDL_SCANCODE_A]) cx -= 0.001;
-	if (ks[SDL_SCANCODE_D]) cx += 0.001;
+	if (actions.size() > 0) {
+		//We need the last Action/Current Action iterator, so we can delete later.
+		auto location = (actions.end() - 1);
+		auto action = *location;
+		if (!action->HasKeyboardControl()) {
+			const uint8_t* ks = SDL_GetKeyboardState(NULL);
+			if (ks[SDL_SCANCODE_W]) cy -= 0.001;
+			if (ks[SDL_SCANCODE_S]) cy += 0.001;
+			if (ks[SDL_SCANCODE_A]) cx -= 0.001;
+			if (ks[SDL_SCANCODE_D]) cx += 0.001;
+			viewPort.SetCamera(cx, cy);
+		}
+	}
 
-	viewPort.SetCamera(cx, cy);
 	viewPort.Update(1);
 	SDL_Rect myRect;
 

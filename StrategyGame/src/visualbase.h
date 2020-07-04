@@ -6,10 +6,11 @@ class VisBase {
 public:
 	virtual void MouseIn() = 0;
 	virtual void MouseOut() = 0;
-	virtual void MouseDown() = 0;
+	virtual void MouseDown(int mx, int my) = 0;
 	virtual void MouseUp() = 0;
 	virtual void MouseClick(int mx, int my) = 0;
 	virtual void Draw() = 0;
+	virtual void Process(double ms) = 0;
 protected:
 	friend class MouseManager;
 	SDL_Rect location{ 0 };

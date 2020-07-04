@@ -30,7 +30,7 @@ void MouseManager::Process(int mx, int my, int mb)
     if (lastHover != nullptr) {
         if (mouseDown != mb) {
             if (mb == 1) {
-                lastHover->MouseDown();
+                lastHover->MouseDown(mx,my);
                 lastDown = lastHover;
             }
             else {

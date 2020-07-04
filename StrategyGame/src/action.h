@@ -9,6 +9,7 @@ public:
 	virtual void Click() = 0;
 	virtual void Mouse(int mx, int my, int b);
 	inline std::list<Action*> GetNext() { return nextActions; }
+	virtual inline bool HasKeyboardControl() { return true; };
 	Action();
 protected: 
 

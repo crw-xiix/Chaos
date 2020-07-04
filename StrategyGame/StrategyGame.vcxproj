@@ -177,6 +177,7 @@
     <ClInclude Include="src\font16.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gameplayer.h" />
+    <ClInclude Include="src\keymanager.h" />
     <ClInclude Include="src\map.h" />
     <ClInclude Include="src\MapItem.h" />
     <ClInclude Include="src\maptile.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\perlinmap.h" />
     <ClInclude Include="src\socketqueue.h" />
+    <ClInclude Include="src\textbox.h" />
     <ClInclude Include="src\threadqueue.h" />
     <ClInclude Include="src\unit.h" />
     <ClInclude Include="src\label.h" />
@@ -211,6 +213,7 @@
     <ClCompile Include="src\font16.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gameplayer.cpp" />
+    <ClCompile Include="src\keymanager.cpp" />
     <ClCompile Include="src\main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -223,6 +226,7 @@
     </ClCompile>
     <ClCompile Include="src\perlinmap.cpp" />
     <ClCompile Include="src\socketqueue.cpp" />
+    <ClCompile Include="src\textbox.cpp" />
     <ClCompile Include="src\unit.cpp" />
     <ClCompile Include="src\label.cpp" />
     <ClCompile Include="src\viewport.cpp" />

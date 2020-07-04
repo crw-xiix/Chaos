@@ -20,9 +20,10 @@ public:
 	void NextPlayer();
 	static inline bool IsRunning() { return gameInstance->running; }
 public: //static
-	
 	void onSelectServerCallback(std::string url);
 private:
+	std::map<int, double> keys;  //numbers to wild for array....
+	void HandleEvent(double ms);
 	//This can only be used locally.
 	static void addAction(Action* action, Action* ref = nullptr);
 	SocketQueue *socketQueue=nullptr;
