@@ -1,6 +1,6 @@
 # StrategyGame
 
-If you PCH gets messed up............
+If your PCH gets messed up............
 
 Make sure you have xxxxx.cpp in your project
 
