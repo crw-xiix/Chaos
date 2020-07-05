@@ -60,14 +60,13 @@ void TextBox::Draw()
 		//Got figure out where the cursor is.....
 		int curOffset = 0;
 		if (curX > 0) {
-			std::string x = label.substr(0, curX);
-			curOffset = Font16::TextLength(x);
+			//std::string x = label.substr(0, curX);
+			curOffset = Font16::TextLength(label,curX);
 		}
 		SDL_Rect cursor{ location.x + 2 + curOffset, location.y + 2, 1, location.h - 4 };
 		SDL_RenderDrawRect(Display::GetRenderer(), &cursor);
 	}
-	//then draw text
-	//then draw cursor
+	
 }
 
 void TextBox::MouseClick(int mx, int my)
@@ -95,6 +94,12 @@ void TextBox::KeyIn(int key)
 		if (curX > 0) {
 			curX--;
 			label.erase(label.begin() + curX);
+		}
+	}
+	if (key == SDLK_DELETE) {
+		try {
+			label.erase(label.begin() + curX);
+		} catch (...) {
 		}
 	}
 	if (key == SDLK_LEFT) {

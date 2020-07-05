@@ -1,7 +1,7 @@
 # stupid folders we don't want
 obj/**
 bin/**
-
+StrategyGame/obj**
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,c++
@@ -15,6 +15,7 @@ bin/**
 *.lo
 *.o
 *.obj
+main.out
 
 # Precompiled Headers
 *.gch

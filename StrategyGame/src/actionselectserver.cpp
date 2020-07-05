@@ -24,13 +24,13 @@ ActionSelectServer::ActionSelectServer()
     Button *bRemote = new Button(location.x+10, location.y+20, 256, 48);
     bRemote->SetText("Remote:82");
     bRemote->SetTexture(bTex);
-    bRemote->SetOnClick(std::bind(&ActionSelectServer::localClick,this));
+    bRemote->SetOnClick(std::bind(&ActionSelectServer::remoteClick,this));
     
 
     Button *bLocal = new Button(location.x+10, location.y+80, 256, 48);
     bLocal->SetText("127.0.0.1:82");
     bLocal->SetTexture(bTex);
-    bLocal->SetOnClick(std::bind(&ActionSelectServer::remoteClick, this));
+    bLocal->SetOnClick(std::bind(&ActionSelectServer::localClick, this));
 
     Button* bExit = new Button(location.x + 10, location.y + 140, 256, 48);
     bExit->SetText("Quit");
@@ -75,8 +75,8 @@ void ActionSelectServer::Mouse(int x, int y, int b)
 
 void ActionSelectServer::localClick()
 {
-    Url = "ws://127.0.0.1:82/chat";
-    Game::gameInstance->onSelectServerCallback(Url);
+    
+    Game::gameInstance->onSelectServerCallback("ws://127.0.0.1:82/chat");
     nextActions.push_back(new ActionJoinCreate());
     
     clicked = true;
@@ -84,16 +84,16 @@ void ActionSelectServer::localClick()
 
 void ActionSelectServer::remoteClick()
 {
-    Url = "ws://71.56.75.25:82/chat";
-    Game::gameInstance->onSelectServerCallback(Url);
+    
+    Game::gameInstance->onSelectServerCallback("ws://71.56.75.25:82/chat");
     nextActions.push_back(new ActionJoinCreate());
     clicked = true;
 }
 
 void ActionSelectServer::quitClick()
 {
-    Url = "QUIT";
-    Game::gameInstance->onSelectServerCallback(Url);
+    
+    Game::gameInstance->onSelectServerCallback("QUIT");
     clicked = true;
 }
 

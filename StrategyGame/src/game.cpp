@@ -76,8 +76,6 @@ void Game::click()
 				auto thePath = pathFinder->GetPathTo(lastMouseCell.x, lastMouseCell.y);
 				for (auto me : thePath) {
 					addAction(new ActionMovePlayer(thisUnit, me.x, me.y));
-					/*actions.insert(actions.begin(), ActionMovePlayer(thisUnit, me.x, me.y));
-					actions.insert()*/
 				}
 				//thisUnit.Move(lastMouseCell.x, lastMouseCell.y);
 				int bp = 0;

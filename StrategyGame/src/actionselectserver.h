@@ -22,7 +22,6 @@ protected:
 	void remoteClick();
 	void quitClick();
 private:
-	std::string Url{ "" };
 	MouseManager* mouseMan = nullptr;
 	SDL_Rect location{ 0 };
 	std::vector<VisBase*> controls;

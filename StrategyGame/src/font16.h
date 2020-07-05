@@ -9,8 +9,9 @@ Charles Wood
 
 class Font16 {
 public:
-	static void DrawText(std::string str, int x, int y);
-	static int TextLength(std::string str);
+	static void DrawText(const std::string &str, int x, int y);
+	static int TextLength(const std::string &str, int at = INT32_MAX);
+
 	/// <summary>
 	/// Draws a 16x16 letter, but smashed width wise
 	/// </summary>
