@@ -21,53 +21,38 @@
 #include "../3rd/jute.h"
 
 
+void test() {
+    std::map<char, int> vals;
 
+    std::string testValue = "I did this in a few minutes.";
 
-
-int nomain2()
-{
-    using easywsclient::WebSocket;
-#ifdef _WIN32
-    INT rc;
-    WSADATA wsaData;
-    rc = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (rc) {
-        printf("WSAStartup Failed.\n");
-        return 1;
+    for (char c : testValue) {
+        char cval = toupper(c);
+        if (vals.find(cval) == vals.end()) {
+            vals[cval] = 1;
+        }
+        else {
+            vals[cval]++;
+        }
     }
-#endif
-    
-
-    //XXXC CRW need to thread this, thread safe queue for send/recv
-
-    GamePlayer gp;
-    std::unique_ptr<WebSocket> ws(WebSocket::from_url("ws://71.56.75.25:82/chat"));
-    assert(ws);
-    ws->send("goodbye");
-    ws->send("hello");
-    while (ws->getReadyState() != WebSocket::CLOSED) {
-        WebSocket::pointer wsp = &*ws; // <-- because a unique_ptr cannot be copied into a lambda
-        ws->poll();
-        ws->dispatch([wsp,&gp](const std::string& message) {
-            printf(">>> %s\n", message.c_str());
-            if (message == "world") { wsp->close(); }
-
-            //XXXC some bullshit.....
-            //we got a message, lets reply with status
-            std::string wtf = gp.GetJson();
-            wsp->send(wtf);
-            });
+    for (char c : testValue) {
+        char cval = toupper(c);
+        if (vals[cval] > 1) {
+            std::cout << ")";
+        }
+        else {
+            std::cout << "(";
+        }
     }
-#ifdef _WIN32
-    WSACleanup();
-#endif
-    // N.B. - unique_ptr will free the WebSocket instance upon return:
-    return 0;
+    std::cout << std::endl;
 }
+
+
 
 
 int main(int argc, char* argv[])
 {
+    test();
     //nomain2();
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{

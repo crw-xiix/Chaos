@@ -46,8 +46,10 @@ void Game::click()
 	}
 	int sp, su;
 	//Bail out, out of range click
-	if ((lastMouseCell.x < 0) || (lastMouseCell.y < 0)) return;
-	if ((lastMouseCell.x >=Map::Size) || (lastMouseCell.y > Map::Size)) return;
+	if ((lastMouseCell.x < 0) || (lastMouseCell.y < 0)) {
+		return;
+	}
+	if ((lastMouseCell.x >=Map::Size) || (lastMouseCell.y >= Map::Size)) return;
 
 	if (getCharacterAt(lastMouseCell.x, lastMouseCell.y, sp, su)) {
 		//We have a character......
@@ -236,7 +238,7 @@ bool Game::Process() {
 	}
 	
 	if (doKeyb) {
-		//keyMan.Process(deltaTime);
+		
 		const uint8_t* ks = SDL_GetKeyboardState(NULL);
 		if (ks[SDL_SCANCODE_W] > 0) cy -= 0.001;
 		if (ks[SDL_SCANCODE_S] > 0) cy += 0.001;

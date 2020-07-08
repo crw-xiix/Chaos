@@ -18,15 +18,31 @@ ViewPort::ViewPort(int x, int y, int w, int h, float zoom)
 
 void ViewPort::SetCamera(double &x, double &y)
 {
+	//Need some limits on this.....
 	if (x < 0) x = 0;
-	if (y >= 1) y = 1;
-	if (x >= 1) x = 1;
-	if (y <= 0) y = 0;
-	camTX = x ;
-	camTY = y ;
+	if (y < 0) y = 0;
+
+	//So, whats our Max CamX
+	double maxCamX = 1.0;
+	double maxX = (double) (Map::Size * Map::TileSize);
+	maxCamX = (maxX - width) / maxX;
+
+	double maxCamY = 1.0;
+	double maxY = (double)(Map::Size * Map::TileSize);
+	maxCamY = (maxY - height) / maxY;
+
+
+
+
+
+	if (y >= maxCamY) y = maxCamY;
+	if (x >= maxCamX) x = maxCamX;
+
+	camTX = x;
+	camTY = y;
 }
 
-//Ghetto cam pan
+
 void ViewPort::Update(int ms)
 {
 	double delay = 9.0f;

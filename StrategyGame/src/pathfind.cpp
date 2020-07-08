@@ -26,6 +26,11 @@ void PathFinder::DoUnitMaxDistanceAttack(const Unit& who, int val, bool aerial)
 
 int PathFinder::GetRange(int x, int y)
 {
+	//Keep it in range.
+	if (x < 0) x = 0;
+	if (y < 0) y = 0;
+	if (x >= Map::Size) x = Map::Size - 1;
+	if (y >= Map::Size) y = Map::Size - 1;
 	return (*dRange)[y][x];
 }
 
@@ -33,10 +38,6 @@ void PathFinder::ResetMap()
 {
 	for (int y = 0; y < Map::Size; y++) {
 		for (int x = 0; x < Map::Size; x++) {
-			//These are just other ways to access it...
-			//dMap->at(j).at(i) = -1;
-			//dMap->at(j)[i] = -1;
-			//(*dMap)[y][x] = -1;
 			(*dRange)[y][x] = -1;
 		}
 	}
@@ -44,7 +45,10 @@ void PathFinder::ResetMap()
 
 PathFinder::xyRange PathFinder::pathGood(int x, int y)
 {
-	int d = ((*dRange)[y][x]);
+	int d = 9999;
+	if (((x >= 0) && (x < Map::Size)) && ((y >= 0) && (y < Map::Size))) {
+		d = ((*dRange)[y][x]);
+	}
 	if (d < 0) d = Map::Size*2+1;
 	return xyRange{ x,y,d };
 }
@@ -72,9 +76,6 @@ std::vector<SDL_Point> PathFinder::GetPathTo(int x, int y)
 	while ((*dRange)[y][x] > 1)
 	{
 		int d = (*dRange)[y][x];
-
-		//std::cout << "Pos" << x << "," << y << " Dist: " << d << "\n";
-
 		found.push_back(pathGood(x, y - 1));
 		found.push_back(pathGood(x, y + 1));
 		found.push_back(pathGood(x - 1, y));

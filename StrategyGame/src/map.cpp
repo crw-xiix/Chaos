@@ -10,7 +10,7 @@ Map::Map()
 void Map::Generate()
 {
 	PerlinMap noise(Size,Size);
-	noise.Randomize(400000);
+	noise.Randomize(400002);
 	noise.MakePerlin();
 	noise.Normalize();
 
@@ -34,6 +34,10 @@ int Map::get(int x, int y)
 
 MapTile& Map::Get(int x, int y)
 {
+	if (x < 0) x = 0;
+	if (y < 0) y = 0;
+	if (x >= Map::Size) x = Map::Size - 1;
+	if (y >= Map::Size) y = Map::Size - 1;
 	return map[x][y];
 }
 

@@ -19,7 +19,7 @@ public:
 	void KeyIn(int key);
 protected:
 	double curTime = 0;
-	bool showCursor;
+	bool showCursor{ false };
 	int curX = 0;
 	std::function<void(void)> onClick;
 	SDL_Texture* texture = nullptr;
