@@ -41,10 +41,11 @@ bool SocketQueue::Start()
     rc = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (rc) {
         printf("WSAStartup Failed.\n");
-        return 1;
+        return true;
     }
 #endif
     ws = std::unique_ptr<WebSocket>(WebSocket::from_url(url));
+    return true;
 }
 
 void SocketQueue::Process()

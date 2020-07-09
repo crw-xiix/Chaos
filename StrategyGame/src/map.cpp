@@ -10,7 +10,7 @@ Map::Map()
 void Map::Generate()
 {
 	PerlinMap noise(Size,Size);
-	noise.Randomize(400002);
+	noise.Randomize(400004);
 	noise.MakePerlin();
 	noise.Normalize();
 

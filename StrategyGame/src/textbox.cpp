@@ -116,7 +116,7 @@ void TextBox::KeyIn(int key)
 		}
 	}
 	if (key == SDLK_END) {
-		curX = label.size();
+		curX = (int)label.size();
 	}
 	if (key == SDLK_HOME) {
 		curX = 0;

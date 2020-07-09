@@ -43,8 +43,13 @@
     #define socketerrno WSAGetLastError()
     #define SOCKET_EAGAIN_EINPROGRESS WSAEINPROGRESS
     #define SOCKET_EWOULDBLOCK WSAEWOULDBLOCK
-    #pragma push;
-    #pragma disable(warning: 26812)
+    #pragma warning(disable : 4267)
+    #pragma warning(disable : 268182)
+    #pragma warning(disable : 6319)
+    #pragma warning(disable : 26541)
+
+
+
 #else
     #include <fcntl.h>
     #include <netdb.h>

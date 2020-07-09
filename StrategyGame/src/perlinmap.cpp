@@ -113,7 +113,7 @@ void PerlinMap::Randomize(int iseed)
     std::uniform_real_distribution<> dis(0.0, 1.0);
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
-            svalues[y * width + x] = dis(gen);
+            svalues[y * width + x] = (float) dis(gen);
         }
     }
 }

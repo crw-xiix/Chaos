@@ -28,7 +28,7 @@ void Game::handleMouse()
 		} else { //Upclick
 			int imx, imy;
 			viewPort.GetCellAtMouseXY(mx, my, imx, imy);
-			if ((imx == lastMouseCell.x) && (imy = lastMouseCell.y)) {
+			if ((imx == lastMouseCell.x) && (imy == lastMouseCell.y)) {
 				click();
 				lastMouseCell.x = -1;
 				lastMouseCell.y = -1;
@@ -203,7 +203,7 @@ void Game::HandleEvent(double ms) {
 //static
 void Game::ProcessEvents()
 {
-	SDL_Event e;
+	
 
 	Game::gameInstance->HandleEvent(0);
 	

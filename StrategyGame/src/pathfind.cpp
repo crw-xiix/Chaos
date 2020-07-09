@@ -5,9 +5,6 @@
 #include <random>
 
 
-
-
-
 PathFinder::PathFinder(Map& imap) : map(imap)
 {
 	dRange = new std::array<std::array<int, Map::Size>, Map::Size>();
@@ -45,7 +42,7 @@ void PathFinder::ResetMap()
 
 PathFinder::xyRange PathFinder::pathGood(int x, int y)
 {
-	int d = 9999;
+	int d = Map::Size * 2 + 1;
 	if (((x >= 0) && (x < Map::Size)) && ((y >= 0) && (y < Map::Size))) {
 		d = ((*dRange)[y][x]);
 	}
@@ -58,7 +55,7 @@ PathFinder::xyRange PathFinder::pathGood(int x, int y)
 /// This shall not be called if a path is not already possible.
 /// </summary>
 /// <param name="x">target x cell</param>
-/// <param name="y">targer y cell</param>
+/// <param name="y">target y cell</param>
 /// <returns></returns>
 std::vector<SDL_Point> PathFinder::GetPathTo(int x, int y)
 {
@@ -81,9 +78,6 @@ std::vector<SDL_Point> PathFinder::GetPathTo(int x, int y)
 		found.push_back(pathGood(x - 1, y));
 		found.push_back(pathGood(x + 1, y));
 
-		auto rng = std::default_random_engine{};
-		std::shuffle(found.begin(), found.begin()+2,rng);
-
 		std::sort(found.begin(), found.end() , 
 			[](xyRange& a, xyRange& b) {
 				return std::get<2>(a) < std::get<2>(b);
@@ -91,19 +85,19 @@ std::vector<SDL_Point> PathFinder::GetPathTo(int x, int y)
 			);
 
 		//This gives us a little randomness in motion so they don't walk straight lines.
-		int d1;
+
 		int idx = 0;
 		if (std::get<2>(found[0]) == std::get<2>(found[1])) {
 			idx = rand() % 2;
 		}
 
-		std::tie(x, y, d1) = found[idx];
-
-		d = d1;
+		//Note, we set d here
+		std::tie(x, y, d) = found[idx];
 		found.clear();
+
 		thePath.push_back( SDL_Point{ x,y });
 		if (thePath.size() > 20) {
-			int bp = 0;
+			int breakPoint = 0;
 		}
 	}
 	return thePath;
@@ -118,12 +112,11 @@ bool PathFinder::rangeOpen(int x, int y, int& speed)
 	if (y >= Map::Size) return false;
 	speed = map.Get(x, y).GetSpeed();
 	if (speed < 99) {
-		int bp = 0;
+		int breakPoint = 0;
 	}
-	//if (((*dMap)[x][y]) != 0) return false;
+
 	if (((*dRange)[y][x]) == -1) return true;
 	return false;
-
 }
 
 void PathFinder::calcFlood(int x, int y, int maxSpeed)
