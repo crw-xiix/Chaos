@@ -10,7 +10,9 @@
 
 using std::placeholders::_1;
 
-ActionJoinCreate::ActionJoinCreate()
+ActionJoinCreate::ActionJoinCreate():
+    //Fire up the callback message, no need to delete this way
+    ourCallBack(std::bind(&ActionJoinCreate::MessageIn, this, _1))
 {
     using namespace std::placeholders;
     location = SDL_Rect{
@@ -52,7 +54,7 @@ ActionJoinCreate::ActionJoinCreate()
     
     keyMan.SetCallBack(std::bind(&ActionJoinCreate::keyPressed,this,_1));
 
-    Game::gameInstance->AddCallBack(std::bind(&ActionJoinCreate::MessageIn, this, _1));
+//    Game::gameInstance->AddCallBack(std::bind(&ActionJoinCreate::MessageIn, this, _1));
     
 }
 

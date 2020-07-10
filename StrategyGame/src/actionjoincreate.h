@@ -10,6 +10,7 @@ Charles Wood
 #include "mousemanager.h"
 #include "keymanager.h"
 #include "textbox.h"
+#include "socketcallback.h"
 
 class ActionJoinCreate : public Action {
 public:
@@ -24,6 +25,7 @@ protected:
 	void createClick();
 	void backClick();
 private:
+	MessageCallBack ourCallBack;
 	void MessageIn(std::string val);
 	void keyPressed(int val);
 	TextBox* tRoomCode = nullptr;
