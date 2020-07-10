@@ -185,6 +185,7 @@
     <ClInclude Include="src\pathfind.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\perlinmap.h" />
+    <ClInclude Include="src\socketcallback.h" />
     <ClInclude Include="src\socketqueue.h" />
     <ClInclude Include="src\textbox.h" />
     <ClInclude Include="src\threadqueue.h" />
@@ -225,6 +226,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\perlinmap.cpp" />
+    <ClCompile Include="src\socketcallback.cpp" />
     <ClCompile Include="src\socketqueue.cpp" />
     <ClCompile Include="src\textbox.cpp" />
     <ClCompile Include="src\unit.cpp" />

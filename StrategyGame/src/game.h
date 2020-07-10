@@ -7,6 +7,7 @@
 #include "console.h"
 #include "socketqueue.h"
 #include "keymanager.h"
+#include <functional>
 
 class Game
 {
@@ -20,9 +21,18 @@ public:
 	void StartUp(int x, int y);
 	void NextPlayer();
 	static inline bool IsRunning() { return gameInstance->running; }
+	//To server
+	void SendMessage(std::string st);
+
+
+	void AddCallBack(std::function<void(std::string)> callBack);
+	void RemoveCallBack();
+
 public: //static
 	void onSelectServerCallback(std::string url);
 private:
+
+	std::function<void(std::string)> callBacks;
 	KeyboardManager keyMan;
 	std::map<int, double> keys;  //numbers to wild for array....
 	bool keyDown(int val);
@@ -61,6 +71,7 @@ private:
 	//Gets the character at cell x,y (not mouse location)
 	bool getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit);
 	void keyPressed(int val);
+	
 
 	
 };

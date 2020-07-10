@@ -119,6 +119,21 @@ void Game::keyPressed(int val)
 {
 }
 
+void Game::SendMessage(std::string st)
+{
+	socketQueue->Send(st);
+}
+
+void Game::AddCallBack(std::function<void(std::string)> callBack)
+{
+	callBacks = callBack;
+}
+
+void Game::RemoveCallBack()
+{
+	callBacks = nullptr;
+}
+
 void Game::onSelectServerCallback(std::string url)
 {
 	if (url == "QUIT") {
@@ -203,22 +218,25 @@ void Game::HandleEvent(double ms) {
 //static
 void Game::ProcessEvents()
 {
-	
-
 	Game::gameInstance->HandleEvent(0);
 	
 	if (gameInstance->socketQueue) {
 		gameInstance->socketQueue->Process();
+
+
 		//int sz = gameInstance->socketQueue->Avail();
 		if (gameInstance->socketQueue->Avail()) {
 			//The temp is for setting breakpoints
 			std::string temp = gameInstance->socketQueue->Get();
 			gameInstance->console->AddLine(temp);
+			if (gameInstance->callBacks != nullptr) {
+				//Call it..
+				(gameInstance->callBacks)(temp);
+			}
 			std::cout << temp << std::endl;
 			int bp = 0;
 		}
 	}
-
 }
 
 bool Game::Process() {
@@ -314,7 +332,6 @@ void Game::StartUp(int x, int y)
 
 	console = new ConsoleView(16, 464, 272, 320, 18);
 	console->AddLine("Starting");
-	console->AddLine("testing 1234567890123456789012345678901234");
 	GamePlayer player;
 	players.push_back(player);
 	curPlayer = 0;
@@ -339,9 +356,7 @@ Game::~Game()
 	
 }
 
-
-
-/*private static members*/
+/*Static Members*/
 Game* Game::gameInstance;
 
 int Game::mCellX = 5;

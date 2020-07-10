@@ -5,7 +5,10 @@
 #include "label.h"
 #include "textbox.h"
 #include <functional>
+#include "game.h"
 
+
+using std::placeholders::_1;
 
 ActionJoinCreate::ActionJoinCreate()
 {
@@ -22,7 +25,7 @@ ActionJoinCreate::ActionJoinCreate()
     lTitle->SetText("Join a current room or create a new one");
 
     Button* bJoin = new Button(location.x + 10, location.y + 30, 256, 48);
-    bJoin->SetText("Create Room");
+    bJoin->SetText("Join Room");
     bJoin->SetTexture(bTex);
     bJoin->SetOnClick(std::bind(&ActionJoinCreate::joinClick, this));
 
@@ -30,7 +33,7 @@ ActionJoinCreate::ActionJoinCreate()
     tRoomCode->SetText("");
 
     Button* bCreate = new Button(location.x + 10, location.y + 90, 256, 48);
-    bCreate->SetText("Join Room");
+    bCreate->SetText("Create Room");
     bCreate->SetTexture(bTex);
     bCreate->SetOnClick(std::bind(&ActionJoinCreate::createClick, this));
 
@@ -44,14 +47,18 @@ ActionJoinCreate::ActionJoinCreate()
     controls.push_back(tRoomCode);
     controls.push_back(bCreate);
     controls.push_back(bExit);
+
     mouseMan = new MouseManager(&controls);
-    //auto fuckMe = std::bind(&ActionJoinCreate::keyPressed, this);
+    
     keyMan.SetCallBack(std::bind(&ActionJoinCreate::keyPressed,this,_1));
-    int bp = 0;
+
+    Game::gameInstance->AddCallBack(std::bind(&ActionJoinCreate::MessageIn, this, _1));
+    
 }
 
 ActionJoinCreate::~ActionJoinCreate()
 {
+    Game::gameInstance->RemoveCallBack();
     for (auto i : controls) delete i;
     delete mouseMan;
 }
@@ -91,11 +98,19 @@ void ActionJoinCreate::joinClick()
 
 void ActionJoinCreate::createClick()
 {
+    std::string st = "{\"request\":\"create\", \"game\" : \"chaos\" }";
+    Game::gameInstance->SendMessage(st);
+
 }
 
 void ActionJoinCreate::backClick()
 {
     clicked = true;
+}
+
+void ActionJoinCreate::MessageIn(std::string val)
+{
+    int bp = 0;
 }
 
 void ActionJoinCreate::keyPressed(int val)

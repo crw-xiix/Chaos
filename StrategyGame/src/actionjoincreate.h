@@ -24,6 +24,7 @@ protected:
 	void createClick();
 	void backClick();
 private:
+	void MessageIn(std::string val);
 	void keyPressed(int val);
 	TextBox* tRoomCode = nullptr;
 	MouseManager* mouseMan = nullptr;

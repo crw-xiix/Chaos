@@ -30,6 +30,7 @@ class ActionMovePlayer : public Action {
 	Unit& actor;
 public:
 	ActionMovePlayer(Unit& who, int x, int y);
+	bool HasKeyboardControl() override;
 	bool Process(double time);
 	void Click();
 };
