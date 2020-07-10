@@ -33,6 +33,10 @@ ActionJoinCreate::ActionJoinCreate():
 
     tRoomCode = new TextBox(location.x + 300, location.y + 35, 256, 20);
     tRoomCode->SetText("");
+    tRoomCode->SetMaxLength(4);
+    tRoomCode->SetCaps(true);
+    tRoomCode->SetLetters("abcdefghijklmnopqrstuvwxyz");
+
 
     Button* bCreate = new Button(location.x + 10, location.y + 90, 256, 48);
     bCreate->SetText("Create Room");
@@ -52,15 +56,12 @@ ActionJoinCreate::ActionJoinCreate():
 
     mouseMan = new MouseManager(&controls);
     
-    keyMan.SetCallBack(std::bind(&ActionJoinCreate::keyPressed,this,_1));
-
-//    Game::gameInstance->AddCallBack(std::bind(&ActionJoinCreate::MessageIn, this, _1));
-    
+    keyMan.SetCallBack(std::bind(&ActionJoinCreate::keyPressed,this, _1));
+   
 }
 
 ActionJoinCreate::~ActionJoinCreate()
 {
-    Game::gameInstance->RemoveCallBack();
     for (auto i : controls) delete i;
     delete mouseMan;
 }

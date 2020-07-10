@@ -87,12 +87,12 @@ void TextBox::Process(double ms)
 
 void TextBox::KeyIn(int key)
 {
+	if (allowedChars.length() > 0) {
+		if (allowedChars.find(key) <0) return;
+	}
+
 	//so cursor is at zero.....
 	//therefore insert at zero, then increment the cursor
-	if ((key >= 32) && (key < 127)) {
-		label.insert(label.begin() + curX, (char)key);
-		curX++;
-	}
 	if (key == SDLK_BACKSPACE) {
 		if (curX > 0) {
 			curX--;
@@ -110,15 +110,31 @@ void TextBox::KeyIn(int key)
 			curX--;
 		}
 	}
-	if (key == SDLK_RIGHT) {
-		if (curX < (label.size() )) {
-			curX++;
-		}
-	}
+
 	if (key == SDLK_END) {
 		curX = (int)label.size();
 	}
 	if (key == SDLK_HOME) {
 		curX = 0;
 	}
+	//Have to rearrange for those that add letters or move cursor
+	if (!(curX < maxLen)) {
+		//xxxc crw maybe beep here....
+		return;
+	}
+	if (key == SDLK_RIGHT) {
+		if (curX < (label.size() )) {
+			curX++;
+		}
+	}
+	if (label.length() >= maxLen) {
+		//xxxc crw should beep here......
+		return;
+	}
+	if ((key >= 32) && (key < 127)) {
+		if (allCaps) key = static_cast<char>(std::toupper(key));
+		label.insert(label.begin() + curX, (char)key);
+		curX++;
+	}
+
 }

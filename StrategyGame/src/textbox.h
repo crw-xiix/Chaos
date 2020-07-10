@@ -17,7 +17,13 @@ public:
 	void MouseClick(int mx, int my) override;
 	void Process(double ms) override;
 	void KeyIn(int key);
+	inline void SetCaps(bool val) { allCaps = val; };
+	inline void SetLetters(std::string val) { allowedChars = val; };
+	inline void SetMaxLength(size_t val) { maxLen = val; };
 protected:
+	bool allCaps;
+	std::string allowedChars{ "" };
+	size_t maxLen = 256;
 	double curTime = 0;
 	bool showCursor{ false };
 	int curX = 0;

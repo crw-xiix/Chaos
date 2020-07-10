@@ -191,7 +191,10 @@ void Game::HandleEvent(double ms) {
 			}
 			if (keys[val] == 0) {
 				//This is where a key gets entered........
-				KeyboardManager::KeyManager->AddKeyDown(val);
+				const uint8_t* ks = SDL_GetKeyboardState(NULL);
+				bool shift =
+					((ks[SDL_SCANCODE_LSHIFT] > 0) || (ks[SDL_SCANCODE_RSHIFT]>0));
+				KeyboardManager::KeyManager->AddKeyDown(val,shift);
 			}
 			keys[val] += ms;
 			if (val == SDLK_BACKSPACE) {
@@ -203,6 +206,9 @@ void Game::HandleEvent(double ms) {
 
 			break;
 		case SDL_KEYUP:
+			if (keys[event.key.keysym.scancode == SDL_SCANCODE_LSHIFT]) {
+			}
+
 			val = event.key.keysym.sym;
 			keys[val] = 0;
 			break;
@@ -265,6 +271,7 @@ bool Game::Process() {
 			cx += 0.001;
 		}
 	}
+
 
 	viewPort.SetCamera(cx, cy);
 
