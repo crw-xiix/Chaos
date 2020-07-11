@@ -7,13 +7,13 @@
 /// </summary>
 class MouseManager {
 public:
-	MouseManager(std::vector<VisBase*>* items);
+	MouseManager(std::vector<VisualBase*>* items);
 	void Process(int mx, int my, int mb);
 	~MouseManager();
 private:
-	std::vector<VisBase*>* viewItems = nullptr;
-	VisBase* lastHover = nullptr;
-	VisBase* lastDown = nullptr;
+	std::vector<VisualBase*>* viewItems = nullptr;
+	VisualBase* lastHover = nullptr;
+	VisualBase* lastDown = nullptr;
 	int mouseDown = 0;
 };
 

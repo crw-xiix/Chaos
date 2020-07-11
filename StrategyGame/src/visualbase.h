@@ -2,7 +2,7 @@
 #include "pch.h"
 #include <functional>
 
-class VisBase {
+class VisualBase {
 public:
 	virtual void MouseIn() = 0;
 	virtual void MouseOut() = 0;

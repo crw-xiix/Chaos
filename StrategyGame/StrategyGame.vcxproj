@@ -177,6 +177,7 @@
     <ClInclude Include="src\font16.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gameplayer.h" />
+    <ClInclude Include="src\json.h" />
     <ClInclude Include="src\keymanager.h" />
     <ClInclude Include="src\map.h" />
     <ClInclude Include="src\MapItem.h" />

@@ -10,16 +10,16 @@ Charles Wood
 #include "game.h"
 #include "actionjoincreate.h"
 
-
 ActionSelectServer::ActionSelectServer()
 {
+    //center us up
     location = SDL_Rect {
         (Display::Width - 600) >> 1,
         (Display::Height - 300) >> 1,
         600, 300};
 
-    SDL_Rect temp;
-    SDL_Texture* bTex = AssetMgr::GetAll("BUTTON",temp);
+    
+    SDL_Texture* bTex = AssetMgr::GetAll("BUTTON");
 
     Button *bRemote = new Button(location.x+10, location.y+20, 256, 48);
     bRemote->SetText("Remote:82");
@@ -45,7 +45,10 @@ ActionSelectServer::ActionSelectServer()
 
 ActionSelectServer::~ActionSelectServer()
 {
-    for (auto i : controls) delete i;
+    for (auto& i : controls) {
+        delete i;
+        i = nullptr;
+    }
     delete mouseMan;
 }
 
@@ -54,14 +57,9 @@ bool ActionSelectServer::Process(double time)
     int mx, my;
     uint32_t mouseState = SDL_GetMouseState(&mx, &my);
     mouseMan->Process(mx, my, mouseState);
-
     eTime += time;
-    if ((eTime > 30000) || (clicked)) {
-        int bp = 0;
-        return true;
-    }
-    draw();
-    return false;
+
+    return clicked;
 }
 
 void ActionSelectServer::Click()
@@ -71,37 +69,13 @@ void ActionSelectServer::Click()
 
 void ActionSelectServer::Mouse(int x, int y, int b)
 {
+    //Using a mouse controller, so it don't matter......
 }
 
-void ActionSelectServer::localClick()
-{
-    
-    Game::gameInstance->onSelectServerCallback("ws://127.0.0.1:82/chat");
-    nextActions.push_back(new ActionJoinCreate());
-    
-    clicked = true;
-}
-
-void ActionSelectServer::remoteClick()
-{
-    
-    Game::gameInstance->onSelectServerCallback("ws://71.56.75.25:82/chat");
-    nextActions.push_back(new ActionJoinCreate());
-    clicked = true;
-}
-
-void ActionSelectServer::quitClick()
-{
-    
-    Game::gameInstance->onSelectServerCallback("QUIT");
-    clicked = true;
-}
-
-void ActionSelectServer::draw()
+void ActionSelectServer::Draw()
 {
     SDL_Rect rect;
     SDL_Texture* img = AssetMgr::GetAll("MENUBKG", rect);
-    int i = SDL_SetTextureAlphaMod(img, 0);
     int x = (Display::Width - 600) >> 1;
     int y = (Display::Height - 300) >> 1;
     SDL_Rect dest{ x,y,600,300 };
@@ -110,4 +84,24 @@ void ActionSelectServer::draw()
         c->Draw();
     }
     return;
+}
+
+void ActionSelectServer::localClick()
+{
+    Game::gameInstance->onSelectServerCallback("ws://127.0.0.1:82/chat");
+    nextActions.push_back(new ActionJoinCreate());
+    clicked = true;
+}
+
+void ActionSelectServer::remoteClick()
+{
+    Game::gameInstance->onSelectServerCallback("ws://71.56.75.25:82/chat");
+    nextActions.push_back(new ActionJoinCreate());
+    clicked = true;
+}
+
+void ActionSelectServer::quitClick()
+{
+    Game::gameInstance->onSelectServerCallback("QUIT");
+    clicked = true;
 }

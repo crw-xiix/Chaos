@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "socketcallback.h"
 
-MessageCallBack::MessageCallBack(std::function<void(std::string)> iCallBack):callBack(iCallBack)
+
+MessageCallBack::MessageCallBack(std::function<bool(jute::jValue&)> iCallBack):callBack(iCallBack)
 {
 	Game::gameInstance->AddCallBack(callBack);
 }

@@ -6,6 +6,9 @@
 #include "textbox.h"
 #include <functional>
 #include "game.h"
+#include "../3rd/jute.h"
+#include "json.h"
+
 
 
 using std::placeholders::_1;
@@ -68,22 +71,27 @@ ActionJoinCreate::~ActionJoinCreate()
 
 bool ActionJoinCreate::Process(double time)
 {
-    //should ::Process() here
     int mx, my;
+    //Need this so we stay in sync changing menus with lag
+    if (first) {
+        ourCallBack.SetActive(true);
+        first = false;
+    }
+    else {
+        int bp = 0;
+    }
     uint32_t mouseState = SDL_GetMouseState(&mx, &my);
     for (auto c : controls) {
         c->Process(time);
     }
-
     mouseMan->Process(mx, my, mouseState);
     keyMan.Process(time);
-
 
     if (clicked) {
         int bp = 0;
         return true;
     }
-    draw();
+  
     return false;
 }
 
@@ -95,15 +103,23 @@ void ActionJoinCreate::Mouse(int x, int y, int b)
 {
 }
 
+void ActionJoinCreate::Draw()
+{
+    draw();
+}
+
 void ActionJoinCreate::joinClick()
 {
 }
 
 void ActionJoinCreate::createClick()
 {
-    std::string st = "{\"request\":\"create\", \"game\" : \"chaos\" }";
+    std::string st = "{" +
+        Json::Jsonify("request", "create") + "," +
+        Json::Jsonify("game", "chaos") +
+        "}";
     Game::gameInstance->SendMessage(st);
-
+    
 }
 
 void ActionJoinCreate::backClick()
@@ -111,9 +127,43 @@ void ActionJoinCreate::backClick()
     clicked = true;
 }
 
-void ActionJoinCreate::MessageIn(std::string val)
+/// <summary>
+/// 
+/// </summary>
+/// <param name="val"></param>
+/// <returns>True if the message was handled.....</returns>
+bool ActionJoinCreate::MessageIn(jute::jValue& v)
 {
+    //have to handle situations where we sent a message, but the internet 
+    //could be fast than we are.....  Gonna leave it in the queue if we
+    //are not ready, or have finished our job..
+    if (ourCallBack.GetActive() == false) return false;
+    try {
+        std::string resp = v["request"].as_string();
+        if (resp == "create") {
+            std::string roomCode = v["roomcode"].as_string();
+            if (roomCode.length() == 4) {
+                //Trigger game, send room code.
+                Game::gameInstance->SetRoomCode(roomCode);
+                std::string st =
+                    "{" +
+                    Json::Jsonify("request", "join") + "," +
+                    Json::Jsonify("roomcode", roomCode) + "," +
+                    Json::Jsonify("game", "chaos") + "}";
+                Game::gameInstance->SendMessage(st);
+
+                //Turn off messages for this function...
+                //xxxc crw need to automate this somehow
+                ourCallBack.SetActive(false);
+            }
+        }
+        
+    }
+    catch (...) {
+        //Failed......
+    }
     int bp = 0;
+    return true; 
 }
 
 void ActionJoinCreate::keyPressed(int val)

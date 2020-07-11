@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "visualbase.h"
 
-class TextBox : public VisBase {
+class TextBox : public VisualBase {
 public:
 	TextBox(int x, int y, int w, int h);
 	void SetText(std::string val);

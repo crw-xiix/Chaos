@@ -31,8 +31,8 @@ wss.on('connection', (ws) => {
     try {
         ws.id = num++;
         players.set('id', ws.id);
-
-        ws.send(`Your Unique ID is: ${ws.id}`); // Tell client who they are
+        ws.send(`{"userid":${ws.id}}`);
+//        ws.send(`Your Unique ID is: ${ws.id}`); // Tell client who they are
         ws.on('close', () => {
             console.log(`${ws.id}`);
             players.delete('id', ws.id);
@@ -52,7 +52,7 @@ wss.on('connection', (ws) => {
 // Server heartbeat
 setInterval(() => {
     wss.clients.forEach((client) => {
-        client.send(`${client.id} is still alive. \r \n`);
+        client.send(`{"ping":${client.id}}`);
     });
 }, 30000);
 

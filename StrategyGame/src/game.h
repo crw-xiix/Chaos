@@ -8,6 +8,7 @@
 #include "socketqueue.h"
 #include "keymanager.h"
 #include <functional>
+#include "../3rd/jute.h"
 
 class Game
 {
@@ -17,7 +18,8 @@ public:
 
 	static void Create();
 	static void ProcessEvents();
-	bool Process();
+	bool Process(double DeltaTime);
+	void Draw(double deltaTime); 
 	void StartUp(int x, int y);
 	void NextPlayer();
 	static inline bool IsRunning() { return gameInstance->running; }
@@ -25,14 +27,14 @@ public:
 	void SendMessage(std::string st);
 
 
-	void AddCallBack(std::function<void(std::string)> callBack);
+	void AddCallBack(std::function<bool(jute::jValue&)> callBack);
 	void RemoveCallBack();
-
+	void SetRoomCode(const std::string& val);
 public: //static
 	void onSelectServerCallback(std::string url);
 private:
-
-	std::function<void(std::string)> callBacks;
+	std::string roomCode = "";
+	std::function<bool(jute::jValue&)> callBacks;
 	KeyboardManager keyMan;
 	std::map<int, double> keys;  //numbers to wild for array....
 	bool keyDown(int val);

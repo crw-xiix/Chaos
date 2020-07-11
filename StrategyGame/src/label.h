@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "visualbase.h"
 
-class Label : public VisBase {
+class Label : public VisualBase {
 public:
 	Label(int x, int y, int w, int h);
 	void SetText(std::string val);

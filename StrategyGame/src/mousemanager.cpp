@@ -2,14 +2,14 @@
 #include "mousemanager.h"
 
 
-MouseManager::MouseManager(std::vector<VisBase*>* items)
+MouseManager::MouseManager(std::vector<VisualBase*>* items)
 {
     viewItems = items;
 }
 
 void MouseManager::Process(int mx, int my, int mb)
 {
-    VisBase* found = nullptr;
+    VisualBase* found = nullptr;
     SDL_Point pt{ mx,my };
     for (auto visBase : *viewItems) {
         if (SDL_PointInRect(&pt, &visBase->location)) {

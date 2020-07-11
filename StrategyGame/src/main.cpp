@@ -26,19 +26,37 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-
-	Game::Create();
 	Display::Create(1600, 800);
 	IMG_Init(IMG_INIT_PNG);
 
+	//Get our stuff loaded up
+	AssetMgr::Load("assets/landscape.png", "LAND");
+	AssetMgr::Load("assets/background.png", "BKG");
+	AssetMgr::Load("assets/Dudes.png", "UNITS");
+	AssetMgr::Load("assets/highlights.png", "HIGHLIGHT");
+	AssetMgr::Load("assets/font16.png", "FONT16");
+	AssetMgr::Load("assets/intro.png", "INTRO");
+	AssetMgr::Load("assets/menubkg.png", "MENUBKG");
+	AssetMgr::Load("assets/button.png", "BUTTON");
+
+	Game::Create();
 	Game::gameInstance->StartUp(1600, 800);
+
+	Uint64 now, last;
+	now = SDL_GetPerformanceCounter();
 
 	while (Game::IsRunning())
 	{
+		//Handle our timing
+		last = now;
+		now = SDL_GetPerformanceCounter();
+		double deltaTime = (double)((now - last) / (double)SDL_GetPerformanceFrequency());
+
 		Game::ProcessEvents();
-        if (!Game::gameInstance->Process()) break;
+        if (!Game::gameInstance->Process(deltaTime)) break;
+		Game::gameInstance->Draw(deltaTime);
 		Display::Present();
-		SDL_Delay(11);
+		SDL_Delay(1);
 	}
 	AssetMgr::Destroy();
 	SDL_Quit();

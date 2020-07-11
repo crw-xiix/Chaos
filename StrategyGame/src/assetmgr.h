@@ -14,5 +14,6 @@ public:
 	static bool Load(std::string filename, std::string nick);
 	static SDL_Texture* Get(std::string nick, int gridSizeX, int GridSizeY, int x, int y, SDL_Rect& dest);
 	static SDL_Texture* GetAll(std::string nick, SDL_Rect& dest);
+	static SDL_Texture* GetAll(std::string nick);
 };
 

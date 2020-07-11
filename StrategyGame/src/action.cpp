@@ -42,6 +42,11 @@ void ActionMovePlayer::Click()
 {
 }
 
+void ActionMovePlayer::Draw()
+{
+    //we don't have to do anything here....
+}
+
 void Action::Mouse(int mx, int my, int b)
 {
     //Do nothing.

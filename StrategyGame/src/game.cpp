@@ -124,7 +124,7 @@ void Game::SendMessage(std::string st)
 	socketQueue->Send(st);
 }
 
-void Game::AddCallBack(std::function<void(std::string)> callBack)
+void Game::AddCallBack(std::function<bool(jute::jValue&)> callBack)
 {
 	callBacks = callBack;
 }
@@ -132,6 +132,11 @@ void Game::AddCallBack(std::function<void(std::string)> callBack)
 void Game::RemoveCallBack()
 {
 	callBacks = nullptr;
+}
+void Game::SetRoomCode(const std::string& val)
+{
+	roomCode = val;
+	console->AddLine("Joined Room:" + val);
 }
 
 void Game::onSelectServerCallback(std::string url)
@@ -229,15 +234,24 @@ void Game::ProcessEvents()
 	if (gameInstance->socketQueue) {
 		gameInstance->socketQueue->Process();
 
-
 		//int sz = gameInstance->socketQueue->Avail();
 		if (gameInstance->socketQueue->Avail()) {
 			//The temp is for setting breakpoints
-			std::string temp = gameInstance->socketQueue->Get();
+			std::string temp = gameInstance->socketQueue->Peek();
 			gameInstance->console->AddLine(temp);
+
+			//Also need to see if the current callback is ready for the message
+			//If not, leave the message in there and wait till something else
+			//Is up and running to accept the message.
 			if (gameInstance->callBacks != nullptr) {
 				//Call it..
-				(gameInstance->callBacks)(temp);
+				//This will happen a few time during transition, but it's okay for now.
+				//Could cache it, or just store the Json in SocketCallBack
+				jute::jValue json = jute::parser::parse(temp);
+				if ((gameInstance->callBacks)(json)) {
+					//Now we can remove it.
+					gameInstance->socketQueue->Get();
+				}
 			}
 			std::cout << temp << std::endl;
 			int bp = 0;
@@ -245,12 +259,9 @@ void Game::ProcessEvents()
 	}
 }
 
-bool Game::Process() {
+bool Game::Process(double deltaTime) {
 	bool doKeyb = true;
-	last = now;
-	now = SDL_GetPerformanceCounter();
 
-	double deltaTime = (double)((now- last)  / (double)SDL_GetPerformanceFrequency());
 	//std::cout << "Frame time: " << deltaTime << "\n";
 	if (actions.size() > 0) {
 		//We need the last Action/Current Action iterator, so we can delete later.
@@ -271,33 +282,18 @@ bool Game::Process() {
 			cx += 0.001;
 		}
 	}
-
-
 	viewPort.SetCamera(cx, cy);
-
-	viewPort.Update(1);
-	SDL_Rect myRect;
-
-	//Don't need to clear anything now
-		//Display::Clear(0, 0, 0);
-	//Get the background up there.........
-	SDL_Texture* tempTex = AssetMgr::GetAll("BKG", myRect);
-	SDL_Rect screen = { 0,0,1600,800 };
-	SDL_RenderSetClipRect(Display::GetRenderer(), &screen);
-	Display::DrawTexture(tempTex, &myRect, &screen);
-	//Ref out for mCell*
-	//Draw the map
-	viewPort.Draw(*gameMap, players, pathFinder);
-	SDL_RenderSetClipRect(Display::GetRenderer(), &screen);
-	//Do actions, if they need to draw....
-
+	viewPort.Update(deltaTime);
 	size_t size = actions.size();
+
 	if (size > 0) {
 		//We need the last Action/Current Action iterator, so we can delete later.
 		auto location = (actions.end() - 1);
 		//Now we have the action...
 		Action* action = *location;
-		if (action->Process(deltaTime)) {
+		bool resultClose = action->Process(deltaTime);
+
+		if (resultClose) {
 			//We have to delete the current one before we can add the new one(s) on top...
 			std::list<Action*> tempActions = action->GetNext();
 			actions.erase(location);
@@ -310,12 +306,40 @@ bool Game::Process() {
 			delete action;
 		}
 	}
-	//No mouse during action time for now
 	handleMouse();
+	Draw(deltaTime);
+	return running;
+}
+
+void Game::Draw(double deltaTime)
+{
+	SDL_Rect myRect;
+
+	//Get the background up there.........
+	SDL_Texture* tempTex = AssetMgr::GetAll("BKG", myRect);
+	SDL_Rect screen = { 0,0,1600,800 };
+	SDL_RenderSetClipRect(Display::GetRenderer(), &screen);
+	Display::DrawTexture(tempTex, &myRect, &screen);
+	
+	//Draw the map
+	viewPort.Draw(*gameMap, players, pathFinder);
+
+	SDL_RenderSetClipRect(Display::GetRenderer(), &screen);
+	//Do actions, if they need to draw....
+
+	size_t size = actions.size();
+	if (size > 0) {
+		//We need the last Action/Current Action iterator, so we can delete later.
+		auto location = (actions.end() - 1);
+		//Now we have the action...
+		Action* action = *location;
+		action->Draw();
+	}
+
+	//No mouse during action time for now
 
 	console->Draw();
 	//Draw the UI......
-	return running;
 }
 
 void Game::StartUp(int x, int y)
@@ -324,19 +348,9 @@ void Game::StartUp(int x, int y)
 	gameMap->Generate();
 
 	pathFinder = new PathFinder(*gameMap);
-
-	AssetMgr::Load("assets/landscape.png", "LAND");
-	AssetMgr::Load("assets/background.png", "BKG");
-	AssetMgr::Load("assets/Dudes.png", "UNITS");
-	AssetMgr::Load("assets/highlights.png", "HIGHLIGHT");
-	AssetMgr::Load("assets/font16.png", "FONT16");
-	AssetMgr::Load("assets/intro.png", "INTRO");
-	AssetMgr::Load("assets/menubkg.png", "MENUBKG");
-	AssetMgr::Load("assets/button.png", "BUTTON");
-			
+		
 	//These numbers come from the background image........
 	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);
-
 	console = new ConsoleView(16, 464, 272, 320, 18);
 	console->AddLine("Starting");
 	GamePlayer player;

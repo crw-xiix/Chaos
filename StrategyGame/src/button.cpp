@@ -50,23 +50,6 @@ void Button::MouseUp()
 	down = false;
 }
 
-void Button::DrawNumber(SDL_Rect ilocation, char c)
-{
-	c = toupper(c);
-	int idx = -1;
-
-	if (c >= '0' && c <= '9') {
-		idx = (int)c - '0';
-	}
-	if (c >= 'A' && c <= 'Z') {
-		idx = ((int)(c - 'A')) + 10;
-	}
-	if (idx == -1) return;
-	SDL_Rect texRect;
-	SDL_Texture* fontText = AssetMgr::Get("FONT16",16,16,idx, 0,texRect);
-	Display::DrawTexture(fontText,   &texRect, &ilocation);
-}
-
 
 void Button::Draw()
 {

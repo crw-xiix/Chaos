@@ -31,6 +31,11 @@ std::string SocketQueue::Get()
     return qIn.Dequeue();
 }
 
+std::string SocketQueue::Peek()
+{
+    return qIn.Peek();
+}
+
 bool SocketQueue::Start()
 {
     using easywsclient::WebSocket;

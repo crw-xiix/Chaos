@@ -3,6 +3,7 @@
 #include "map.h"
 #include "display.h"
 #include "assetmgr.h"
+#include "json.h"
 
 Unit::Unit(UnitType type, int x, int y)
 {
@@ -56,21 +57,15 @@ Unit::Unit(UnitType type, int x, int y)
 	}
 }
 
-std::string jsonify(std::string key, std::string value) {
-	std::string result = "";
-	result += " \""+key+"\": \"";
-	result += value + "\"";
-	return result;
-}
 
 std::string Unit::GetJson()
 {
 	std::string result = "{\r\n";
-	result += jsonify("hp", std::to_string(hp));
+	result += Json::Jsonify("hp", hp);
 	result += ",\r\n";
-	result += jsonify("x", std::to_string(GetX()));
+	result += Json::Jsonify("x", GetX());
 	result += ",\r\n";
-	result += jsonify("y", std::to_string(GetY()));
+	result += Json::Jsonify("y", GetY());
 	result += "\r\n";
 	result += "}\r\n";
 	return result;

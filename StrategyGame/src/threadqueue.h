@@ -45,6 +45,18 @@ public:
         q.pop();
         return val;
     }
+    T Peek(void)
+    {
+        std::unique_lock<std::mutex> lock(m);
+        while (q.empty())
+        {
+            // release lock as long as the wait and reaquire it afterwards.
+            c.wait(lock);
+        }
+        T val = q.front();
+        //We won't pop here..... Just peeking
+        return val;
+    }
 private:
     std::queue<T> q;
     mutable std::mutex m;

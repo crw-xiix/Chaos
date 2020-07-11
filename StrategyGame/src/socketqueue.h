@@ -9,6 +9,7 @@ public:
 	bool Send(std::string val);
 	bool Avail();
 	std::string Get();
+	std::string Peek();
 	bool Start();
 	void Process();
 	void Stop();

@@ -40,6 +40,18 @@ SDL_Texture* AssetMgr::GetAll(std::string nick, SDL_Rect& dest)
 	return tex;
 }
 
+SDL_Texture* AssetMgr::GetAll(std::string nick)
+{
+	SDL_Texture* tex = Images[nick];
+	/*Uint32 fmt;
+	int acs;
+	SDL_Rect dest;
+	dest.x = 0;
+	dest.y = 0;
+	SDL_QueryTexture(tex, &fmt, &acs, &dest.w, &dest.h);*/
+	return tex;
+}
+
 
 //Statics
 std::map<std::string, SDL_Texture*> AssetMgr::Images;

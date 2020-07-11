@@ -8,7 +8,7 @@ Charles Wood
 #include <functional>
 #include "visualbase.h"
 
-class Button : public VisBase {
+class Button : public VisualBase {
 public:
 	Button(int x, int y, int w, int h);
 	void SetText(std::string val);
@@ -22,7 +22,6 @@ public:
 	void MouseClick(int mx, int my) override;
 	void Process(double ms) override;
 protected:
-	void DrawNumber(SDL_Rect location, char c);
 	std::function<void(void)> onClick;
 	SDL_Texture* texture=nullptr;
 	std::string label{ "" };

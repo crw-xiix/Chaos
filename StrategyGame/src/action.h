@@ -6,6 +6,7 @@ class Action {
 public:
 	//Returns true if Process is complete.
 	virtual bool Process(double time) = 0;
+	virtual void Draw() = 0;
 	virtual void Click() = 0;
 	virtual void Mouse(int mx, int my, int b);
 	inline std::list<Action*> GetNext() { return nextActions; }
@@ -26,13 +27,15 @@ class ActionPlayLocal : public Action {
 
 
 class ActionMovePlayer : public Action {
-	int tx, ty;
-	Unit& actor;
 public:
 	ActionMovePlayer(Unit& who, int x, int y);
 	bool HasKeyboardControl() override;
 	bool Process(double time);
 	void Click();
+	void Draw() override;
+private:
+	int tx, ty;
+	Unit& actor;
 };
 
 

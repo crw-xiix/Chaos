@@ -16,18 +16,18 @@ public:
 	bool Process(double time);
 	void Click();
 	void Mouse(int x, int y, int b) override;
-	
+	void Draw() override;
 protected:
+	//event handlers
 	void localClick();
 	void remoteClick();
 	void quitClick();
 private:
+	
 	MouseManager* mouseMan = nullptr;
 	SDL_Rect location{ 0 };
-	std::vector<VisBase*> controls;
-	std::string serverUrl = "";
+	std::vector<VisualBase*> controls;
 	bool clicked = false;
 	double eTime = 0;
-	void draw();
 };
 
