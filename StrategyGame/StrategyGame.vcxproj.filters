@@ -203,7 +203,4 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="src\txt.txt" />
-  </ItemGroup>
 </Project>

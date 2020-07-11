@@ -26,7 +26,7 @@ protected:
 	size_t maxLen = 256;
 	double curTime = 0;
 	bool showCursor{ false };
-	int curX = 0;
+	int cursorX = 0;
 	std::function<void(void)> onClick;
 	SDL_Texture* texture = nullptr;
 	std::string label{ "" };

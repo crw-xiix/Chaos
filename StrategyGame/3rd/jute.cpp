@@ -36,13 +36,13 @@ string deserialize(const string& ref) {
         unsigned long long v = 0;
         for (int j=0;j<4;j++) {
           v *= 16;
-          if (ref[i+2+j] <= '9' && ref[i+2+j] >= '0') v += ref[i+2+j]-'0';
-          if (ref[i+2+j] <= 'f' && ref[i+2+j] >= 'a') v += ref[i+2+j]-'a'+10;
+          if (ref[i+2+j] <= '9' && ref[i+2+j] >= '0') v += (long long) ref[i+2u+j]-'0';
+          if (ref[i+2+j] <= 'f' && ref[i+2+j] >= 'a') v += (long long) ref[i+2u+j]- 'a'+10;
         }
         out += (char)v;
         plus = 6;
       }
-      i += plus-1;
+      i += (long long) plus-(1);
       continue;
     }
     out += ref[i];
@@ -56,11 +56,11 @@ string jValue::makesp(int d) {
   return s;
 }
 string jValue::to_string_d(int d) {
-  if (type == JSTRING)   return string("\"") + svalue + string("\"");
-  if (type == JNUMBER)   return svalue;
-  if (type == JBOOLEAN)  return svalue;
-  if (type == JNULL)     return "null";
-  if (type == JOBJECT) {
+  if (type == jType::JSTRING)   return string("\"") + svalue + string("\"");
+  if (type == jType::JNUMBER)   return svalue;
+  if (type == jType::JBOOLEAN)  return svalue;
+  if (type == jType::JNULL)     return "null";
+  if (type == jType::JOBJECT) {
     string s = string("{\n");
     for (size_t i=0;i<properties.size();i++) {
       s += makesp(d) + string("\"") + properties[i].first + string("\": ") + properties[i].second.to_string_d(d+1) + string(i==properties.size()-1?"":",") + string("\n");
@@ -68,7 +68,7 @@ string jValue::to_string_d(int d) {
     s += makesp(d-1) + string("}");
     return s;
   }
-  if (type == JARRAY) {
+  if (type == jType::JARRAY) {
     string s = "[";
     for (size_t i=0;i<arr.size();i++) {
       if (i) s += ", ";
@@ -80,7 +80,7 @@ string jValue::to_string_d(int d) {
   return "##";
 }
 jValue::jValue() {
-  this->type = JUNKNOWN;
+  this->type = jType::JUNKNOWN;
 }
 jValue::jValue(jType tp) {
   this->type = tp;
@@ -130,19 +130,19 @@ string jValue::as_string() {
   return deserialize(svalue);
 }
 int jValue::size() {
-  if (type == JARRAY) {
+  if (type == jType::JARRAY) {
     return (int)arr.size();
   }
-  if (type == JOBJECT) {
+  if (type == jType::JOBJECT) {
     return (int)properties.size();;
   }
   return 0;
 }
 jValue jValue::operator[](int i) {
-  if (type == JARRAY) {
+  if (type == jType::JARRAY) {
     return arr[i];
   }
-  if (type == JOBJECT) {
+  if (type == jType::JOBJECT) {
     return properties[i].second;
   }
   return jValue();
@@ -155,7 +155,7 @@ jValue jValue::operator[](string s) {
 struct parser::token {
   string value;
   token_type type;
-  token(string value="",token_type type=UNKNOWN): value(value), type(type) {}
+  token(string value="",token_type type= UNKNOWN): value(value), type(type) {}
 };
 bool parser::is_whitespace(const char c) {
   return isspace(c);
@@ -276,7 +276,7 @@ vector<parser::token> parser::tokenize(string source) {
 jValue parser::json_parse(vector<token> v, int i, int& r) {
   jValue current;
   if (v[i].type == CROUSH_OPEN) {
-    current.set_type(JOBJECT);
+    current.set_type(jType::JOBJECT);
     int k = i+1;
     while (v[k].type != CROUSH_CLOSE) {
       string key = v[k].value;
@@ -291,7 +291,7 @@ jValue parser::json_parse(vector<token> v, int i, int& r) {
     return current;
   }
   if (v[i].type == BRACKET_OPEN) {
-    current.set_type(JARRAY);
+    current.set_type(jType::JARRAY);
     int k = i+1;
     while (v[k].type != BRACKET_CLOSE) {
       int j = k;
@@ -304,25 +304,25 @@ jValue parser::json_parse(vector<token> v, int i, int& r) {
     return current;
   }
   if (v[i].type == NUMBER) {
-    current.set_type(JNUMBER);
+    current.set_type(jType::JNUMBER);
     current.set_string(v[i].value);
     r = i+1;
     return current;
   }
   if (v[i].type == STRING) {
-    current.set_type(JSTRING);
+    current.set_type(jType::JSTRING);
     current.set_string(v[i].value);
     r = i+1;
     return current;
   }
   if (v[i].type == BOOLEAN) {
-    current.set_type(JBOOLEAN);
+    current.set_type(jType::JBOOLEAN);
     current.set_string(v[i].value);
     r = i+1;
     return current;
   }
   if (v[i].type == NUL) {
-    current.set_type(JNULL);
+    current.set_type(jType::JNULL);
     current.set_string("null");
     r = i+1;
     return current;
@@ -334,6 +334,7 @@ jValue parser::parse(const string& str) {
   int k;
   return json_parse(tokenize(str), 0, k);
 }
+
 jValue parser::parse_file(const string& filename) {
   ifstream in(filename.c_str());
   string str = "";

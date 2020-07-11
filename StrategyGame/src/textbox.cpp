@@ -59,9 +59,9 @@ void TextBox::Draw()
 	if (showCursor) {
 		//Got figure out where the cursor is.....
 		int curOffset = 0;
-		if (curX > 0) {
+		if (cursorX > 0) {
 			//std::string x = label.substr(0, curX);
-			curOffset = Font16::TextLength(label,curX);
+			curOffset = Font16::TextLength(label,cursorX);
 		}
 		SDL_Rect cursor{ location.x + 2 + curOffset, location.y + 2, 1, location.h - 4 };
 		SDL_RenderDrawRect(Display::GetRenderer(), &cursor);
@@ -91,40 +91,38 @@ void TextBox::KeyIn(int key)
 		if (allowedChars.find(key) <0) return;
 	}
 
-	//so cursor is at zero.....
-	//therefore insert at zero, then increment the cursor
 	if (key == SDLK_BACKSPACE) {
-		if (curX > 0) {
-			curX--;
-			label.erase(label.begin() + curX);
+		if (cursorX > 0) {
+			cursorX--;
+			label.erase(label.begin() + cursorX);
 		}
 	}
 	if (key == SDLK_DELETE) {
 		try {
-			label.erase(label.begin() + curX);
+			label.erase(label.begin() + cursorX);
 		} catch (...) {
 		}
 	}
 	if (key == SDLK_LEFT) {
-		if (curX > 0) {
-			curX--;
+		if (cursorX > 0) {
+			cursorX--;
 		}
 	}
 
 	if (key == SDLK_END) {
-		curX = (int)label.size();
+		cursorX = (int)label.size();
 	}
 	if (key == SDLK_HOME) {
-		curX = 0;
+		cursorX = 0;
 	}
 	//Have to rearrange for those that add letters or move cursor
-	if (!(curX < maxLen)) {
+	if (!(cursorX < maxLen)) {
 		//xxxc crw maybe beep here....
 		return;
 	}
 	if (key == SDLK_RIGHT) {
-		if (curX < (label.size() )) {
-			curX++;
+		if (cursorX < (label.size() )) {
+			cursorX++;
 		}
 	}
 	if (label.length() >= maxLen) {
@@ -133,8 +131,8 @@ void TextBox::KeyIn(int key)
 	}
 	if ((key >= 32) && (key < 127)) {
 		if (allCaps) key = static_cast<char>(std::toupper(key));
-		label.insert(label.begin() + curX, (char)key);
-		curX++;
+		label.insert(label.begin() + cursorX, (char)key);
+		cursorX++;
 	}
 
 }

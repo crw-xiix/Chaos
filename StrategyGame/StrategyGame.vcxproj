@@ -234,9 +234,6 @@
     <ClCompile Include="src\label.cpp" />
     <ClCompile Include="src\viewport.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="src\txt.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\sdl2_image.nuget.redist.2.0.5\build\native\sdl2_image.nuget.redist.targets" Condition="Exists('..\packages\sdl2_image.nuget.redist.2.0.5\build\native\sdl2_image.nuget.redist.targets')" />

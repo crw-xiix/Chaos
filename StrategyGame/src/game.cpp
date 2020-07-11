@@ -7,7 +7,7 @@
 #include <functional>
 #include "keymanager.h"
 
-//XXXC CRW Need an action for requesting new room, joining room, etc.
+
 
 Game::Game() : running(true), console{ nullptr }
 {
@@ -152,18 +152,10 @@ void Game::onSelectServerCallback(std::string url)
 //Each action, when it closes, adds an action.
 void Game::addAction(Action* action, Action* ref)
 {
+	//we aren't doing emplace yet
 	if (ref == nullptr) {
 		gameInstance->actions.push_back(action);
-	}/*
-	else {
-		for (int i = 0; i < gameInstance->actions.size(); i++) {
-			if 
-		}
-		if (gameInstance->actions.find(ref) != gameInstance->end()) {
-			//insert before 
-
-		}
-	}*/
+	}
 }
 
 //static
@@ -226,6 +218,24 @@ void Game::HandleEvent(double ms) {
 		}
 	}
 }
+
+
+bool Game::handleLocal(jute::jValue& v)
+{
+	//This just clears out stuff that isn't for the actions/menus....
+	std::string resp = v["request"].as_string();
+	if (resp == "userid") {
+		gameInstance->console->AddLine("User Id recvd");
+		return true;
+	}
+	if (resp == "ping") {
+		gameInstance->console->AddLine("Pinged");
+		lastPing = elapsedTime;
+		return true;
+	}
+	return false;
+}
+
 //static
 void Game::ProcessEvents()
 {
@@ -238,16 +248,20 @@ void Game::ProcessEvents()
 		if (gameInstance->socketQueue->Avail()) {
 			//The temp is for setting breakpoints
 			std::string temp = gameInstance->socketQueue->Peek();
-			gameInstance->console->AddLine(temp);
-
+			//gameInstance->console->AddLine(temp);
+			//Call it..xxxc crw
+			//This will happen a few time during transition, but it's okay for now.
+			//Could cache it, or just store the Json in SocketCallBack
+			jute::jValue json = jute::parser::parse(temp);
+			if (gameInstance->handleLocal(json)) {
+				//Remove it
+				gameInstance->socketQueue->Get();
+				return;
+			}
 			//Also need to see if the current callback is ready for the message
 			//If not, leave the message in there and wait till something else
 			//Is up and running to accept the message.
 			if (gameInstance->callBacks != nullptr) {
-				//Call it..
-				//This will happen a few time during transition, but it's okay for now.
-				//Could cache it, or just store the Json in SocketCallBack
-				jute::jValue json = jute::parser::parse(temp);
 				if ((gameInstance->callBacks)(json)) {
 					//Now we can remove it.
 					gameInstance->socketQueue->Get();
@@ -261,8 +275,8 @@ void Game::ProcessEvents()
 
 bool Game::Process(double deltaTime) {
 	bool doKeyb = true;
+	elapsedTime = deltaTime;
 
-	//std::cout << "Frame time: " << deltaTime << "\n";
 	if (actions.size() > 0) {
 		//We need the last Action/Current Action iterator, so we can delete later.
 		auto location = (actions.end() - 1);
@@ -273,7 +287,6 @@ bool Game::Process(double deltaTime) {
 	}
 	
 	if (doKeyb) {
-		
 		const uint8_t* ks = SDL_GetKeyboardState(NULL);
 		if (ks[SDL_SCANCODE_W] > 0) cy -= 0.001;
 		if (ks[SDL_SCANCODE_S] > 0) cy += 0.001;
@@ -291,6 +304,7 @@ bool Game::Process(double deltaTime) {
 		auto location = (actions.end() - 1);
 		//Now we have the action...
 		Action* action = *location;
+		//Process can cause a message queue close, but it's usually the messageIn
 		bool resultClose = action->Process(deltaTime);
 
 		if (resultClose) {
@@ -307,7 +321,7 @@ bool Game::Process(double deltaTime) {
 		}
 	}
 	handleMouse();
-	Draw(deltaTime);
+	//Draw(deltaTime);
 	return running;
 }
 
@@ -337,7 +351,6 @@ void Game::Draw(double deltaTime)
 	}
 
 	//No mouse during action time for now
-
 	console->Draw();
 	//Draw the UI......
 }

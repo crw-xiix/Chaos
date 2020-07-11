@@ -33,6 +33,11 @@ public:
 public: //static
 	void onSelectServerCallback(std::string url);
 private:
+	bool handleLocal(jute::jValue& val);
+
+private:
+	double elapsedTime = 0;
+	double lastPing = 0;
 	std::string roomCode = "";
 	std::function<bool(jute::jValue&)> callBacks;
 	KeyboardManager keyMan;

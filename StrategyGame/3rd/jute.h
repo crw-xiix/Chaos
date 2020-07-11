@@ -10,7 +10,7 @@
 #include <cstring>
 
 namespace jute {
-  enum jType {JSTRING, JOBJECT, JARRAY, JBOOLEAN, JNUMBER, JNULL, JUNKNOWN};
+  enum class jType {JSTRING, JOBJECT, JARRAY, JBOOLEAN, JNUMBER, JNULL, JUNKNOWN};
   class jValue {
     private:
       std::string makesp(int);
@@ -25,7 +25,7 @@ namespace jute {
       jValue(jType);
       std::string to_string();
       jType get_type();
-      void set_type(jType);
+      void set_type(jType typ);
       void add_property(std::string key, jValue v);
       void add_element(jValue v);
       void set_string(std::string s);

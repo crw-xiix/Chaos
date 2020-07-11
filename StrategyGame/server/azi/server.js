@@ -31,7 +31,14 @@ wss.on('connection', (ws) => {
     try {
         ws.id = num++;
         players.set('id', ws.id);
-        ws.send(`{"userid":${ws.id}}`);
+        let msg = '';
+        
+        msg += '{';
+        msg += '"request":"userid",';
+        msg += `"userid":${ws.id}`;
+        msg += '}';
+        ws.send(msg);
+        
 //        ws.send(`Your Unique ID is: ${ws.id}`); // Tell client who they are
         ws.on('close', () => {
             console.log(`${ws.id}`);
@@ -52,7 +59,14 @@ wss.on('connection', (ws) => {
 // Server heartbeat
 setInterval(() => {
     wss.clients.forEach((client) => {
-        client.send(`{"ping":${client.id}}`);
+        let msg = '';
+        
+        msg += "";
+        msg += '{"request":"ping",';
+        msg += `"userid":${client.id}`;
+        msg += '}';
+        client.send(msg);
+            
     });
 }, 30000);
 

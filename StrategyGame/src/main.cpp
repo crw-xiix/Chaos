@@ -51,7 +51,6 @@ int main(int argc, char* argv[])
 		last = now;
 		now = SDL_GetPerformanceCounter();
 		double deltaTime = (double)((now - last) / (double)SDL_GetPerformanceFrequency());
-
 		Game::ProcessEvents();
         if (!Game::gameInstance->Process(deltaTime)) break;
 		Game::gameInstance->Draw(deltaTime);

@@ -38,6 +38,3 @@ private:
 	Unit& actor;
 };
 
-
-//XXXC CRW  Need action request, action join, action waiting, action playing and action 
-//game over.  Also have to do point inserts on action lists.
