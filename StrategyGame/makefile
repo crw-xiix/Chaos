@@ -7,8 +7,8 @@ SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 TRD_FILES := $(wildcard $(TRD_DIR)/*.cpp)
 OBJ_FILES_TRD := $(patsubst $(TRD_DIR)/%.cpp,$(OBJ_DIR_TRD)/%.o,$(TRD_FILES))
-LDFLAGS := `sdl2-config --cflags -libs` -lSDL2 -lSDL2_image
-CPPFLAGS := -I./src -I/usr/include/SDL2
+LDFLAGS := `sdl2-config --libs` -lSDL2_image
+CPPFLAGS := -I./src `sdl2-config --cflags`
 
 all: main
 	echo "AllDone"
