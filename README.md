@@ -11,5 +11,7 @@ Compile all other files with /Yu flag (Use Precompiled Header)
 (right click on project -> properties -> Precompiled Headers -> use)
 
 
+Huhlig - Mac compilation.
+
 
 
