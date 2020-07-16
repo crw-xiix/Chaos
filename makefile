@@ -22,7 +22,7 @@ MKDIR := mkdir -p
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 
 SRC_FILES := $(call rwildcard,$(SRC_DIR),*.$(SRC_EXT))
-OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
+OBJ_FILES := $(patsubst $(SRC_DIR)/%.$(SRC_EXT),$(OBJ_DIR)/%.o,$(SRC_FILES))
 
 all: clean build
 
