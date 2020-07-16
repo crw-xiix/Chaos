@@ -10,8 +10,8 @@ SRC_EXT := cpp
 SRC_DIR := ./StrategyGame
 OBJ_DIR := ./obj
 
-LDFLAGS := `sdl2-config --cflags -libs` -lSDL2 -lSDL2_image
-CFLAGS := -I$(SRC_DIR)/src -I$(SRC_DIR)/3rd -I/usr/include/SDL2 -std=c++17
+LDFLAGS := `sdl2-config --libs` -lSDL2_image
+CFLAGS := `sdl2-config --cflags` -I$(SRC_DIR)/src -I$(SRC_DIR)/3rd -std=c++17
 
 EXEC_NAME := main
 
