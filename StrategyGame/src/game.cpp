@@ -388,6 +388,7 @@ Game::~Game()
 {
 	delete socketQueue;
 	delete console;
+	delete playerStatus;
 	delete gameInstance;
 	
 }
