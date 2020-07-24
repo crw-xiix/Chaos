@@ -4,6 +4,9 @@
 #include "game.h"
 #include "font16.h"
 
+/// <summary>
+/// Debug feature
+/// </summary>
 bool cellDistanceShow = false;
 
 ViewPort::ViewPort(int x, int y, int w, int h, float zoom)

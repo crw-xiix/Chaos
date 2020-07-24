@@ -354,6 +354,9 @@ void Game::Draw(double deltaTime)
 	console->Draw();
 	//Draw the UI......
 	playerStatus->Draw(players[0]);
+
+	//
+	
 }
 
 void Game::StartUp(int x, int y)
@@ -365,6 +368,7 @@ void Game::StartUp(int x, int y)
 		
 	//These numbers come from the background image........
 	viewPort = ViewPort(325, 75, 1225, 675, 1.0f);
+
 	console = new ConsoleView(16, 464, 272, 320, 18);
 	console->AddLine("Starting");
 	playerStatus = new PlayerStatus(16, 51, 272, 400);

@@ -36,7 +36,8 @@ private:
 	float y=2;
 
 public:
-	static constexpr int ConstMax = 50;
+	int StaminaMax = 50;
+	int HealthMax = 50;
 	Unit(UnitType type, int x, int y);
 	std::string GetJson();
 	void Draw(SDL_Rect dest);
