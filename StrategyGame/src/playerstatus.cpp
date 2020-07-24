@@ -7,9 +7,7 @@
 PlayerStatus::PlayerStatus(int x, int y, int w, int h)
 {
 	window = SDL_Rect{ x, y, w, h };
-
 }
-
 
 void PlayerStatus::Draw(GamePlayer &player) 
 {

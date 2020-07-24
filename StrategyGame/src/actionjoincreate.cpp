@@ -36,9 +36,9 @@ ActionJoinCreate::ActionJoinCreate():
 
     tRoomCode = new TextBox(location.x + 300, location.y + 35, 256, 20);
     tRoomCode->SetText("");
-    tRoomCode->SetMaxLength(4);
-    tRoomCode->SetCaps(true);
-    tRoomCode->SetLetters("abcdefghijklmnopqrstuvwxyz");
+    //tRoomCode->SetMaxLength(4);
+    //tRoomCode->SetCaps(true);
+    //tRoomCode->SetLetters("abcdefghijklmnopqrstuvwxyz");
 
 
     Button* bCreate = new Button(location.x + 10, location.y + 90, 256, 48);
