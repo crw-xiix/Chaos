@@ -9,6 +9,7 @@
 #include "keymanager.h"
 #include <functional>
 #include "../3rd/jute.h"
+#include "playerstatus.h"
 
 class Game
 {
@@ -61,6 +62,7 @@ private:
 	std::vector<GamePlayer> players;
 	ViewPort viewPort;
 	ConsoleView* console = nullptr;
+	PlayerStatus* playerStatus = nullptr;
 
 	PathFinder* pathFinder = nullptr;
 

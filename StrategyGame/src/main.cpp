@@ -38,6 +38,7 @@ int main(int argc, char* argv[])
 	AssetMgr::Load("assets/intro.png", "INTRO");
 	AssetMgr::Load("assets/menubkg.png", "MENUBKG");
 	AssetMgr::Load("assets/button.png", "BUTTON");
+	AssetMgr::Load("assets/playerstatusbackground.png", "PSTATUSBKG");
 
 	Game::Create();
 	Game::gameInstance->StartUp(1600, 800);

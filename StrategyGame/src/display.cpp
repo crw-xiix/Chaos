@@ -58,7 +58,6 @@ Display* Display::displayInstance;
 int Display::Width = 0;
 int Display::Height = 0;
 
-
 SDL_ClipRectSection::SDL_ClipRectSection(int x, int y, int w, int h)
 {
 	SDL_RenderGetClipRect(Display::GetRenderer(), &oldRect);

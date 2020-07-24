@@ -28,7 +28,7 @@ private:
 	//Speed is how many regular tiles it can travel per round/Tile slowness.
 	int speed = 20;
 
-	int constitution = 50;
+	int stamina = 50;
 	int range;
 	float damage;
 
