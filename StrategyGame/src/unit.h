@@ -34,7 +34,11 @@ private:
 
 	float x=1;
 	float y=2;
+	int frameNo=0;
+	int frameDir = 1;
+	int maxFrames = 1;
 
+	int slowDown = 0;
 public:
 	int StaminaMax = 50;
 	int HealthMax = 50;

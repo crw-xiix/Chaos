@@ -5,6 +5,7 @@
 #include "assetmgr.h"
 #include "json.h"
 
+
 Unit::Unit(UnitType type, int x, int y)
 {
 	this->type = type;
@@ -12,8 +13,8 @@ Unit::Unit(UnitType type, int x, int y)
 	this->x = (float) x;
 	this->y = (float) y;
 
-	texture = AssetMgr::Get("UNITS", Map::TileSize, Map::TileSize, 0, (int)type, rect);
-
+	//texture = AssetMgr::Get("UNITS", Map::TileSize, Map::TileSize, 0, (int)type, rect);
+	
 	weapon = WeaponType::None;
 	hp = 0;
 	speed = 0;
@@ -24,6 +25,7 @@ Unit::Unit(UnitType type, int x, int y)
 	switch (type)
 	{
 	case UnitType::Warrior:
+		maxFrames = 4;
 		weapon = WeaponType::Melee;
 		hp = 100;
 		speed = 12;
@@ -73,5 +75,43 @@ std::string Unit::GetJson()
 
 void Unit::Draw(SDL_Rect dest)
 {
+	this->type = type;
+
+	this->x = (float)x;
+	this->y = (float)y;
+	
+	texture = AssetMgr::Get("UNITS", Map::TileSize, Map::TileSize, frameNo, (int)type, rect);
+	slowDown++;
+	if (slowDown == 60) {
+		frameNo+=frameDir;
+		slowDown = 0;
+		if (frameNo >= maxFrames) {
+			frameDir *= -1;
+			frameNo += frameDir;
+		}
+		if (frameNo < 0) {
+			frameDir *= -1;
+			frameNo += frameDir;
+		}
+
+
+	}
+
+	if (maxFrames > 1) {
+			int breakPoint = 0;
+	
+	}
+
+	if (frameNo > 1) {
+		int breakpoint = 0;
+	}
+	if (maxFrames > 1) {
+		int breakpoint=0;
+		
+	}
+	
+	
+
+
 	Display::DrawTexture(texture, &rect, &dest);
 }

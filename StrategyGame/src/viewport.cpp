@@ -54,7 +54,8 @@ void ViewPort::Update(int ms)
 }
 
 int asdf = 0;
-void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathFinder)
+
+void ViewPort::Draw(Map& map, std::vector<GamePlayer> &players, PathFinder *pathFinder)
 {
 	SDL_ClipRectSection myClip(topX, topY, width, height);
 	SDL_Rect destRect;
@@ -112,7 +113,7 @@ void ViewPort::Draw(Map& map, std::vector<GamePlayer> players, PathFinder *pathF
 
 	for (auto& player : players)
 	{
-		for (auto unit : player.GetUnits())
+		for (auto &unit : player.GetUnits())
 		{
 			destRect.x =(int) ((unit.GetXF()-(float)cx ) * (float)Map::TileSize + (float)topX - (float)pcx);
 			destRect.y =(int) ((unit.GetYF()-(float)cy ) * (float)Map::TileSize + (float)topY - (float)pcy);
