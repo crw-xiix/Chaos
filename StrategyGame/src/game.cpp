@@ -164,6 +164,11 @@ void Game::Create()
 	gameInstance = new Game();
 }
 
+void Game::Destroy()
+{
+	delete gameInstance;
+}
+
 bool Game::keyDown(int val)
 {
 	if (keys.find(val) == keys.end()) {
@@ -398,7 +403,7 @@ Game::~Game()
 }
 
 /*Static Members*/
-Game* Game::gameInstance;
+Game* Game::gameInstance = nullptr;
 
 int Game::mCellX = 5;
 int Game::mCellY = 5;

@@ -11,5 +11,7 @@ Zaida:Mexico:Artist:Characters
 Sir Felix Delazar:Russia:Characters, linux port makefile
 JPB:USA:Nothing yet
 Mad:USA:Code review, linux port makefile
+KenRyuu:Malaysia:Ax Man animation
+
 
 */

@@ -9,6 +9,9 @@
 #include "../3rd/jute.h"
 #include "json.h"
 
+const int a_val = 1;
+const int b_val = 2;
+const int c_val = a_val + b_val;
 
 
 using std::placeholders::_1;
@@ -163,7 +166,8 @@ bool ActionJoinCreate::MessageIn(jute::jValue& v)
         //Failed......
     }
     int bp = 0;
-    return true; 
+    return true;
+    
 }
 
 void ActionJoinCreate::keyPressed(int val)

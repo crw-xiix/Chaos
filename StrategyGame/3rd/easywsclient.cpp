@@ -88,6 +88,8 @@
 using easywsclient::Callback_Imp;
 using easywsclient::BytesCallback_Imp;
 
+const char* test = "test";
+
 namespace { // private module-only namespace
 
 socket_t hostname_connect(const std::string& hostname, int port) {

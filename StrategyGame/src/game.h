@@ -18,6 +18,7 @@ public:
 	static Game* gameInstance;
 
 	static void Create();
+	static void Destroy();
 	static void ProcessEvents();
 	bool Process(double DeltaTime);
 	void Draw(double deltaTime); 

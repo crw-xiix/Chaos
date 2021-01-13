@@ -6,7 +6,7 @@
 #include "assetmgr.h"
 #include "map.h"
 #include "viewport.h"
-#include "../3rd/easywsclient.hpp"
+//#include "../3rd/easywsclient.hpp"
 
 #include <assert.h>
 #include <stdio.h>
@@ -58,7 +58,9 @@ int main(int argc, char* argv[])
 		Display::Present();
 		SDL_Delay(1);
 	}
+	//Game::Destroy();
 	AssetMgr::Destroy();
 	SDL_Quit();
+	_CrtDumpMemoryLeaks();
 	return 0;
 }
