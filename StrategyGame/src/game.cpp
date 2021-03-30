@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "pch.h"
 #include "game.h"
 #include "assetmgr.h"
 #include "viewport.h"
@@ -95,14 +94,12 @@ void Game::selectUnit(int sp, int su)
 	pathFinder->DoUnitMaxDistanceTravel(players[curPlayer].GetUnit(selUnit),10);
 }
 
-
-
 bool Game::getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit)
 {
 	int pnum = 0;
 	int unum = 0;
 	for (auto iplayer : players) {
-		for (auto unit : iplayer.GetUnits()) {
+		for (auto &unit : iplayer.GetUnits()) {
 			if ((unit.GetX() == cx) && (unit.GetY() == cy)) {
 				sPlayer = pnum;
 				sUnit = unum;
@@ -217,6 +214,7 @@ void Game::HandleEvent(double ms) {
 		case SDL_QUIT:
 			{
 				gameInstance->running = false;
+				break;
 			}
 		default:
 			break;

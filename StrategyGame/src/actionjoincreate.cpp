@@ -39,9 +39,6 @@ ActionJoinCreate::ActionJoinCreate():
 
     tRoomCode = new TextBox(location.x + 300, location.y + 35, 256, 20);
     tRoomCode->SetText("");
-    //tRoomCode->SetMaxLength(4);
-    //tRoomCode->SetCaps(true);
-    //tRoomCode->SetLetters("abcdefghijklmnopqrstuvwxyz");
 
 
     Button* bCreate = new Button(location.x + 10, location.y + 90, 256, 48);
@@ -52,7 +49,7 @@ ActionJoinCreate::ActionJoinCreate():
     Button* bExit = new Button(location.x + 10, location.y + 150, 256, 48);
     bExit->SetText("Just Wander");
     bExit->SetTexture(bTex);
-    bExit->SetOnClick(std::bind(&ActionJoinCreate::backClick, this));
+    bExit->SetOnClick(std::bind(&ActionJoinCreate::wanderClick, this));
 
     controls.push_back(lTitle);
     controls.push_back(bJoin);
@@ -125,7 +122,7 @@ void ActionJoinCreate::createClick()
     
 }
 
-void ActionJoinCreate::backClick()
+void ActionJoinCreate::wanderClick()
 {
     clicked = true;
 }

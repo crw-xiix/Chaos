@@ -42,6 +42,7 @@ Unit::Unit(UnitType type, int x, int y)
 		break;
 
 	case UnitType::Archer:
+		maxFrames = 3;
 		weapon = WeaponType::Ranged;
 		hp = 100;
 		speed = 30;

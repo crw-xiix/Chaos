@@ -24,7 +24,7 @@ public:
 protected:
 	void joinClick();
 	void createClick();
-	void backClick();
+	void wanderClick();
 private:
 	MessageCallBack ourCallBack;
 	bool first{ true };  //For turning on the message system....
