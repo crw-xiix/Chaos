@@ -1,4 +1,6 @@
-/* Written by Mikol/JJJ based on crw-xiix AssetManager class */
+/* Written by Mikol/JJJ based on crw-xiix AssetManager class 
+https://github.com/Me43489
+*/
 
 #include "audiomanager.hpp"
 #include <iostream>
