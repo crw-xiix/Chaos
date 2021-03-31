@@ -1,3 +1,5 @@
+/* Written by Mikol/JJJ based on crw-xiix AssetManager class */
+
 #pragma once
 
 #include <string>
