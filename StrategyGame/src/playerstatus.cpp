@@ -18,18 +18,19 @@ void PlayerStatus::Draw( GamePlayer &player)
 	//Get our background up
     Display::DrawTexture(img, &rect, &window);
 	//Figure out where the dudes go
-	SDL_Rect destRect;
+	SDL_Rect destRect = {0};
 	destRect.x = window.x + 16;
 	destRect.y = window.y + 5;
 	destRect.w = 64;
 	destRect.h = 64;
 
-	for (auto unit : player.GetUnits())
+	for (auto &&unit : player.GetUnits())
 	{
-		
+		Font16 font;
+
 		unit.Draw(destRect);
 		//Temp text.
-		Font16::DrawText("Player Name", destRect.w + destRect.x, destRect.y + 32 - 8);
+		font.DrawText("Player Name", destRect.w + destRect.x, destRect.y + 32 - 8);
 		destRect.y += destRect.h;
 	}
     return;

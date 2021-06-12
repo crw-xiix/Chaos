@@ -35,6 +35,8 @@ int main(int argc, char* argv[])
 	AssetMgr::Load("assets/Dudes.png", "UNITS");
 	AssetMgr::Load("assets/highlights.png", "HIGHLIGHT");
 	AssetMgr::Load("assets/font16.png", "FONT16");
+	AssetMgr::Load("assets/font32.png", "FONT32");
+
 	AssetMgr::Load("assets/intro.png", "INTRO");
 	AssetMgr::Load("assets/menubkg.png", "MENUBKG");
 	AssetMgr::Load("assets/button.png", "BUTTON");

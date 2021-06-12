@@ -3,10 +3,16 @@
 #include "display.h"
 #include "font16.h" 
 
-TextBox::TextBox(int x, int y, int w, int h)
+TextBox::TextBox(int x, int y, int w, int h) 
 {
+	font = std::make_unique<Font16>( Font16() );
 	location = SDL_Rect{ x,y,w,h };
 }
+
+
+void TextBox::SetFont(std::unique_ptr<FontFixed> val) { 
+	font = std::move(val); 
+};
 
 void TextBox::SetText(std::string val)
 {
@@ -15,7 +21,7 @@ void TextBox::SetText(std::string val)
 
 std::string TextBox::GetText()
 {
-	return std::string();
+	return label;
 }
 
 void TextBox::SetTexture(SDL_Texture* tex)
@@ -45,6 +51,7 @@ void TextBox::MouseUp()
 
 void TextBox::Draw()
 {
+	//Font16 ourFont;
 	//we need a black box
 	SDL_SetRenderDrawColor(Display::GetRenderer(), 0, 0, 0, 255);
 	SDL_RenderFillRect(Display::GetRenderer(), &location);
@@ -53,7 +60,7 @@ void TextBox::Draw()
 	SDL_SetRenderDrawColor(Display::GetRenderer(), 255, 255, 255, 255);
 	SDL_RenderDrawRect(Display::GetRenderer(), &location);
 
-	Font16::DrawText(label,location.x + 2, location.y + 2);
+	font->DrawText(label,location.x + 2, location.y + 2);
 
 	
 	if (showCursor) {
@@ -61,7 +68,7 @@ void TextBox::Draw()
 		int curOffset = 0;
 		if (cursorX > 0) {
 			//std::string x = label.substr(0, curX);
-			curOffset = Font16::TextLength(label,cursorX);
+			curOffset = font->TextLength(label,cursorX);
 		}
 		SDL_Rect cursor{ location.x + 2 + curOffset, location.y + 2, 1, location.h - 4 };
 		SDL_RenderDrawRect(Display::GetRenderer(), &cursor);

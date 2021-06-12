@@ -53,6 +53,7 @@ void Button::MouseUp()
 
 void Button::Draw()
 {
+	Font16 ourFont;
 	SDL_Rect source{ 0, 0, location.w, location.h };
 	if (hover) {
 		source.y = 48;
@@ -62,13 +63,14 @@ void Button::Draw()
 	//Change 16 to font size later on.
 	SDL_Rect topLeft = SDL_Rect{ location.x,location.y, 16,16 };
 	int xs, ys;
-	int labelL = Font16::TextLength(label);
+	int labelL = ourFont.TextLength(label);
+	
 
 	xs = (location.w - labelL) >> 1;
 	ys = (location.h - 16) >> 1;
 	topLeft.x += xs;
 	topLeft.y += ys;
-	Font16::DrawText(label, topLeft.x, topLeft.y);
+	ourFont.DrawText(label, topLeft.x, topLeft.y);
 }
 
 void Button::MouseClick(int mx, int my)

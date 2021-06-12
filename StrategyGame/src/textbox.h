@@ -1,6 +1,8 @@
 #pragma once
 #include "pch.h"
 #include "visualbase.h"
+#include "font16.h"
+#include <memory>
 
 class TextBox : public VisualBase {
 public:
@@ -20,8 +22,10 @@ public:
 	inline void SetCaps(bool val) { allCaps = val; };
 	inline void SetLetters(std::string val) { allowedChars = val; };
 	inline void SetMaxLength(size_t val) { maxLen = val; };
+	void SetFont(std::unique_ptr<FontFixed> val);// { font = std::move(val); };
 protected:
-	bool allCaps;
+	std::unique_ptr<FontFixed> font;
+	bool allCaps = false;
 	std::string allowedChars{ "" };
 	size_t maxLen = 256;
 	double curTime = 0;

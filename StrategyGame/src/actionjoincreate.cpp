@@ -8,6 +8,7 @@
 #include "game.h"
 #include "../3rd/jute.h"
 #include "json.h"
+#include <memory>
 
 const int a_val = 1;
 const int b_val = 2;
@@ -39,14 +40,19 @@ ActionJoinCreate::ActionJoinCreate():
 
     int rSideY = location.y + 35;
     //This will be 32x32 font..
+    //std::smart_ptr<FontFixed> pt(new Font16());
     tRoomCode = new TextBox(location.x + 300, rSideY, 256, 20);
     tRoomCode->SetText("");
+    tRoomCode->SetFont(std::make_unique<Font32>());
+    tRoomCode->SetText("Thank you");
 
     rSideY += 80;
     //32x32 here
     tUserName= new TextBox(location.x + 300, rSideY, 256, 20);
-
     tUserName->SetText("");
+    tUserName->SetFont(std::make_unique<Font16>());
+    tUserName->SetText("John");
+
 
     Button* bCreate = new Button(location.x + 10, location.y + 90, 256, 48);
     bCreate->SetText("Create Room");
@@ -124,7 +130,8 @@ void ActionJoinCreate::createClick()
 {
     std::string st = "{" +
         Json::Jsonify("request", "create") + "," +
-        Json::Jsonify("game", "chaos") +
+        Json::Jsonify("game", "chaos") + "," +
+        Json::Jsonify("username", tUserName->GetText()) +
         "}";
     Game::gameInstance->SendMessage(st);
     
@@ -157,6 +164,7 @@ bool ActionJoinCreate::MessageIn(jute::jValue& v)
                     "{" +
                     Json::Jsonify("request", "join") + "," +
                     Json::Jsonify("roomcode", roomCode) + "," +
+                    Json::Jsonify("username", tUserName->GetText()) + "," +
                     Json::Jsonify("game", "chaos") + "}";
                 Game::gameInstance->SendMessage(st);
 

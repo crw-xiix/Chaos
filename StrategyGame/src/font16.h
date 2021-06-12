@@ -7,19 +7,51 @@ Charles Wood
 #pragma once
 #include "pch.h"
 
-class Font16 {
+class FontFixed {
 public:
-	static void DrawText(const std::string &str, int x, int y);
-	static int TextLength(const std::string &str, int at = INT32_MAX);
-
-	/// <summary>
-	/// Draws a 16x16 letter, but smashed width wise
-	/// </summary>
-	/// <param name="c"></param>
-	/// <param name="x"></param>
-	/// <param name="y"></param>
-	/// <returns>Number of pixels wide the character was</returns>
-	static int DrawLetter(char c, int x, int y);
+	virtual void DrawText(const std::string& str, int x, int y) = 0;
+	virtual int TextLength(const std::string& str, int at = INT32_MAX) = 0;
+	virtual int DrawLetter(char c, int x, int y) = 0;
+	virtual int GetHeight() = 0;
+	virtual std::string FontName() = 0;
+	virtual ~FontFixed() {
+		std::cout << "Destroy Font Fixed";
+	}
 };
+
+
+
+/// <summary>
+/// Draws and measures a 32 px font
+/// </summary>
+class Font16 : public FontFixed {
+public:
+	void DrawText(const std::string &str, int x, int y);
+	int TextLength(const std::string &str, int at = INT32_MAX);
+	int DrawLetter(char c, int x, int y);
+	int GetHeight() ;
+	std::string FontName() { return "FONT16"; }
+	virtual ~Font16() {																													
+		std::cout << "Destroy Font16";
+	}
+
+};	
+
+
+/// <summary>
+/// Draws and measures a 32 px font
+/// </summary>
+class Font32: public FontFixed {
+public:
+	void DrawText(const std::string& str, int x, int y);
+	int TextLength(const std::string& str, int at = INT32_MAX);
+	int DrawLetter(char c, int x, int y);
+	int GetHeight();
+	std::string FontName() { return "FONT32"; }
+	virtual ~Font32() {
+		std::cout << "Destroy Font32";
+	}
+};
+
 
 

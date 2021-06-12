@@ -58,7 +58,7 @@ int asdf = 0;
 void ViewPort::Draw(Map& map, std::vector<GamePlayer> &players, PathFinder *pathFinder)
 {
 	SDL_ClipRectSection myClip(topX, topY, width, height);
-	SDL_Rect destRect;
+	SDL_Rect destRect = { 0 };
 	destRect.w = Map::TileSize;
 	destRect.h = Map::TileSize;
 	int maxXCells = width / destRect.w;
@@ -170,5 +170,6 @@ bool ViewPort::MouseInViewPort(int x, int y)
 void ViewPort::DrawNumber(SDL_Rect location, int value)
 {
 	std::string str = std::to_string(value);
-	Font16::DrawText(str, location.x, location.y);
+	Font16 asdf;
+	asdf.DrawText(str, location.x, location.y);
 }

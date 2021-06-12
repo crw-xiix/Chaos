@@ -75,7 +75,7 @@ void Game::click()
 					socketQueue->Send(test);
 				}
 				auto thePath = pathFinder->GetPathTo(lastMouseCell.x, lastMouseCell.y);
-				for (auto me : thePath) {
+				for (auto &&me : thePath) {
 					addAction(new ActionMovePlayer(thisUnit, me.x, me.y));
 				}
 				//thisUnit.Move(lastMouseCell.x, lastMouseCell.y);
@@ -98,7 +98,7 @@ bool Game::getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit)
 {
 	int pnum = 0;
 	int unum = 0;
-	for (auto iplayer : players) {
+	for (auto &&iplayer : players) {
 		for (auto &unit : iplayer.GetUnits()) {
 			if ((unit.GetX() == cx) && (unit.GetY() == cy)) {
 				sPlayer = pnum;

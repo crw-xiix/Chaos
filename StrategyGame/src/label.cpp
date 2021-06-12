@@ -40,13 +40,14 @@ void Label::MouseUp()
 
 void Label::Draw()
 {
+	Font16 ourFont;
 	//center our location, and just draw it.....
-	int labelL = Font16::TextLength(label);
+	int labelL = ourFont.TextLength(label);
 	int xs = (location.w - labelL) >> 1;
 	int ys = (location.h - 16) >> 1;
 	xs += location.x;
 	ys += location.y;
-	Font16::DrawText(label, xs, ys);
+	ourFont.DrawText(label, xs, ys);
 }
 
 void Label::MouseClick(int mx, int my)

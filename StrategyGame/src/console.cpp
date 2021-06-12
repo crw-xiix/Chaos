@@ -41,11 +41,12 @@ void ConsoleView::DrawNumber(SDL_Rect location, char c)
 }
 void ConsoleView::Draw()
 {
+	Font16 ourFont;
 	SDL_ClipRectSection myClip(window.x, window.y, window.w, window.h);
 	//Change 16 to font size later on.
 	SDL_Rect topLeft = SDL_Rect{ window.x,window.y, 16,16 };
-	for (auto str : data) { 
-		Font16::DrawText(str, topLeft.x, topLeft.y);
+	for (auto &&str : data) { 
+		ourFont.DrawText(str, topLeft.x, topLeft.y);
 		
 		
 		/*
