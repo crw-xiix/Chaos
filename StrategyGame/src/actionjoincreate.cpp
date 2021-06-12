@@ -37,9 +37,16 @@ ActionJoinCreate::ActionJoinCreate():
     bJoin->SetTexture(bTex);
     bJoin->SetOnClick(std::bind(&ActionJoinCreate::joinClick, this));
 
-    tRoomCode = new TextBox(location.x + 300, location.y + 35, 256, 20);
+    int rSideY = location.y + 35;
+    //This will be 32x32 font..
+    tRoomCode = new TextBox(location.x + 300, rSideY, 256, 20);
     tRoomCode->SetText("");
 
+    rSideY += 80;
+    //32x32 here
+    tUserName= new TextBox(location.x + 300, rSideY, 256, 20);
+
+    tUserName->SetText("");
 
     Button* bCreate = new Button(location.x + 10, location.y + 90, 256, 48);
     bCreate->SetText("Create Room");
@@ -54,6 +61,7 @@ ActionJoinCreate::ActionJoinCreate():
     controls.push_back(lTitle);
     controls.push_back(bJoin);
     controls.push_back(tRoomCode);
+    controls.push_back(tUserName);
     controls.push_back(bCreate);
     controls.push_back(bExit);
 

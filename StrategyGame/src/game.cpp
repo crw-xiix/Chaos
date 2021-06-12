@@ -236,6 +236,12 @@ bool Game::handleLocal(jute::jValue& v)
 		lastPing = elapsedTime;
 		return true;
 	}
+	//This will help in debugging
+	if (resp == "error") {
+		std::string msg = v["message"].as_string();
+		gameInstance->console->AddLine(msg);
+		return true;
+	}
 	return false;
 }
 

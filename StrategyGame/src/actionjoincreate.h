@@ -32,6 +32,7 @@ private:
 	bool MessageIn(jute::jValue &val);
 	void keyPressed(int val);
 	TextBox* tRoomCode = nullptr;
+	TextBox* tUserName = nullptr;
 	MouseManager* mouseMan = nullptr;
 	KeyboardManager keyMan;
 	SDL_Rect location{ 0 };
