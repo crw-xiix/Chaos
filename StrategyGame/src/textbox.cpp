@@ -9,7 +9,6 @@ TextBox::TextBox(int x, int y, int w, int h)
 	location = SDL_Rect{ x,y,w,h };
 }
 
-
 void TextBox::SetFont(std::unique_ptr<FontFixed> val) { 
 	font = std::move(val); 
 };

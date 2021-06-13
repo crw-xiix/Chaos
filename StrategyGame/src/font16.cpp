@@ -89,7 +89,7 @@ int Font32::TextLength(const std::string& str, int at)
 			x += 4;
 		}
 		else {
-			x += spacing16[idx + 1] - spacing16[idx];
+			x += spacing32[idx + 1] - spacing32[idx];
 		}
 		at--;
 		if (at == 0) break;
@@ -108,7 +108,7 @@ int Font32::DrawLetter(char c, int x, int y) {
 	SDL_Texture* fontText = AssetMgr::GetAll("FONT32", texRect);
 	//Pick out our location in the buffer for the string
 	texRect.x = spacing32[idx];
-	texRect.w = spacing32[idx + 1] - spacing16[idx];
+	texRect.w = spacing32[idx + 1] - spacing32[idx];
 	texRect.y = 0;
 	texRect.h = 32;
 	SDL_Rect ilocation{ x,y,texRect.w,texRect.h };

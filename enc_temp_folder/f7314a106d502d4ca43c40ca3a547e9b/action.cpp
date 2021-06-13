@@ -41,7 +41,7 @@ bool ActionMovePlayer::Process(double time)
     dx /= len; 
     dy /= len;
     actor.MoveF(actor.GetXF() + dx*(float)time*4.0f, actor.GetYF() + dy*(float)time*4.0f);
-    //need to store old direction to see if we reversed - went too far, lag, etc.
+    //XXXC CRW - need to store old direction to see if we reversed - went too far, lag, etc.
     if (len < 0.05) {
         actor.Move(tx, ty);
         return true;

@@ -258,7 +258,7 @@ void Game::ProcessEvents()
 			//The temp is for setting breakpoints
 			std::string temp = gameInstance->socketQueue->Peek();
 			//gameInstance->console->AddLine(temp);
-			
+			//Call it..xxxc crw
 			//This will happen a few time during transition, but it's okay for now.
 			//Could cache it, or just store the Json in SocketCallBack
 			jute::jValue json = jute::parser::parse(temp);

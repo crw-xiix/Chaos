@@ -64,9 +64,6 @@ ActionJoinCreate::ActionJoinCreate():
     bExit->SetTexture(bTex);
     bExit->SetOnClick(std::bind(&ActionJoinCreate::wanderClick, this));
 
-
-    //xxxc CRW focus manager
-
     controls.push_back(lTitle);
     controls.push_back(bJoin);
     controls.push_back(tRoomCode);
@@ -188,8 +185,6 @@ bool ActionJoinCreate::MessageIn(jute::jValue& v)
 
 void ActionJoinCreate::keyPressed(int val)
 {
-    //xxxc CRW need focus manager
-
     tRoomCode->KeyIn(val);
 }
 

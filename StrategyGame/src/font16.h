@@ -15,7 +15,7 @@ public:
 	virtual int GetHeight() = 0;
 	virtual std::string FontName() = 0;
 	virtual ~FontFixed() {
-		std::cout << "Destroy Font Fixed";
+		//std::cout << "Destroy Font Fixed";
 	}
 };
 
@@ -32,7 +32,7 @@ public:
 	int GetHeight() ;
 	std::string FontName() { return "FONT16"; }
 	virtual ~Font16() {																													
-		std::cout << "Destroy Font16";
+		//std::cout << "Destroy Font16";
 	}
 
 };	
@@ -49,7 +49,7 @@ public:
 	int GetHeight();
 	std::string FontName() { return "FONT32"; }
 	virtual ~Font32() {
-		std::cout << "Destroy Font32";
+		//std::cout << "Destroy Font32";
 	}
 };
 
