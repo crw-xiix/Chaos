@@ -189,7 +189,6 @@ bool ActionJoinCreate::MessageIn(jute::jValue& v)
 void ActionJoinCreate::keyPressed(int val)
 {
     //xxxc CRW need focus manager
-
     tRoomCode->KeyIn(val);
 }
 

@@ -7,6 +7,7 @@ TextBox::TextBox(int x, int y, int w, int h)
 {
 	font = std::make_unique<Font16>( Font16() );
 	location = SDL_Rect{ x,y,w,h };
+	canFocus = true;
 }
 
 void TextBox::SetFont(std::unique_ptr<FontFixed> val) { 
@@ -41,6 +42,9 @@ void TextBox::MouseOut()
 
 void TextBox::MouseDown(int mx, int my)
 {
+	if (canFocus) {
+		hasFocus = true;
+	}
 }
 
 
@@ -56,13 +60,18 @@ void TextBox::Draw()
 	SDL_RenderFillRect(Display::GetRenderer(), &location);
 
 	//We need a border
-	SDL_SetRenderDrawColor(Display::GetRenderer(), 255, 255, 255, 255);
+	if (hasFocus) {
+		SDL_SetRenderDrawColor(Display::GetRenderer(), 255, 255, 255, 255);
+	}
+	else {
+		SDL_SetRenderDrawColor(Display::GetRenderer(), 127,127,127,255);
+	}
 	SDL_RenderDrawRect(Display::GetRenderer(), &location);
 
 	font->DrawText(label,location.x + 2, location.y + 2);
 
 	
-	if (showCursor) {
+	if (showCursor && hasFocus) {
 		//Got figure out where the cursor is.....
 		int curOffset = 0;
 		if (cursorX > 0) {
@@ -93,6 +102,7 @@ void TextBox::Process(double ms)
 
 void TextBox::KeyIn(int key)
 {
+	if (!hasFocus) return;
 	if (allowedChars.length() > 0) {
 		if (allowedChars.find(key) <0) return;
 	}

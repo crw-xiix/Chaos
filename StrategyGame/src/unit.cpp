@@ -51,8 +51,9 @@ Unit::Unit(UnitType type, int x, int y)
 		break;
 
 	case UnitType::Wizard:
+		maxFrames = 3;
 		weapon = WeaponType::Magic;
-		hp = 100;
+		hp = 40;
 		speed = 20;
 		range = 2;
 		damage = 40.0f;

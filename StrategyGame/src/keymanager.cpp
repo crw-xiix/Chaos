@@ -6,6 +6,10 @@ KeyboardManager::KeyboardManager()
 	
 }
 
+//This is a pointer to obj on stack, owned by caller.
+void KeyboardManager::SetFocusManager(FocusManager* fm) {
+    focusMan = fm;
+}
 void KeyboardManager::Process(double ms) {
     if (KeyManager == nullptr) {
         KeyManager = new KeyboardManager();
@@ -13,7 +17,9 @@ void KeyboardManager::Process(double ms) {
     if (keyQueue.size() > 0) {
         int val = *(keyQueue.begin());
         keyQueue.pop_front();
-        if (callBack) callBack(val);
+        if (callBack) {
+            callBack(val);
+        }
     }
 }
 
@@ -54,6 +60,7 @@ void KeyboardManager::AddKeyDown(int key, bool shift)
         case '/': key = '?'; break;
         }
     }
+    //xxxc CRW - how to catch a loss of focus
     keyQueue.push_back(key);
 }
 

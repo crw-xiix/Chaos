@@ -16,4 +16,6 @@ protected:
 	SDL_Rect location{ 0 };
 	bool hover = false;
 	bool down = false;
+	bool canFocus = false;
+	bool hasFocus = false;
 };
