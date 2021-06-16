@@ -44,5 +44,5 @@ void MouseManager::Process(int mx, int my, int mb)
 
 MouseManager::~MouseManager()
 {
-    if (viewItems) delete viewItems;
+    //if (viewItems != nullptr) delete viewItems;
 }

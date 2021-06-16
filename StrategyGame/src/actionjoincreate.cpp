@@ -169,6 +169,7 @@ bool ActionJoinCreate::MessageIn(jute::jValue& v)
                     Json::Jsonify("roomcode", roomCode) + "," +
                     Json::Jsonify("username", tUserName->GetText()) + "," +
                     Json::Jsonify("game", "chaos") + "}";
+                ourCallBack.SetActive(false);
                 Game::gameInstance->SendMessage(st);
 
                 //Turn off messages for this function...

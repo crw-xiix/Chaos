@@ -40,7 +40,7 @@ void Game::handleMouse()
 void Game::click()
 {
 	if (actions.size() > 0) {
-		actions[actions.size() - 1]->Click();
+		(actions[actions.size() - 1])->Click();
 		return;
 	}
 	int sp, su;
@@ -75,7 +75,7 @@ void Game::click()
 					socketQueue->Send(test);
 				}
 				auto thePath = pathFinder->GetPathTo(lastMouseCell.x, lastMouseCell.y);
-				for (auto me : thePath) {
+				for (auto &me : thePath) {
 					addAction(new ActionMovePlayer(thisUnit, me.x, me.y));
 				}
 				//thisUnit.Move(lastMouseCell.x, lastMouseCell.y);
@@ -98,7 +98,7 @@ bool Game::getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit)
 {
 	int pnum = 0;
 	int unum = 0;
-	for (auto iplayer : players) {
+	for (auto &iplayer : players) {
 		for (auto &unit : iplayer.GetUnits()) {
 			if ((unit.GetX() == cx) && (unit.GetY() == cy)) {
 				sPlayer = pnum;
@@ -121,14 +121,15 @@ void Game::SendMessage(std::string st)
 	socketQueue->Send(st);
 }
 
-void Game::AddCallBack(std::function<bool(jute::jValue&)> callBack)
+//void Game::SetMsgCallBack(std::function<bool(jute::jValue&)> callBack)
+void Game::SetMsgCallBack(std::function<bool(jute::jValue&)> callBack)
 {
-	callBacks = callBack;
+	msgCallBack = callBack;
 }
 
 void Game::RemoveCallBack()
 {
-	callBacks = nullptr;
+	msgCallBack = nullptr;
 }
 void Game::SetRoomCode(const std::string& val)
 {
@@ -147,12 +148,9 @@ void Game::onSelectServerCallback(std::string url)
 
 //This has to be static unless we want to pass 100K vars around.
 //Each action, when it closes, adds an action.
-void Game::addAction(Action* action, Action* ref)
+void Game::addAction(Action* action)
 {
-	//we aren't doing emplace yet
-	if (ref == nullptr) {
-		gameInstance->actions.push_back(action);
-	}
+	gameInstance->actions.emplace_back(std::unique_ptr<Action>(action));
 }
 
 //static
@@ -270,63 +268,177 @@ void Game::ProcessEvents()
 			//Also need to see if the current callback is ready for the message
 			//If not, leave the message in there and wait till something else
 			//Is up and running to accept the message.
-			if (gameInstance->callBacks != nullptr) {
-				if ((gameInstance->callBacks)(json)) {
-					//Now we can remove it.
-					gameInstance->socketQueue->Get();
+
+			try {
+				if (gameInstance->msgCallBack != nullptr) {
+
+					if ((gameInstance->msgCallBack)(json)) {
+						//Now we can remove it.
+						gameInstance->socketQueue->Get();
+					}
 				}
+			}
+			catch (...) {
+			
 			}
 			std::cout << temp << std::endl;
 			int bp = 0;
 		}
 	}
 }
+/*
+
+#include <array>
+#include <list>
+#include <string>
+#include <vector>
+
+#include <iostream>
+#include <sstream>
+#include <fstream>
+
+#include <functional>
+#include <memory>
+#include <map>
+
+
+using namespace std;
+
+class Employee {
+public:
+	Employee(string iname = "") { name = iname; }
+	string name = "No Name";
+	bool onVacation = true;
+	virtual void display() {
+		cout << "    Name: " << name << "\nVacation: " << (onVacation ? "Yes" : "No") << "\n\n";
+	}
+	virtual ~Employee() {
+		cout << "Employee::Dtor::" << name << "\n";
+	}
+};
+
+class Manager : public Employee {
+public:
+	Manager(string iname = "") : Employee(iname) {
+
+	}
+	virtual void display() {
+		cout << "------------Manager--------------\n";
+		Employee::display();
+	}
+	~Manager() {
+		cout << "Manager::Employee::Dtor::" << name << "\n";
+	}
+
+};
+
+void whyNot(Employee* toAdd) {
+	std::vector< std::unique_ptr<Employee> > objs;
+
+	objs.emplace_back(unique_ptr<Employee>(toAdd));
+	cout << "\n\nWhy not:--------------------------------------------------- \n\n";
+	for (auto const& p : objs) {
+		p->display();
+	}
+}
+
+int main()
+{
+	// Create an Employee on the stack
+	// Employee EmpRec("Cliff");
+
+	 //EmpRec.onVacation = true; 
+	Employee* test = new Employee("Chuck");  //dtor
+	Employee* man = new Manager("The Man");  //dtor 2x
+
+	// Assign values to a uniqueptrs
+
+	//This is normal way
+	unique_ptr<Employee> tempEmp(new Employee("Justin")); //dtor
+	//This is odd.
+	unique_ptr<Employee> tempEmp2(test);
+
+	//This is inheritance check;
+	unique_ptr<Employee> tempEmp3 = std::make_unique<Employee>("Stock Worker 2");//dtor
+	unique_ptr<Employee> tempEmp4(man);
+
+	// *tempEmp = std::move(EmpRec); //this is a copy......
+	*tempEmp2 = std::move(*test);
+	// *tempEmp = std::move( &EmpRec);
+
+	//tempEmp.get()->name = "Tyreke";
+
+	tempEmp.get()->display();
+	tempEmp2.get()->display();
+	tempEmp3.get()->display();
+	tempEmp4.get()->display();
+
+
+
+	Employee* man2 = new Manager("The Man #2");  //dtord
+	man2->onVacation = false;
+
+	Employee* man3 = new Manager("CEO");
+	//Okay now to arrays/vecs
+
+	cout << "PolyMorphic vector of Employees\n";
+	std::vector< std::unique_ptr<Employee> > objs;
+
+	objs.emplace_back(unique_ptr<Employee>(man2));
+	objs.emplace_back(unique_ptr<Employee>(man3));
+	objs.emplace_back(unique_ptr<Employee>(new Employee("Jill"))); //jill dtor
+	//managers
+	cout << "Managers: \n";
+	for (auto const& p : objs) {
+		p->display();
+	}
+	man->onVacation = false;
+	whyNot(man3);
+	//objs.emplace_back(tempEmp);
+
+}
+*/
 
 bool Game::Process(double deltaTime) {
 	bool doKeyb = true;
 	elapsedTime = deltaTime;
 
 	if (actions.size() > 0) {
-		//We need the last Action/Current Action iterator, so we can delete later.
-		auto location = (actions.end() - 1);
-		auto action = *location;
-		if (action->HasKeyboardControl()) {
-			doKeyb = false;
+		//This just allows some windows to let control keys through to gameInstance.
+		if (doKeyb) {
+			const uint8_t* ks = SDL_GetKeyboardState(NULL);
+			if (ks[SDL_SCANCODE_W] > 0) cy -= 0.001;
+			if (ks[SDL_SCANCODE_S] > 0) cy += 0.001;
+			if (ks[SDL_SCANCODE_A] > 0) cx -= 0.001;
+			if (ks[SDL_SCANCODE_D] > 0) {
+				cx += 0.001;
+			}
 		}
+		
 	}
 	
-	if (doKeyb) {
-		const uint8_t* ks = SDL_GetKeyboardState(NULL);
-		if (ks[SDL_SCANCODE_W] > 0) cy -= 0.001;
-		if (ks[SDL_SCANCODE_S] > 0) cy += 0.001;
-		if (ks[SDL_SCANCODE_A] > 0) cx -= 0.001;
-		if (ks[SDL_SCANCODE_D] > 0) {
-			cx += 0.001;
-		}
-	}
 	viewPort.SetCamera(cx, cy);
 	viewPort.Update(deltaTime);
 	size_t size = actions.size();
 
 	if (size > 0) {
 		//We need the last Action/Current Action iterator, so we can delete later.
-		auto location = (actions.end() - 1);
+		auto location = (actions.end()-1);
 		//Now we have the action...
-		Action* action = *location;
+		auto &action = actions.back();
 		//Process can cause a message queue close, but it's usually the messageIn
 		bool resultClose = action->Process(deltaTime);
 
 		if (resultClose) {
 			//We have to delete the current one before we can add the new one(s) on top...
-			std::list<Action*> tempActions = action->GetNext();
-			actions.erase(location);
-			if (tempActions.size() != 0) {
-				for (auto a : tempActions) {
-					addAction(a);
-				}
+			//We are only doing one action for now....
+			Action* nextAction = action->GetNext();
+			//Remove from container
+			actions.pop_back();
+			if (nextAction != nullptr) {
+				addAction(nextAction);
 			}
 			//Must do this last.
-			delete action;
 		}
 	}
 	handleMouse();
@@ -355,8 +467,8 @@ void Game::Draw(double deltaTime)
 		//We need the last Action/Current Action iterator, so we can delete later.
 		auto location = (actions.end() - 1);
 		//Now we have the action...
-		Action* action = *location;
-		action->Draw();
+//		Action* action = *location;
+		actions.back()->Draw();
 	}
 
 	//No mouse during action time for now

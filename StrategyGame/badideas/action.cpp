@@ -2,19 +2,6 @@
 #include "action.h"
 
 
-bool Action::Process(double time)
-{
-    return false;
-}
-
-void Action::Draw()
-{
-}
-
-void Action::Click()
-{
-}
-
 void Action::Mouse(int mx, int my, int b)
 {
     //Testing 1234 -- webhooks

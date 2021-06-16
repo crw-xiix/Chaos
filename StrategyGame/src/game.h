@@ -29,7 +29,7 @@ public:
 	void SendMessage(std::string st);
 
 
-	void AddCallBack(std::function<bool(jute::jValue&)> callBack);
+	void SetMsgCallBack(std::function<bool(jute::jValue&)> callBack);
 	void RemoveCallBack();
 	void SetRoomCode(const std::string& val);
 public: //static
@@ -41,13 +41,20 @@ private:
 	double elapsedTime = 0;
 	double lastPing = 0;
 	std::string roomCode = "";
-	std::function<bool(jute::jValue&)> callBacks;
+	std::function<bool(jute::jValue&)> msgCallBack;
 	KeyboardManager keyMan;
+	
 	std::map<int, double> keys;  //numbers to wild for array....
 	bool keyDown(int val);
 	void HandleEvent(double ms);
-	//This can only be used locally.
-	static void addAction(Action* action, Action* ref = nullptr);
+	
+	
+	/// <summary>
+	/// This converts the pointer to a unique pointer and claims ownership.
+	/// </summary>
+	/// <param name="action"></param>
+	/// <param name="ref"></param>
+	static void addAction(Action* action);
 	SocketQueue *socketQueue=nullptr;
 
 	bool running= false;
@@ -72,7 +79,8 @@ private:
 
 	SDL_Point lastMouseCell{ -1,-1 };
 	bool mouseDown = false;
-	std::vector<Action*> actions;
+
+	std::vector<std::unique_ptr<Action>> actions;
 	Uint64 now = 0;
 	Uint64 last = 0;
 	void handleMouse();
@@ -81,7 +89,4 @@ private:
 	//Gets the character at cell x,y (not mouse location)
 	bool getCharacterAt(int cx, int cy, int& sPlayer, int& sUnit);
 	void keyPressed(int val);
-	
-
-	
 };

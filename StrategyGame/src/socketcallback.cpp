@@ -4,7 +4,7 @@
 
 MessageCallBack::MessageCallBack(std::function<bool(jute::jValue&)> iCallBack):callBack(iCallBack)
 {
-	Game::gameInstance->AddCallBack(callBack);
+	Game::gameInstance->SetMsgCallBack(callBack);
 }
 
 MessageCallBack::~MessageCallBack()

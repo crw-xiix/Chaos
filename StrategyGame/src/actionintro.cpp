@@ -15,7 +15,8 @@ bool ActionIntro::Process(double time)
     eTime += time;
     if ((eTime > showTime) || (clicked)) {
         int bp = 0;
-        nextActions.push_back(new ActionSelectServer());
+        //This pointer gets owned by game.
+        nextAction = new ActionSelectServer();
         return true;
     }
     return false;
@@ -33,7 +34,7 @@ void ActionIntro::Draw()
     if (eTime < 1) {
         alpha = (int((255) * eTime));
     }
-    if (eTime > (showTime - 1)) {
+    if (eTime > ((showTime - 1l))) {
         alpha = (int((255) * (showTime - eTime)));
     }
 

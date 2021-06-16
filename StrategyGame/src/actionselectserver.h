@@ -21,6 +21,7 @@ protected:
 	//event handlers
 	void localClick();
 	void remoteClick();
+	void piClick();
 	void quitClick();
 private:
 	

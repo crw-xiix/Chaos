@@ -22,7 +22,7 @@ ActionSelectServer::ActionSelectServer()
     SDL_Texture* bTex = AssetMgr::GetAll("BUTTON");
 
     Button *bRemote = new Button(location.x+10, location.y+20, 256, 48);
-    bRemote->SetText("Remote:82");
+    bRemote->SetText("Cabbage:82");
     bRemote->SetTexture(bTex);
     bRemote->SetOnClick(std::bind(&ActionSelectServer::remoteClick,this));
     
@@ -32,13 +32,19 @@ ActionSelectServer::ActionSelectServer()
     bLocal->SetTexture(bTex);
     bLocal->SetOnClick(std::bind(&ActionSelectServer::localClick, this));
 
-    Button* bExit = new Button(location.x + 10, location.y + 140, 256, 48);
+    Button* bPi = new Button(location.x + 10, location.y + 140, 256, 48);
+    bPi->SetText("192.168.89.250:82");
+    bPi->SetTexture(bTex);
+    bPi->SetOnClick(std::bind(&ActionSelectServer::piClick, this));
+
+    Button* bExit = new Button(location.x + 10, location.y + 200, 256, 48);
     bExit->SetText("Quit");
     bExit->SetTexture(bTex);
     bExit->SetOnClick(std::bind(&ActionSelectServer::quitClick, this));
 
     controls.push_back(bRemote);
     controls.push_back(bLocal);
+    controls.push_back(bPi);
     controls.push_back(bExit);
     mouseMan = new MouseManager(&controls);
 }
@@ -49,7 +55,7 @@ ActionSelectServer::~ActionSelectServer()
         delete i;
         i = nullptr;
     }
-    delete mouseMan;
+    if (mouseMan != nullptr) delete mouseMan;
 }
 
 bool ActionSelectServer::Process(double time)
@@ -89,14 +95,22 @@ void ActionSelectServer::Draw()
 void ActionSelectServer::localClick()
 {
     Game::gameInstance->onSelectServerCallback("ws://127.0.0.1:82/chat");
-    nextActions.push_back(new ActionJoinCreate());
+    nextAction = new ActionJoinCreate();
     clicked = true;
 }
 
 void ActionSelectServer::remoteClick()
 {
-    Game::gameInstance->onSelectServerCallback("ws://71.56.75.25:82/chat");
-    nextActions.push_back(new ActionJoinCreate());
+    //xxxc CRW finger out how to open 82 on the PI........
+    Game::gameInstance->onSelectServerCallback("ws://madcabbage.ovh:82/chat");
+    nextAction = new ActionJoinCreate();
+    clicked = true;
+}
+
+void ActionSelectServer::piClick()
+{
+    Game::gameInstance->onSelectServerCallback("ws://192.168.89.250:82/chat");
+    nextAction = new ActionJoinCreate();
     clicked = true;
 }
 

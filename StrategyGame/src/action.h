@@ -5,19 +5,18 @@
 class Action {
 public:
 	//Returns true if Process is complete.
-	virtual bool Process(double time) = 0;
-	virtual void Draw() = 0;
-	virtual void Click() = 0;
+	virtual bool Process(double time);
+	virtual void Draw();
+	virtual void Click();
 	virtual void Mouse(int mx, int my, int b);
-	inline std::list<Action*> GetNext() { return nextActions; }
+	//Once this gets called, it's a unique_ptr, do not delete here.
+	Action* GetNext() { return nextAction; }
 	virtual inline bool HasKeyboardControl() { return true; };
 	Action();
+	virtual ~Action();
 protected: 
-
-	std::list<Action*> nextActions;
+	Action* nextAction = nullptr;
 private:
-	
-
 };
 
 class ActionPlayLocal : public Action {
@@ -34,7 +33,7 @@ public:
 	void Click();
 	void Draw() override;
 private:
-	int tx, ty;
+	int targetX, targetY;
 	Unit& actor;
 };
 
