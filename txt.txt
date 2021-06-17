@@ -1,0 +1,32 @@
+Mother board cpu ram, solid state drive, hard drive, power supply, case, sata cables, graphics card,
+liquid cooler for cpu, radiator
+
+Computer: Hardware, and software
+
+
+Mother baord contain everything.
+
+Case:
+	motherboard
+		audio
+		usb
+		INTEGRATED HDMI
+		pci x16 * 2
+		
+		Wifi
+		
+		Sata jacks
+		
+		cpu,
+		ram, 
+		ssd,
+		hdd,
+		graphics card,
+			display port x 2, dvi x 2, hdmi x 1
+		Mouse,
+		Keyboard
+		Monitor
+		
+		
+		
+	
