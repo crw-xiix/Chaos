@@ -50,6 +50,10 @@ bool SocketQueue::Start()
     }
 #endif
     ws = std::unique_ptr<WebSocket>(WebSocket::from_url(url));
+    if (ws.get()->getReadyState() == easywsclient::WebSocket::readyStateValues::OPEN) {
+        SocketQueue::instance->qIn.Enqueue("{\"socket\":\"open\"}");
+    }
+
     return true;
 }
 

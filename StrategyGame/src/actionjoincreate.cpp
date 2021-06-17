@@ -46,6 +46,12 @@ ActionJoinCreate::ActionJoinCreate():
     tRoomCode->SetFont(std::make_unique<Font32>());
     tRoomCode->SetText("Thank you");
 
+    if (Game::gameInstance->GetRoomCode() != "") {
+        tRoomCode->SetText(Game::gameInstance->GetRoomCode());
+    }
+
+
+
     rSideY += 80;
     //32x32 here
     tUserName= new TextBox(location.x + 300, rSideY, 256, 20);
@@ -163,6 +169,9 @@ bool ActionJoinCreate::MessageIn(jute::jValue& v)
             if (roomCode.length() == 4) {
                 //Trigger game, send room code.
                 Game::gameInstance->SetRoomCode(roomCode);
+                tRoomCode->SetText(roomCode);
+                tRoomCode->SetEnabled(false);
+               
                 std::string st =
                     "{" +
                     Json::Jsonify("request", "join") + "," +

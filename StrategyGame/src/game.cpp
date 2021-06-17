@@ -131,6 +131,11 @@ void Game::RemoveCallBack()
 {
 	msgCallBack = nullptr;
 }
+
+std::string Game::GetRoomCode() {
+	return roomCode;
+}
+
 void Game::SetRoomCode(const std::string& val)
 {
 	roomCode = val;
@@ -141,6 +146,7 @@ void Game::onSelectServerCallback(std::string url)
 {
 	if (url == "QUIT") {
 		running = false;
+		return;
 	}
 	socketQueue = new SocketQueue(url);
 	socketQueue->Start();
@@ -224,7 +230,15 @@ void Game::HandleEvent(double ms) {
 bool Game::handleLocal(jute::jValue& v)
 {
 	//This just clears out stuff that isn't for the actions/menus....
+
+	std::string socket = v["socket"].as_string();
+	if (socket == "open") {
+		gameInstance->console->AddLine("Connected to Server");
+		return true;
+	}
+
 	std::string resp = v["request"].as_string();
+	
 	if (resp == "userid") {
 		gameInstance->console->AddLine("User Id recvd");
 		return true;
@@ -240,6 +254,7 @@ bool Game::handleLocal(jute::jValue& v)
 		gameInstance->console->AddLine(msg);
 		return true;
 	}
+	
 	return false;
 }
 

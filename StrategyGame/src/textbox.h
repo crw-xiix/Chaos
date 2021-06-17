@@ -23,7 +23,9 @@ public:
 	inline void SetLetters(std::string val) { allowedChars = val; };
 	inline void SetMaxLength(size_t val) { maxLen = val; };
 	void SetFont(std::unique_ptr<FontFixed> val);// { font = std::move(val); };
+	void SetEnabled(bool val);
 protected:
+	bool enabled = true;
 	std::unique_ptr<FontFixed> font;
 	bool allCaps = false;
 	std::string allowedChars{ "" };

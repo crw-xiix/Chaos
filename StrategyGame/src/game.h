@@ -32,6 +32,7 @@ public:
 	void SetMsgCallBack(std::function<bool(jute::jValue&)> callBack);
 	void RemoveCallBack();
 	void SetRoomCode(const std::string& val);
+	std::string GetRoomCode();
 public: //static
 	void onSelectServerCallback(std::string url);
 private:

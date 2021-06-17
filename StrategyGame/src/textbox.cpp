@@ -14,6 +14,11 @@ void TextBox::SetFont(std::unique_ptr<FontFixed> val) {
 	font = std::move(val); 
 };
 
+void TextBox::SetEnabled(bool val) {
+	enabled = val;
+}
+
+
 void TextBox::SetText(std::string val)
 {
 	label = val;
@@ -56,7 +61,13 @@ void TextBox::Draw()
 {
 	//Font16 ourFont;
 	//we need a black box
-	SDL_SetRenderDrawColor(Display::GetRenderer(), 0, 0, 0, 255);
+	if (enabled) {
+		SDL_SetRenderDrawColor(Display::GetRenderer(), 0, 0, 0, 255);
+	}
+	else {
+		SDL_SetRenderDrawColor(Display::GetRenderer(), 63, 63, 63, 255);
+	}
+
 	SDL_RenderFillRect(Display::GetRenderer(), &location);
 
 	//We need a border
