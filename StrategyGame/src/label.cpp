@@ -6,6 +6,9 @@ Label::Label(int x, int y, int w, int h)
 {
 	location = SDL_Rect{ x,y,w,h };
 }
+Label::Label(SDL_Rect pos) {
+	location = pos;
+}
 
 void Label::SetText(std::string val)
 {

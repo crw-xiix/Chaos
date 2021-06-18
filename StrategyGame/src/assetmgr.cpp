@@ -39,7 +39,11 @@ SDL_Texture* AssetMgr::GetAll(std::string nick, SDL_Rect& dest)
 		
 	return tex;
 }
-
+/// <summary>
+/// Does not allocate memory...
+/// </summary>
+/// <param name="nick">Nick name of texture</param>
+/// <returns>SDL_Texture by nick ame</returns>
 SDL_Texture* AssetMgr::GetAll(std::string nick)
 {
 	SDL_Texture* tex = Images[nick];

@@ -14,6 +14,7 @@ public:
 	virtual inline bool HasKeyboardControl() { return true; };
 	Action();
 	virtual ~Action();
+	static void DrawWindow(SDL_Rect& target, SDL_Color back, SDL_Color Border);
 protected: 
 	Action* nextAction = nullptr;
 private:

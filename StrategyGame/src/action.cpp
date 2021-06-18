@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "action.h"
+#include "display.h"
 
 
 bool Action::Process(double time)
@@ -27,6 +28,33 @@ Action::Action()
 }
 
 Action::~Action() {
+}
+
+void Action::DrawWindow(SDL_Rect& target, SDL_Color back, SDL_Color border)
+{
+    int bw = 4;
+    //Gonna cheat here and use 2px borders
+    SDL_SetRenderDrawColor(Display::GetRenderer(), border.r, border.g, border.b, 255);
+    SDL_RenderFillRect(Display::GetRenderer(), &target);
+    //copy
+    SDL_Rect top(target);
+    SDL_Rect bot(target);
+
+    //Gives us the top part....
+    top.y += bw;
+    top.x += bw;
+    top.w -= bw*2;
+    top.h = 18+bw*2;
+
+    bot.y += 22 + bw * 3;
+    bot.x += bw;
+    bot.w -= bw*2;
+    bot.h = target.h +18 + bw * 3;
+
+    SDL_SetRenderDrawColor(Display::GetRenderer(), back.r, back.g, back.b, 255);
+    SDL_RenderFillRect(Display::GetRenderer(), &top);
+    SDL_SetRenderDrawColor(Display::GetRenderer(), back.r, back.g, back.b, 255);
+    SDL_RenderFillRect(Display::GetRenderer(), &bot);
 }
 
 bool ActionPlayLocal::Process(double time)

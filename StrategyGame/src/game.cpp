@@ -11,6 +11,8 @@
 Game::Game() : running(true), console{ nullptr }
 {
 	socketQueue = nullptr;
+	
+	
 }
 
 void Game::handleMouse()

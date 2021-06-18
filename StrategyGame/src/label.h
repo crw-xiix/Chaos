@@ -5,6 +5,7 @@
 class Label : public VisualBase {
 public:
 	Label(int x, int y, int w, int h);
+	Label(SDL_Rect pos);
 	void SetText(std::string val);
 	void SetTexture(SDL_Texture* tex);
 	void SetOnClick(std::function<void(void)> func);
