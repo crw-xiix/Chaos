@@ -7,11 +7,13 @@ Charles Wood
 #pragma once
 #include "action.h"
 #include "button.h"
-#include "mousemanager.h"
+#include "textbox.h"
+#include "inputmanager.h"
 
 class ActionSelectServer : public Action {
 public:
 	ActionSelectServer();
+	void keyPressed(int val);
 	~ActionSelectServer();
 	bool Process(double time);
 	void Click();
@@ -23,9 +25,12 @@ protected:
 	void remoteClick();
 	void piClick();
 	void quitClick();
-private:
+private:  //Controls
+	TextBox* tUserName = nullptr;
 	
-	MouseManager* mouseMan = nullptr;
+private:
+	InputManager keyMan;
+	//MouseManager* mouseMan = nullptr;
 	SDL_Rect location{ 0 };
 	std::vector<VisualBase*> controls;
 	bool clicked = false;

@@ -11,6 +11,7 @@ Charles Wood
 #include "actionjoincreate.h"
 #include "label.h"
 
+
 ActionSelectServer::ActionSelectServer()
 {
     //center us up
@@ -30,7 +31,8 @@ ActionSelectServer::ActionSelectServer()
 
     location.y += 30;
     //Have to center this up now.
-    location.x = (Display::Width - 600 - 256) >> 1;  //It's gotta be centered..........
+    //Location.x 
+    location.x = (Display::Width - 256) >> 1;  //It's gotta be centered..........
 
     Button *bRemote = new Button(location.x, location.y+20, 256, 48);
     bRemote->SetText("Cabbage:82");
@@ -43,40 +45,66 @@ ActionSelectServer::ActionSelectServer()
     bLocal->SetTexture(bTex);
     bLocal->SetOnClick(std::bind(&ActionSelectServer::localClick, this));
 
-    Button* bPi = new Button(location.x + 10, location.y + 140, 256, 48);
+    Button* bPi = new Button(location.x, location.y + 140, 256, 48);
     bPi->SetText("192.168.89.250:82");
     bPi->SetTexture(bTex);
     bPi->SetOnClick(std::bind(&ActionSelectServer::piClick, this));
-    location.y += 20;
-    Button* bExit = new Button(location.x + 10, location.y + 200, 256, 48);
+
+    
+    Label* lUserName = new Label(location.x, location.y + 200, 256, 48);
+    lUserName->SetText("Enter User Name");
+    tUserName = new TextBox(location.x , location.y + 240, 256, 20);
+    tUserName->SetText("");
+    tUserName->SetFont(std::make_unique<Font16>());
+    tUserName->SetText("");
+    tUserName->SetMaxLength(16);
+
+
+    location.y += 80;
+    Button* bExit = new Button(location.x, location.y + 200, 256, 48);
     bExit->SetText("Quit");
     bExit->SetTexture(bTex);
     bExit->SetOnClick(std::bind(&ActionSelectServer::quitClick, this));
+
+
+
 
     controls.push_back(lTitle);
     controls.push_back(bRemote);
     controls.push_back(bLocal);
     controls.push_back(bPi);
+
+    controls.push_back(lUserName);
+    controls.push_back(tUserName);
+    
     controls.push_back(bExit);
-    mouseMan = new MouseManager(&controls);
+
+    keyMan.Add(controls);
 }
 
+void ActionSelectServer::keyPressed(int val)
+{
+    //We don't really care for now.
+   
+   
+}
 ActionSelectServer::~ActionSelectServer()
 {
     for (auto& i : controls) {
         delete i;
         i = nullptr;
     }
-    if (mouseMan != nullptr) delete mouseMan;
+
 }
 
 bool ActionSelectServer::Process(double time)
 {
     int mx, my;
     uint32_t mouseState = SDL_GetMouseState(&mx, &my);
-    mouseMan->Process(mx, my, mouseState);
+    keyMan.Process(mx, my, mouseState);
     eTime += time;
-
+    keyMan.Process(mx, my, mouseState);
+    keyMan.Process(time);
     return clicked;
 }
 
@@ -88,6 +116,7 @@ void ActionSelectServer::Click()
 void ActionSelectServer::Mouse(int x, int y, int b)
 {
     //Using a mouse controller, so it don't matter......
+    std::string st = "";
 }
 
 void ActionSelectServer::Draw()

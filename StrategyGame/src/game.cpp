@@ -4,7 +4,7 @@
 #include "viewport.h"
 #include "actionintro.h"
 #include <functional>
-#include "keymanager.h"
+#include "inputmanager.h"
 
 
 
@@ -199,7 +199,7 @@ void Game::HandleEvent(double ms) {
 				const uint8_t* ks = SDL_GetKeyboardState(NULL);
 				bool shift =
 					((ks[SDL_SCANCODE_LSHIFT] > 0) || (ks[SDL_SCANCODE_RSHIFT]>0));
-				KeyboardManager::KeyManager->AddKeyDown(val,shift);
+				InputManager::KeyManager->AddKeyDown(val,shift);
 			}
 			keys[val] += ms;
 			if (val == SDLK_BACKSPACE) {

@@ -92,9 +92,10 @@ void TextBox::Draw()
 		SDL_Rect cursor{ location.x + 2 + curOffset, location.y + 2, 1, location.h - 4 };
 		SDL_RenderDrawRect(Display::GetRenderer(), &cursor);
 	}
-
+	/*???
 	std::map<char, int> vals;
 	if (vals.find('c') != vals.end()) {}
+	*/
 	
 }
 

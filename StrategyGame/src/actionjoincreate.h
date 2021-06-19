@@ -7,8 +7,8 @@ Charles Wood
 #pragma once
 #include "action.h"
 #include "button.h"
-#include "mousemanager.h"
-#include "keymanager.h"
+
+#include "inputmanager.h"
 #include "textbox.h"
 #include "socketcallback.h"
 
@@ -33,8 +33,8 @@ private:
 	void keyPressed(int val);
 	TextBox* tRoomCode = nullptr;
 	TextBox* tUserName = nullptr;
-	MouseManager* mouseMan = nullptr;
-	KeyboardManager keyMan;
+	//MouseManager* mouseMan = nullptr;
+	InputManager keyMan;
 	SDL_Rect location{ 0 };
 	std::vector<VisualBase*> controls;
 	std::string serverUrl = "";

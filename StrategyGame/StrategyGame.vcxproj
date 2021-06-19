@@ -179,11 +179,11 @@
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gameplayer.h" />
     <ClInclude Include="src\json.h" />
-    <ClInclude Include="src\keymanager.h" />
+    <ClInclude Include="src\inputmanager.h" />
     <ClInclude Include="src\map.h" />
     <ClInclude Include="src\MapItem.h" />
     <ClInclude Include="src\maptile.h" />
-    <ClInclude Include="src\mousemanager.h" />
+    <ClInclude Include="src\removed\mousemanager.h" />
     <ClInclude Include="src\pathfind.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\perlinmap.h" />
@@ -218,13 +218,13 @@
     <ClCompile Include="src\font16.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gameplayer.cpp" />
-    <ClCompile Include="src\keymanager.cpp" />
+    <ClCompile Include="src\inputmanager.cpp" />
     <ClCompile Include="src\main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\map.cpp" />
     <ClCompile Include="src\maptile.cpp" />
-    <ClCompile Include="src\mousemanager.cpp" />
+    <ClCompile Include="src\removed\mousemanager.cpp" />
     <ClCompile Include="src\pathfind.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

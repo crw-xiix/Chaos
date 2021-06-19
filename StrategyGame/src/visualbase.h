@@ -11,8 +11,9 @@ public:
 	virtual void MouseClick(int mx, int my) = 0;
 	virtual void Draw() = 0;
 	virtual void Process(double ms) = 0;
+	virtual inline void KeyIn(int val) {};
 protected:
-	friend class MouseManager;
+	friend class InputManager;
 	SDL_Rect location{ 0 };
 	bool hover = false;
 	bool down = false;

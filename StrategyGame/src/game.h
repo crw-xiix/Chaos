@@ -6,7 +6,7 @@
 #include "action.h"
 #include "console.h"
 #include "socketqueue.h"
-#include "keymanager.h"
+#include "inputmanager.h"
 #include <functional>
 #include "../3rd/jute.h"
 #include "playerstatus.h"
@@ -43,7 +43,7 @@ private:
 	double lastPing = 0;
 	std::string roomCode = "";
 	std::function<bool(jute::jValue&)> msgCallBack;
-	KeyboardManager keyMan;
+	InputManager keyMan;
 	
 	std::map<int, double> keys;  //numbers to wild for array....
 	bool keyDown(int val);

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "mousemanager.h"
 
-
+/*
 MouseManager::MouseManager(std::vector<VisualBase*>* items)
 {
     viewItems = items;
@@ -46,3 +46,4 @@ MouseManager::~MouseManager()
 {
     //if (viewItems != nullptr) delete viewItems;
 }
+*/

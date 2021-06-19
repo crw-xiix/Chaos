@@ -80,8 +80,7 @@ ActionJoinCreate::ActionJoinCreate():
     controls.push_back(bCreate);
     controls.push_back(bExit);
 
-    mouseMan = new MouseManager(&controls);
-    
+    keyMan.Add(controls);
     keyMan.SetCallBack(std::bind(&ActionJoinCreate::keyPressed,this, _1));
    
 }
@@ -89,7 +88,6 @@ ActionJoinCreate::ActionJoinCreate():
 ActionJoinCreate::~ActionJoinCreate()
 {
     for (auto i : controls) delete i;
-    delete mouseMan;
 }
 
 bool ActionJoinCreate::Process(double time)
@@ -107,7 +105,7 @@ bool ActionJoinCreate::Process(double time)
     for (auto c : controls) {
         c->Process(time);
     }
-    mouseMan->Process(mx, my, mouseState);
+    keyMan.Process(mx, my, mouseState);
     keyMan.Process(time);
 
     if (clicked) {
@@ -199,7 +197,7 @@ bool ActionJoinCreate::MessageIn(jute::jValue& v)
 void ActionJoinCreate::keyPressed(int val)
 {
     //xxxc CRW need focus manager
-    tRoomCode->KeyIn(val);
+    //tRoomCode->KeyIn(val);
 }
 
 void ActionJoinCreate::draw()
