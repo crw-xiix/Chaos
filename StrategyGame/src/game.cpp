@@ -420,7 +420,7 @@ bool Game::Process(double deltaTime) {
 	bool doKeyb = true;
 	elapsedTime = deltaTime;
 
-	if (actions.size() > 0) {
+	if (actions.size() == 0) {
 		//This just allows some windows to let control keys through to gameInstance.
 		if (doKeyb) {
 			const uint8_t* ks = SDL_GetKeyboardState(NULL);

@@ -8,6 +8,7 @@ class InputManager {
 public:
     InputManager();
     static InputManager* KeyManager;
+    
     void Process(int mx, int my, int mb);
     void Process(double ms);
     void SetCallBack(std::function<void(const int)> a);
@@ -16,7 +17,8 @@ public:
     void Add(std::vector<VisualBase*> items);
     //void SetFocusManager(FocusManager* fm);
     void KeyIn(int val);
-
+protected:
+    void ClearFocus();
 private:
     static std::list<int> keyQueue;
     std::vector<VisualBase*> viewItems;

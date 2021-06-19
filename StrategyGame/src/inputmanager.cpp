@@ -1,3 +1,4 @@
+
 #include "pch.h"
 #include "inputmanager.h"
 
@@ -7,6 +8,10 @@ InputManager::InputManager()
 }
 
 //This is a pointer to obj on stack, owned by caller.
+
+void InputManager::ClearFocus() {
+    for (auto visBase : viewItems) visBase->hasFocus = false;
+}
 
 void InputManager::Process(int mx, int my, int mb)
 {
@@ -30,37 +35,36 @@ void InputManager::Process(int mx, int my, int mb)
         }
         lastHover = found;
     }
+    bool mouseChanged = (mouseDown != mb);
+    bool mousePressed = (mb > 0);
+    bool mouseReleased = (mb == 0);
+    bool mouseOverObj = (lastHover != nullptr);
 
-    //This should keep us in the frame
-    if (lastHover != nullptr) {
-        if (mouseDown != mb) {
-            if (mb == 1) {
+
+    if (mouseChanged) {
+        if (mouseOverObj) {
+            if (mousePressed) {
                 lastHover->MouseDown(mx, my);
-                focus->hasFocus = false;
+                lastDown = lastHover;
+                //Clear what ever had focus before;
+                ClearFocus();
                 //Take away focus
-                if (lastDown != nullptr) {
-                    lastDown->hasFocus = true;
-                    lastDown = lastHover;
-                }
-                else {
 
-                }
-                if (found->canFocus) {
-                    focus = found;
-                    focus->hasFocus = true;
-                }
+                lastHover->hasFocus = true;
 
-            }
-            else {
-                lastHover->MouseUp();
-                if (lastDown == lastHover) {
-                    lastHover->MouseClick(mx, my);
-                }
+                focus = lastDown;
+            };
+            if (mouseReleased) {
+                //This is the mouse released section....
+                lastDown->MouseUp();
+                lastHover->MouseClick(mx, my);
             }
         }
-        mouseDown = mb;
     }
+    mouseDown = mb;
 }
+
+
 void InputManager::Process(double ms) {
     
     if (keyQueue.size() > 0) {
@@ -70,10 +74,10 @@ void InputManager::Process(double ms) {
         if (callBack) {
             callBack(val);
         }
-        else {
-            focus->KeyIn(val);
+        
+        focus->KeyIn(val);
         }
-    }
+    
     for (auto i : viewItems) {
         i->Process(ms);
     }
